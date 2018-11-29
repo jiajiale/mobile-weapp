@@ -5,22 +5,22 @@
     export default class extends wepy.app {
         config = {
             pages: [
-                'pages/index'
+                'pages/home/index'
             ],
             window: {
                 backgroundTextStyle: 'light',
-                navigationBarBackgroundColor: '#fff',
-                navigationBarTitleText: 'WeChat',
-                navigationBarTextStyle: 'black'
+                navigationBarBackgroundColor: '#ec3a3e',
+                navigationBarTitleText: '首页',
+                navigationBarTextStyle: '#ffffff'
             }
-        }
+        };
 
         globalData = {
             userInfo: null
-        }
+        };
 
         constructor() {
-            super()
+            super();
             this.use('requestfix')
         }
 
@@ -37,18 +37,18 @@
         }
 
         async testAsync() {
-            const data = await this.sleep(3)
+            const data = await this.sleep(3);
             console.log(data)
         }
 
         getUserInfo(cb) {
-            const that = this
+            const that = this;
             if (this.globalData.userInfo) {
                 return this.globalData.userInfo
             }
             wepy.getUserInfo({
                 success (res) {
-                    that.globalData.userInfo = res.userInfo
+                    that.globalData.userInfo = res.userInfo;
                     cb && cb(res.userInfo)
                 }
             })

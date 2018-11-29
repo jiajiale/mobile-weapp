@@ -1,0 +1,56 @@
+<style lang="less">
+
+</style>
+<template>
+  <view class="goods-item">
+      <i-row>
+          <i-col span="24" i-class="col-class">
+              <image src="https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg" mode="scaleToFill"></image>
+          </i-col>
+      </i-row>
+      <i-row>
+          <i-col span="24" i-class="col-class">col-8</i-col>
+      </i-row>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class HomeIndex extends wepy.page {
+    config = {
+        navigationBarTitleText: '首页',
+        usingComponents: {
+            "i-row": "../../iview/row/index",
+            "i-col": "../../iview/col/index"
+        }
+    };
+    components = {
+
+    };
+
+    mixins = [];
+
+    data = {
+
+    };
+
+    computed = {
+
+    };
+
+    methods = {
+        handleClick(){
+            console.log('aaaa');
+        }
+    };
+
+    events = {
+
+    };
+
+    onLoad() {
+
+    }
+  }
+</script>
