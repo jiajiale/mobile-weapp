@@ -1,12 +1,39 @@
 <style lang="less">
-    .wx-goods-item {
-        padding: 30rpx;
-        border-bottom: 1px solid #e9e9e9;
-        .wx-goods-item-head {
-            image {
-                width: 100%;
-                height: 350rpx;
+    .wx-goods-list{
+        margin-bottom: 120rpx;
+
+        .wx-goods-item {
+            padding: 30rpx;
+            border-bottom: 1px solid #e9e9e9;
+            .wx-goods-item-head {
+                image {
+                    width: 100%;
+                    height: 350rpx;
+                }
             }
+            .wx-goods-item-foot{
+                .wx-goods-price{
+                    height: 50rpx;
+                    line-height: 50rpx;
+                    .new-price{
+                        color: red;
+                        font-size: 35rpx;
+                        margin-right: 15rpx;
+                    }
+                    .old-price{
+                        font-size: 25rpx;
+                        text-decoration: line-through;
+                    }
+                }
+                .wx-goods-title{
+                    height: 50rpx;
+                    line-height: 50rpx;
+                    text-indent: 10rpx;
+                }
+            }
+        }
+        .wx-goods-item:last-child{
+            border-bottom: none;
         }
     }
 
@@ -16,31 +43,70 @@
         bottom: 0rpx;
         height: 100rpx;
         line-height: 100rpx;
-        background: #999999;
+        background: #ffffff;
         width: 100%;
-        opacity: 0.6;
+
+        .wx-cart-icon{
+            height: 120rpx;
+            line-height: 120rpx;
+            width: 120rpx;
+            border-radius: 50%;
+            display: inline-block;
+            background: #ffffff;
+            text-align: center;
+            position: relative;
+            top:-20rpx;
+            margin-left: 20rpx;
+        }
+
+        .wx-cart-info{
+            display: inline-block;
+            font-size: 25rpx;
+            position: relative;
+            top:-12rpx;
+        }
+
+        button{
+            margin: 10rpx 20rpx;
+        }
     }
 </style>
 <template>
-    <view class="wx-goods-item" wx:for="{{goodsList}}" wx:key="">
-        <i-row class="wx-goods-item-head">
-            <i-col span="24" i-class="col-class">
-                <image src="https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg"
-                       mode="scaleToFill"></image>
-            </i-col>
-        </i-row>
-        <i-row class="wx-goods-item-foot">
-            <view>
-                <i-col span="24" i-class="col-class"></i-col>
-            </view>
-            <view>
-                <i-col span="24" i-class="col-class">Macbook air pro苹果电脑包</i-col>
-            </view>
-        </i-row>
+    <view class="wx-goods-list">
+        <view class="wx-goods-item" wx:for="{{goodsList}}" wx:key="">
+            <i-row class="wx-goods-item-head">
+                <i-col span="24" i-class="col-class">
+                    <image src="https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg"
+                           mode="scaleToFill"></image>
+                </i-col>
+            </i-row>
+            <i-row class="wx-goods-item-foot">
+                <i-col span="20" i-class="col-class">
+                    <view class="wx-goods-price">
+                        <span class="new-price">￥200.00</span>
+                        <span class="old-price">￥260.00</span>
+                    </view>
+                    <view class="wx-goods-title">Macbook air pro苹果电脑包</view>
+                </i-col>
+                <i-col span="4" i-class="col-class">
+                    <i-radio checked="{{false}}"></i-radio>
+                </i-col>
+            </i-row>
+        </view>
     </view>
 
     <view class="wx-cart-bar">
-        <!--<i-button type="ghost" bind:click="handleOpen">打开窗口</i-button>-->
+        <i-row>
+            <i-col span="16" i-class="col-class">
+                <view class="wx-cart-icon">0</view>
+                <view class="wx-cart-info">
+                    未选购商品
+                </view>
+            </i-col>
+            <i-col span="8" i-class="col-class">
+                <i-button type="success" size="small">结算</i-button>
+            </i-col>
+        </i-row>
     </view>
 </template>
 
@@ -54,6 +120,7 @@
                 "i-row": "../../iview/row/index",
                 "i-col": "../../iview/col/index",
                 "i-button": "../../iview/button/index",
+                "i-radio": "../../iview/radio/index"
             }
         };
         components = {};
@@ -61,7 +128,7 @@
         mixins = [];
 
         data = {
-            goodsList: [1, 2],
+            goodsList: [1, 2,3],
             visible: false,
             actions2: [1,2]
         };
@@ -69,10 +136,6 @@
         computed = {};
 
         methods = {
-            handleOpen () {
-                this.visible = true;
-                this.$apply();
-            },
         };
 
         events = {};
