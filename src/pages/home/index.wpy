@@ -96,11 +96,13 @@
         </view>
     </view>
 
-    <ContentSheet></ContentSheet>
+    <ContentSheet :visible.sync="cartSheet">
+        <view slot="content">商品一</view>
+    </ContentSheet>
     <view class="wx-cart-bar">
         <i-row>
             <i-col span="16" i-class="col-class">
-                <view class="wx-cart-icon">0</view>
+                <view class="wx-cart-icon" bindtap="switchCartSheet">0</view>
                 <view class="wx-cart-info">
                     未选购商品
                 </view>
@@ -134,13 +136,16 @@
 
         data = {
             goodsList: [1, 2,3],
-            visible: false,
+            cartSheet: false,
             actions2: [1,2]
         };
 
         computed = {};
 
         methods = {
+            switchCartSheet(){
+                this.cartSheet = !this.cartSheet;
+            }
         };
 
         events = {};

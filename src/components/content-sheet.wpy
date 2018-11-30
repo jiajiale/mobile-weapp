@@ -23,17 +23,26 @@
     }
 </style>
 <template>
-    <view class="wx-sheet">
+    <view class="wx-sheet" wx:if="{{visible}}">
         <view class="wx-sheet-content">
             <view></view>
-            <view>sdfsd</view>
-            <view>sdfsd</view>
-            <view>sdfsd</view>
-            <view>sdfsd</view>
-            <view>sdfsd</view>
-            <view>sdfsd</view>
-            <view>sdfsd</view>
+            <slot name="content"></slot>
         </view>
         <view class="wx-sheet-modal"></view>
     </view>
 </template>
+<script>
+    import wepy from 'wepy'
+
+    export default class ContentSheet extends wepy.component {
+        props = {
+            visible: {
+                type: Boolean
+            }
+        };
+
+        methods = {
+
+        }
+    }
+</script>
