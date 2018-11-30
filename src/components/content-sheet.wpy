@@ -3,7 +3,6 @@
         position: fixed;
         background: #ffffff;
         width: 101%;
-        text-align: center;
         bottom: 100rpx;
         left: 50%;
         transform: translate3d(-50%,0,0);
@@ -25,6 +24,7 @@
 <template>
     <view class="wx-sheet" wx:if="{{visible}}">
         <view class="wx-sheet-content">
+            <!--<slot name="title"></slot>-->
             <view></view>
             <slot name="content"></slot>
         </view>

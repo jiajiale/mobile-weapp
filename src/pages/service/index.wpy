@@ -97,7 +97,13 @@
     </view>
 
     <ContentSheet :visible.sync="cartSheet">
-        <view slot="content">商品一</view>
+        <view slot="content">
+            <i-cell-group>
+                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
+                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
+                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
+            </i-cell-group>
+        </view>
     </ContentSheet>
     <view class="wx-cart-bar">
         <i-row>
@@ -118,14 +124,16 @@
     import wepy from 'wepy';
     import ContentSheet from '../../components/content-sheet';
 
-    export default class HomeIndex extends wepy.page {
+    export default class ServiceIndex extends wepy.page {
         config = {
             navigationBarTitleText: '首页',
             usingComponents: {
                 "i-row": "../../iview/row/index",
                 "i-col": "../../iview/col/index",
                 "i-button": "../../iview/button/index",
-                "i-radio": "../../iview/radio/index"
+                "i-radio": "../../iview/radio/index",
+                "i-cell-group": "../../iview/cell-group/index",
+                "i-cell": "../../iview/cell/index"
             }
         };
         components = {
