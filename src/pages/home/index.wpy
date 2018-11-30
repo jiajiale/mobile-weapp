@@ -1,56 +1,84 @@
 <style lang="less">
+    .wx-goods-item {
+        padding: 30rpx;
+        border-bottom: 1px solid #e9e9e9;
+        .wx-goods-item-head {
+            image {
+                width: 100%;
+                height: 350rpx;
+            }
+        }
+    }
 
+    .wx-cart-bar{
+        position: fixed;
+        left: 0rpx;
+        bottom: 0rpx;
+        height: 100rpx;
+        line-height: 100rpx;
+        background: #999999;
+        width: 100%;
+        opacity: 0.6;
+    }
 </style>
 <template>
-  <view class="goods-item">
-      <i-row>
-          <i-col span="24" i-class="col-class">
-              <image src="https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg" mode="scaleToFill"></image>
-          </i-col>
-      </i-row>
-      <i-row>
-          <i-col span="24" i-class="col-class">col-8</i-col>
-      </i-row>
-  </view>
+    <view class="wx-goods-item" wx:for="{{goodsList}}" wx:key="">
+        <i-row class="wx-goods-item-head">
+            <i-col span="24" i-class="col-class">
+                <image src="https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg"
+                       mode="scaleToFill"></image>
+            </i-col>
+        </i-row>
+        <i-row class="wx-goods-item-foot">
+            <view>
+                <i-col span="24" i-class="col-class"></i-col>
+            </view>
+            <view>
+                <i-col span="24" i-class="col-class">Macbook air pro苹果电脑包</i-col>
+            </view>
+        </i-row>
+    </view>
+
+    <view class="wx-cart-bar">
+        <!--<i-button type="ghost" bind:click="handleOpen">打开窗口</i-button>-->
+    </view>
 </template>
 
 <script>
-  import wepy from 'wepy'
+    import wepy from 'wepy'
 
-  export default class HomeIndex extends wepy.page {
-    config = {
-        navigationBarTitleText: '首页',
-        usingComponents: {
-            "i-row": "../../iview/row/index",
-            "i-col": "../../iview/col/index"
+    export default class HomeIndex extends wepy.page {
+        config = {
+            navigationBarTitleText: '首页',
+            usingComponents: {
+                "i-row": "../../iview/row/index",
+                "i-col": "../../iview/col/index",
+                "i-button": "../../iview/button/index",
+            }
+        };
+        components = {};
+
+        mixins = [];
+
+        data = {
+            goodsList: [1, 2],
+            visible: false,
+            actions2: [1,2]
+        };
+
+        computed = {};
+
+        methods = {
+            handleOpen () {
+                this.visible = true;
+                this.$apply();
+            },
+        };
+
+        events = {};
+
+        onLoad() {
+
         }
-    };
-    components = {
-
-    };
-
-    mixins = [];
-
-    data = {
-
-    };
-
-    computed = {
-
-    };
-
-    methods = {
-        handleClick(){
-            console.log('aaaa');
-        }
-    };
-
-    events = {
-
-    };
-
-    onLoad() {
-
     }
-  }
 </script>
