@@ -45,6 +45,7 @@
         line-height: 100rpx;
         background: #ffffff;
         width: 100%;
+        z-index: 999;
 
         .wx-cart-icon{
             height: 120rpx;
@@ -95,6 +96,7 @@
         </view>
     </view>
 
+    <ContentSheet></ContentSheet>
     <view class="wx-cart-bar">
         <i-row>
             <i-col span="16" i-class="col-class">
@@ -111,7 +113,8 @@
 </template>
 
 <script>
-    import wepy from 'wepy'
+    import wepy from 'wepy';
+    import ContentSheet from '../../components/content-sheet';
 
     export default class HomeIndex extends wepy.page {
         config = {
@@ -123,7 +126,9 @@
                 "i-radio": "../../iview/radio/index"
             }
         };
-        components = {};
+        components = {
+            ContentSheet: ContentSheet
+        };
 
         mixins = [];
 
