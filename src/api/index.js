@@ -1,7 +1,4 @@
 import wepy from 'wepy';
-import util from '../utils/util';
-import md5 from '../utils/md5';
-import tip from '../utils/tip';
 
 const APP_URL = 'http://test.mobile.com';
 // const APP_URL = 'https://reagent.caryue.com';

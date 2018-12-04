@@ -1,14 +1,21 @@
 <style lang="less">
     .wx-sheet-content{
         position: fixed;
-        background: #ffffff;
-        width: 101%;
-        bottom: 100rpx;
-        left: 50%;
-        transform: translate3d(-50%,0,0);
-        backface-visibility: hidden;
+        bottom: 0;
+        left: 0;
+        width: 100%;
         transition: transform .3s ease-out,-webkit-transform .3s ease-out;
         z-index: 100;
+        background: #ffffff;
+        .wx-sheet-content-head{
+            height: 80rpx;
+            line-height: 80rpx;
+            padding: 0rpx 20rpx;
+            border-bottom: 1rpx solid #e9e9e9;
+        }
+        .wx-sheet-content-body{
+            overflow: auto;
+        }
     }
     .wx-sheet-modal{
         position: fixed;
@@ -24,9 +31,11 @@
 <template>
     <view class="wx-sheet" wx:if="{{visible}}">
         <view class="wx-sheet-content">
-            <!--<slot name="title"></slot>-->
-            <view></view>
-            <slot name="content"></slot>
+            <view class="wx-sheet-content-head">购物车</view>
+            <view class="wx-sheet-content-body" style="max-height: {{maxHeight +'rpx'}}">
+                <view></view>
+                <slot name="content"></slot>
+            </view>
         </view>
         <view class="wx-sheet-modal"></view>
     </view>
@@ -38,6 +47,10 @@
         props = {
             visible: {
                 type: Boolean
+            },
+            maxHeight: {
+                type: Number,
+                default: 800
             }
         };
 

@@ -89,16 +89,19 @@
                     </view>
                     <view class="wx-goods-title">Macbook air pro苹果电脑包</view>
                 </i-col>
-                <i-col span="4" i-class="col-class">
-                    <i-radio checked="{{false}}"></i-radio>
-                </i-col>
             </i-row>
         </view>
     </view>
 
-    <ContentSheet :visible.sync="cartSheet">
+    <ContentSheet :visible.sync="sheetVisible" :maxHeight.sync="maxHeight">
         <view slot="content">
-            <i-cell-group>
+            <i-cell-group  style="overflow-y: scroll;">
+                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
+                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
+                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
+                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
+                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
+                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
                 <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
                 <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
                 <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
@@ -131,7 +134,6 @@
                 "i-row": "../../iview/row/index",
                 "i-col": "../../iview/col/index",
                 "i-button": "../../iview/button/index",
-                "i-radio": "../../iview/radio/index",
                 "i-cell-group": "../../iview/cell-group/index",
                 "i-cell": "../../iview/cell/index"
             }
@@ -144,7 +146,8 @@
 
         data = {
             goodsList: [1, 2,3],
-            cartSheet: false,
+            sheetVisible: false,
+            maxHeight: 600,
             actions2: [1,2]
         };
 
@@ -152,7 +155,7 @@
 
         methods = {
             switchCartSheet(){
-                this.cartSheet = !this.cartSheet;
+                this.sheetVisible = !this.sheetVisible;
             }
         };
 
