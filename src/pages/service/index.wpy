@@ -5,6 +5,7 @@
         .wx-goods-item {
             padding: 30rpx;
             border-bottom: 1px solid #e9e9e9;
+            position: relative;
             .wx-goods-item-head {
                 image {
                     width: 100%;
@@ -12,6 +13,22 @@
                 }
             }
             .wx-goods-item-foot{
+                .wx-goods-buy-btn{
+                    position:absolute;
+                    word-wrap:break-word;
+                    width:70rpx;
+                    height:70rpx;
+                    line-height: 35rpx;
+                    background:#ec3a3e;
+                    text-align:center;
+                    border-radius:50%;
+                    padding:15rpx;
+                    color:#fff;
+                    left:calc(50% - 35rpx);
+                    bottom: 90rpx;
+                    border: 1px solid #fff;
+                    font-size: 25rpx;
+                }
                 .wx-goods-price{
                     height: 50rpx;
                     line-height: 50rpx;
@@ -92,6 +109,7 @@
             </i-row>
             <i-row class="wx-goods-item-foot">
                 <i-col span="20" i-class="col-class">
+                    <view class="wx-goods-buy-btn">我要办理</view>
                     <view class="wx-goods-price">
                         <span class="new-price">￥200.00</span>
                         <span class="old-price">￥260.00</span>
@@ -127,7 +145,7 @@
         <i-row>
             <i-col span="16" i-class="col-class">
                 <view class="wx-cart-icon" bindtap="switchCartSheet">
-                    <icon class="iconfont icon-gouwuche"/>
+                    <icon class="iconfont icon-gouwuche" style="font-size: 40rpx"/>
                 </view>
                 <view class="wx-cart-info">
                     未选购商品
