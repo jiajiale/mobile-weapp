@@ -71,6 +71,15 @@
             margin: 10rpx 20rpx;
         }
     }
+    .wx-sheet-content-head{
+        height: 80rpx;
+        line-height: 80rpx;
+        padding: 0rpx 20rpx;
+        border-bottom: 1rpx solid #e9e9e9;
+    }
+    .wx-sheet-close-icon{
+        float: right;
+    }
 </style>
 <template>
     <view class="wx-goods-list">
@@ -93,7 +102,13 @@
         </view>
     </view>
 
-    <ContentSheet :visible.sync="sheetVisible" :maxHeight.sync="maxHeight">
+    <ContentSheet :visible.sync="sheetVisible" :maxHeight.sync="{{600}}">
+        <view slot="title">
+            <view class="wx-sheet-content-head">
+                购物车
+                <icon class="iconfont icon-guanbi wx-sheet-close-icon" bindtap="switchCartSheet"/>
+            </view>
+        </view>
         <view slot="content">
             <i-cell-group  style="overflow-y: scroll;">
                 <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
@@ -111,7 +126,9 @@
     <view class="wx-cart-bar">
         <i-row>
             <i-col span="16" i-class="col-class">
-                <view class="wx-cart-icon" bindtap="switchCartSheet">0</view>
+                <view class="wx-cart-icon" bindtap="switchCartSheet">
+                    <icon class="iconfont icon-gouwuche"/>
+                </view>
                 <view class="wx-cart-info">
                     未选购商品
                 </view>
