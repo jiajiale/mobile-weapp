@@ -1,11 +1,9 @@
 <style lang="less">
     .wx-sheet-content{
         position: fixed;
-        bottom: 0;
         left: 0;
         width: 100%;
         transition: transform .3s ease-out,-webkit-transform .3s ease-out;
-        z-index: 100;
         background: #ffffff;
         .wx-sheet-content-body{
             overflow: auto;
@@ -24,9 +22,9 @@
 </style>
 <template>
     <view class="wx-sheet" wx:if="{{visible}}">
-        <view class="wx-sheet-content">
+        <view class="wx-sheet-content" style="bottom: {{bottomStyle}}rpx;z-index: {{zIndexStyle}}">
             <slot name="title"></slot>
-            <view class="wx-sheet-content-body" style="max-height: {{maxHeight +'rpx'}}">
+            <view class="wx-sheet-content-body" style="max-height: {{maxHeight}}rpx">
                 <view></view>
                 <slot name="content"></slot>
             </view>
@@ -45,6 +43,14 @@
             maxHeight: {
                 type: Number,
                 default: 800
+            },
+            bottomStyle:{
+                type: Number,
+                default: 100
+            },
+            zIndexStyle:{
+                type: Number,
+                default: 100
             }
         };
 

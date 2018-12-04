@@ -62,7 +62,7 @@
         line-height: 100rpx;
         background: #ffffff;
         width: 100%;
-        z-index: 999;
+        z-index: 99;
 
         .wx-cart-icon{
             height: 120rpx;
@@ -88,11 +88,16 @@
             margin: 10rpx 20rpx;
         }
     }
-    .wx-sheet-content-head{
+    .wx-sheet-cart-head{
         height: 80rpx;
         line-height: 80rpx;
         padding: 0rpx 20rpx;
         border-bottom: 1rpx solid #e9e9e9;
+    }
+    .wx-sheet-goods-head{
+        height: 40rpx;
+        line-height: 40rpx;
+        padding: 0rpx 20rpx;
     }
     .wx-sheet-close-icon{
         float: right;
@@ -100,10 +105,10 @@
 </style>
 <template>
     <view class="wx-goods-list">
-        <view class="wx-goods-item" wx:for="{{goodsList}}" wx:key="">
-            <i-row class="wx-goods-item-head">
+        <view class="wx-goods-item" wx:for="{{goodsList}}" wx:key="{{item.id}}">
+            <i-row class="wx-goods-item-head" data-item="{{item}}" bindtap="switchGoodsSheet">
                 <i-col span="24" i-class="col-class">
-                    <image src="https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg"
+                    <image src="{{item.url}}"
                            mode="scaleToFill"></image>
                 </i-col>
             </i-row>
@@ -111,36 +116,47 @@
                 <i-col span="20" i-class="col-class">
                     <view class="wx-goods-buy-btn">我要办理</view>
                     <view class="wx-goods-price">
-                        <span class="new-price">￥200.00</span>
-                        <span class="old-price">￥260.00</span>
+                        <span class="new-price">￥{{item.newPrice}}</span>
+                        <span class="old-price">￥{{item.oldPrice}}</span>
                     </view>
-                    <view class="wx-goods-title">Macbook air pro苹果电脑包</view>
+                    <view class="wx-goods-title">{{item.title}}</view>
                 </i-col>
             </i-row>
         </view>
     </view>
 
-    <ContentSheet :visible.sync="sheetVisible" :maxHeight.sync="{{600}}">
-        <view slot="title">
-            <view class="wx-sheet-content-head">
-                购物车
-                <icon class="iconfont icon-guanbi wx-sheet-close-icon" bindtap="switchCartSheet"/>
-            </view>
-        </view>
+    <GoodsSheet :visible.sync="goodsVisible" :maxHeight.sync="goodsMaxHeight"
+                :bottomStyle.sync="goodsBottomStyle"
+                :zIndexStyle.sync="goodsZIndexStyle">
         <view slot="content">
-            <i-cell-group  style="overflow-y: scroll;">
-                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
-                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
-                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
-                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
-                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
-                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
+            <view slot="title">
+                <view class="wx-sheet-goods-head">
+                    <icon class="iconfont icon-guanbi wx-sheet-close-icon" bindtap="switchGoodsSheet"/>
+                </view>
+            </view>
+            <i-cell-group>
                 <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
                 <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
                 <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
             </i-cell-group>
         </view>
-    </ContentSheet>
+    </GoodsSheet>
+
+    <CartSheet :visible.sync="cartVisible" :maxHeight.sync="cartMaxHeight">
+        <view slot="title">
+            <view class="wx-sheet-cart-head">
+                选中业务
+                <icon class="iconfont icon-guanbi wx-sheet-close-icon" bindtap="switchCartSheet"/>
+            </view>
+        </view>
+        <view slot="content">
+            <i-cell-group>
+                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
+                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
+                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
+            </i-cell-group>
+        </view>
+    </CartSheet>
     <view class="wx-cart-bar">
         <i-row>
             <i-col span="16" i-class="col-class">
@@ -148,7 +164,7 @@
                     <icon class="iconfont icon-gouwuche" style="font-size: 40rpx"/>
                 </view>
                 <view class="wx-cart-info">
-                    未选购商品
+                    未选择任何业务
                 </view>
             </i-col>
             <i-col span="8" i-class="col-class">
@@ -174,15 +190,24 @@
             }
         };
         components = {
-            ContentSheet: ContentSheet
+            GoodsSheet: ContentSheet,
+            CartSheet: ContentSheet,
         };
 
         mixins = [];
 
         data = {
-            goodsList: [1, 2,3],
-            sheetVisible: false,
-            maxHeight: 600,
+            goodsList: [
+                {id:1,url:'https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg',oldPrice:260.00,newPrice:200.00,title:'Macbook air pro苹果电脑包'},
+                {id:2,url:'https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg',oldPrice:506.00,newPrice:426.00,title:'秋冬卫衣专场购买'},
+                {id:3,url:'https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg',oldPrice:10250.00,newPrice:8600.00,title:'iphone XR降价甩卖'},
+            ],
+            goodsMaxHeight: 800,
+            goodsBottomStyle: 0,
+            goodsZIndexStyle: 101,
+            cartMaxHeight: 600,
+            goodsVisible: false,
+            cartVisible: false,
             actions2: [1,2]
         };
 
@@ -190,7 +215,11 @@
 
         methods = {
             switchCartSheet(){
-                this.sheetVisible = !this.sheetVisible;
+                this.cartVisible = !this.cartVisible;
+            },
+            switchGoodsSheet(e){
+                let item = e.currentTarget.dataset.item;
+                this.goodsVisible = !this.goodsVisible;
             }
         };
 
