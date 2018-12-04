@@ -1,107 +1,5 @@
 <style lang="less">
-    .wx-goods-list{
-        margin-bottom: 120rpx;
-
-        .wx-goods-item {
-            padding: 30rpx;
-            border-bottom: 1px solid #e9e9e9;
-            position: relative;
-            .wx-goods-item-head {
-                image {
-                    width: 100%;
-                    height: 350rpx;
-                }
-            }
-            .wx-goods-item-foot{
-                .wx-goods-buy-btn{
-                    position:absolute;
-                    word-wrap:break-word;
-                    width:70rpx;
-                    height:70rpx;
-                    line-height: 35rpx;
-                    background:#ec3a3e;
-                    text-align:center;
-                    border-radius:50%;
-                    padding:15rpx;
-                    color:#fff;
-                    left:calc(50% - 35rpx);
-                    bottom: 90rpx;
-                    border: 1px solid #fff;
-                    font-size: 25rpx;
-                }
-                .wx-goods-price{
-                    height: 50rpx;
-                    line-height: 50rpx;
-                    .new-price{
-                        color: red;
-                        font-size: 35rpx;
-                        margin-right: 15rpx;
-                    }
-                    .old-price{
-                        font-size: 25rpx;
-                        text-decoration: line-through;
-                    }
-                }
-                .wx-goods-title{
-                    height: 50rpx;
-                    line-height: 50rpx;
-                    text-indent: 10rpx;
-                }
-            }
-        }
-        .wx-goods-item:last-child{
-            border-bottom: none;
-        }
-    }
-
-    .wx-cart-bar{
-        position: fixed;
-        left: 0rpx;
-        bottom: 0rpx;
-        height: 100rpx;
-        line-height: 100rpx;
-        background: #ffffff;
-        width: 100%;
-        z-index: 99;
-
-        .wx-cart-icon{
-            height: 120rpx;
-            line-height: 120rpx;
-            width: 120rpx;
-            border-radius: 50%;
-            display: inline-block;
-            background: #ffffff;
-            text-align: center;
-            position: relative;
-            top:-20rpx;
-            margin-left: 20rpx;
-        }
-
-        .wx-cart-info{
-            display: inline-block;
-            font-size: 25rpx;
-            position: relative;
-            top:-12rpx;
-        }
-
-        button{
-            margin: 10rpx 20rpx;
-        }
-    }
-    .wx-sheet-cart-head{
-        height: 80rpx;
-        line-height: 80rpx;
-        padding: 0rpx 20rpx;
-        border-bottom: 1rpx solid #e9e9e9;
-    }
-    .wx-sheet-goods-head{
-        height: 40rpx;
-        line-height: 40rpx;
-        padding: 0rpx 20rpx;
-    }
-    .wx-sheet-close-icon{
-        float: right;
-    }
+    @import "../../assets/styles/service_index";
 </style>
 <template>
     <view class="wx-goods-list">
@@ -129,9 +27,10 @@
                 :bottomStyle.sync="goodsBottomStyle"
                 :zIndexStyle.sync="goodsZIndexStyle">
         <view slot="content">
-            <view slot="title">
-                <view class="wx-sheet-goods-head">
-                    <icon class="iconfont icon-guanbi wx-sheet-close-icon" bindtap="switchGoodsSheet"/>
+            <view class="wx-goods-detail-head">
+                <view class="wx-goods-head-img">
+                    <image src="https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg"
+                           mode="scaleToFill"></image>
                 </view>
             </view>
             <i-cell-group>
