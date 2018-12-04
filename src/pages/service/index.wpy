@@ -28,11 +28,16 @@
                 :zIndexStyle.sync="goodsZIndexStyle">
         <view slot="content">
             <view class="wx-goods-head-img">
-                <image src="https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg" style="width: 280rpx;height: 160rpx;"
+                <image src="https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg"
                        mode="scaleToFill"></image>
             </view>
             <view class="wx-goods-head-main">
-                sdfsdfsddsfsdfsdffffffffffffffff
+                <icon class="iconfont icon-guanbi wx-sheet-close-icon" bindtap="switchGoodsSheet"/>
+                <view class="wx-goods-title">Macbook air pro苹果电脑包</view>
+                <view class="wx-goods-price">
+                    <span class="new-price">￥200.00</span>
+                    <span class="old-price">￥230.00</span>
+                </view>
             </view>
             <i-cell-group>
                 <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>

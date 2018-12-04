@@ -58,12 +58,35 @@
   z-index: 102;
   border-radius: 4px;
   border: 1px solid rgba(0,0,0,.1);
-  height: 160rpx;
+  height: 140rpx;
   margin: 10rpx 20rpx;
+  image{
+    width: 200rpx;
+    height: 140rpx;
+  }
 }
 .wx-goods-head-main{
-  height: 120rpx;
-  padding: 20rpx 20rpx 20px 260rpx;
+  height: 80rpx;
+  padding: 20rpx 20rpx 15rpx 240rpx;
+  border-bottom: 1px solid #e9e9e9;
+  .wx-goods-price{
+    height: 40rpx;
+    line-height: 30rpx;
+    .new-price{
+      color: red;
+      font-size: 25rpx;
+      margin-right: 15rpx;
+    }
+    .old-price{
+      font-size: 20rpx;
+      text-decoration: line-through;
+    }
+  }
+  .wx-goods-title{
+    height: 40rpx;
+    line-height: 30rpx;
+    text-indent: 10rpx;
+  }
 }
 .wx-cart-bar{
   position: fixed;
