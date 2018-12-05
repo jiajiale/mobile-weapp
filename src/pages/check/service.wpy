@@ -11,8 +11,13 @@
                         <image src="https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg"
                                mode="scaleToFill"></image>
                     </i-col>
-                    <i-col span="12" i-class="col-class">col-8</i-col>
-                    <i-col span="6" i-class="col-class">col-8</i-col>
+                    <i-col span="12" i-class="col-class">
+                        <view class="wx-goods-title">秋冬卫衣专场购买</view>
+                        <view class="wx-goods-spec">4G+64G土豪金</view>
+                    </i-col>
+                    <i-col span="6" i-class="col-class">
+                        <view class="wx-goods-price">￥120.00</view>
+                    </i-col>
                 </view>
             </i-row>
         </view>
