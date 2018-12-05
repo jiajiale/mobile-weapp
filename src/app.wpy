@@ -9,11 +9,11 @@
     export default class extends wepy.app {
         config = {
             pages: [
-                'pages/home/index',
+                'pages/check/service',
                 'pages/service/index',
                 'pages/goods/index',
-                'pages/check/service',
                 'pages/user/index',
+                'pages/home/index',
             ],
             window: {
                 backgroundTextStyle: 'light',

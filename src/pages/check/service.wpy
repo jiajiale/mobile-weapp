@@ -2,7 +2,41 @@
     @import "../../assets/styles/check_service";
 </style>
 <template>
+    <view class="wx-check">
+        <view class="wx-check-title">已选择的业务</view>
+        <view class="wx-check-body">
+            <i-row>
+                <view class="wx-goods-info">
+                    <i-col span="6" i-class="col-class" class="wx-goods-thumb">
+                        <image src="https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg"
+                               mode="scaleToFill"></image>
+                    </i-col>
+                    <i-col span="12" i-class="col-class">col-8</i-col>
+                    <i-col span="6" i-class="col-class">col-8</i-col>
+                </view>
+            </i-row>
+        </view>
 
+        <view class="wx-check-title">填写信息</view>
+        <view class="wx-check-body">
+            <view class="wx-check-info">
+                <i-input value="" title="用户姓名" placeholder="请输入用户姓名" />
+                <i-input value="" title="手机号码" placeholder="请输入用户手机号码" />
+                <i-input value="" title="身份证号" placeholder="请输入用户身份证号" />
+                <i-input value="" title="用户地址" placeholder="请输入用户地址" />
+            </view>
+        </view>
+        <view class="wx-check-bar">
+            <i-row>
+                <i-col span="16" i-class="col-class">
+                    ￥192.00
+                </i-col>
+                <i-col span="8" i-class="col-class">
+                    <i-button type="success" size="small">去支付</i-button>
+                </i-col>
+            </i-row>
+        </view>
+    </view>
 </template>
 
 <script>
@@ -16,9 +50,7 @@
                 "i-row": "../../iview/row/index",
                 "i-col": "../../iview/col/index",
                 "i-button": "../../iview/button/index",
-                "i-cell-group": "../../iview/cell-group/index",
-                "i-cell": "../../iview/cell/index",
-                "i-panel": "../../iview/panel/index",
+                "i-input": "../../iview/input/index"
             }
         };
         components = {
