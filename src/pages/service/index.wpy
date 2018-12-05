@@ -4,7 +4,7 @@
 <template>
     <view class="wx-goods-list">
         <view class="wx-goods-item" wx:for="{{goodsList}}" wx:key="{{item.id}}">
-            <i-row class="wx-goods-item-head" data-item="{{item}}" bindtap="switchGoodsSheet">
+            <i-row class="wx-goods-item-head" data-item="{{item}}">
                 <i-col span="24" i-class="col-class">
                     <image src="{{item.url}}"
                            mode="scaleToFill"></image>
@@ -12,7 +12,7 @@
             </i-row>
             <i-row class="wx-goods-item-foot">
                 <i-col span="20" i-class="col-class">
-                    <view class="wx-goods-buy-btn">我要办理</view>
+                    <view class="wx-goods-buy-btn" bindtap="switchGoodsSheet">我要办理</view>
                     <view class="wx-goods-price">
                         <span class="new-price">￥{{item.newPrice}}</span>
                         <span class="old-price">￥{{item.oldPrice}}</span>
@@ -39,11 +39,17 @@
                     <span class="old-price">￥230.00</span>
                 </view>
             </view>
-            <i-cell-group>
-                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
-                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
-                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
-            </i-cell-group>
+            <view class="wx-goods-specs">
+                <i-panel title="规格">
+                    <view class="wx-goods-spec">
+                        <view class="wx-goods-spec-item active">4G+64G土豪金</view>
+                        <view class="wx-goods-spec-item">4G+128G亮黑色</view>
+                    </view>
+                </i-panel>
+            </view>
+            <view>
+                <i-button type="success" size="small" bindtap="switchGoodsSheet">选好了</i-button>
+            </view>
         </view>
     </GoodsSheet>
 
@@ -91,7 +97,8 @@
                 "i-col": "../../iview/col/index",
                 "i-button": "../../iview/button/index",
                 "i-cell-group": "../../iview/cell-group/index",
-                "i-cell": "../../iview/cell/index"
+                "i-cell": "../../iview/cell/index",
+                "i-panel": "../../iview/panel/index",
             }
         };
         components = {
