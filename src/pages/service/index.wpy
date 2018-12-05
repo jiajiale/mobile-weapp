@@ -65,9 +65,8 @@
         </view>
         <view slot="content">
             <i-cell-group>
-                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
-                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
-                <i-cell title="只显示箭头" label="详细描述信息" value="￥100.00"></i-cell>
+                <i-cell title="韩版潮流女士连衣裙" label="粉色带花" value="￥100.00"></i-cell>
+                <i-cell title="男士潮版打底衫" value="￥120.00"></i-cell>
             </i-cell-group>
         </view>
     </CartSheet>
