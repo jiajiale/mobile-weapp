@@ -12,7 +12,10 @@
             </i-row>
             <i-row class="wx-goods-item-foot">
                 <i-col span="20" i-class="col-class">
-                    <view class="wx-goods-buy-btn" bindtap="switchGoodsSheet">我要办理</view>
+                    <view class="wx-goods-buy-btn" bindtap="switchGoodsSheet" wx:if="{{item.id != 2}}">我要办理</view>
+                    <view class="wx-goods-buy-btn" wx:else>
+                        <icon class="iconfont icon-duigou" bindtap="switchGoodsSheet"/>
+                    </view>
                     <view class="wx-goods-price">
                         <span class="new-price">￥{{item.newPrice}}</span>
                         <span class="old-price">￥{{item.oldPrice}}</span>
@@ -73,6 +76,7 @@
             <i-col span="16" i-class="col-class">
                 <view class="wx-cart-icon" bindtap="switchCartSheet">
                     <icon class="iconfont icon-gouwuche" style="font-size: 40rpx"/>
+                    <view class="wx-cart-num">5</view>
                 </view>
                 <view class="wx-cart-info">
                     未选择任何业务
