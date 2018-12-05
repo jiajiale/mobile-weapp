@@ -52,7 +52,7 @@
         <view class="wx-check-bar">
             <i-row>
                 <i-col span="16" i-class="col-class">
-                    ￥192.00
+                    <view class="wx-check-total">￥192.00</view>
                 </i-col>
                 <i-col span="8" i-class="col-class">
                     <i-button type="success" size="small">去支付</i-button>
