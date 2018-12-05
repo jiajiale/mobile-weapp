@@ -3,7 +3,7 @@
 </style>
 <template>
     <view class="wx-check">
-        <view class="wx-check-title">已选择的业务</view>
+        <view class="wx-check-title">可办理的业务</view>
         <view class="wx-check-body">
             <i-row>
                 <view class="wx-goods-info">
@@ -20,10 +20,10 @@
         <view class="wx-check-body">
             <view class="wx-check-body-title">填写信息</view>
             <view class="wx-check-info">
-                <i-input value="" title="用户姓名" placeholder="请输入用户姓名" />
-                <i-input value="" title="手机号码" placeholder="请输入用户手机号码" />
-                <i-input value="" title="身份证号" placeholder="请输入用户身份证号" />
-                <i-input value="" title="用户地址" placeholder="请输入用户地址" />
+                <i-input value="" title="用户姓名" placeholder="请输入用户姓名" right="true"/>
+                <i-input value="" title="手机号码" placeholder="请输入用户手机号码" right="true"/>
+                <i-input value="" title="身份证号" placeholder="请输入用户身份证号" right="true"/>
+                <i-input value="" title="用户地址" placeholder="请输入用户地址" right="true"/>
             </view>
         </view>
 
@@ -32,10 +32,14 @@
             <i-row>
                 <view class="wx-check-image">
                     <i-col span="8" i-class="col-class">
-
+                        <view class="wx-image-upload"><i-icon type="camera_fill" /></view>
                     </i-col>
-                    <i-col span="8" i-class="col-class">col-8</i-col>
-                    <i-col span="8" i-class="col-class">col-8</i-col>
+                    <i-col span="8" i-class="col-class">
+                        <view class="wx-image-upload"><i-icon type="camera_fill" /></view>
+                    </i-col>
+                    <i-col span="8" i-class="col-class">
+                        <view class="wx-image-upload"><i-icon type="camera_fill" /></view>
+                    </i-col>
                 </view>
             </i-row>
         </view>
@@ -64,7 +68,8 @@
                 "i-row": "../../iview/row/index",
                 "i-col": "../../iview/col/index",
                 "i-button": "../../iview/button/index",
-                "i-input": "../../iview/input/index"
+                "i-input": "../../iview/input/index",
+                "i-icon": "../../iview/icon/index"
             }
         };
         components = {
