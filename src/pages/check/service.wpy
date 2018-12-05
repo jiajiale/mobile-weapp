@@ -1,5 +1,5 @@
 <style lang="less">
-    @import "../../assets/styles/service_index";
+    @import "../../assets/styles/check_service";
 </style>
 <template>
 
@@ -9,7 +9,7 @@
     import wepy from 'wepy';
     import ContentSheet from '../../components/content-sheet';
 
-    export default class CheckIndex extends wepy.page {
+    export default class CheckService extends wepy.page {
         config = {
             navigationBarTitleText: '首页',
             usingComponents: {
