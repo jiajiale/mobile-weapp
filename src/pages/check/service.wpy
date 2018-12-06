@@ -38,12 +38,15 @@
                 <view class="wx-check-image">
                     <i-col span="8" i-class="col-class">
                         <view class="wx-image-upload"><i-icon type="camera_fill" /></view>
+                        <view class="wx-upload-info">身份证</view>
                     </i-col>
                     <i-col span="8" i-class="col-class">
                         <view class="wx-image-upload"><i-icon type="camera_fill" /></view>
+                        <view class="wx-upload-info">工作证</view>
                     </i-col>
                     <i-col span="8" i-class="col-class">
                         <view class="wx-image-upload"><i-icon type="camera_fill" /></view>
+                        <view class="wx-upload-info">头像</view>
                     </i-col>
                 </view>
             </i-row>
