@@ -90,6 +90,7 @@
 
 <script>
     import wepy from 'wepy';
+    import authorize from '../../mixins/authorize';
     import ContentSheet from '../../components/content-sheet';
 
     export default class ServiceIndex extends wepy.page {
@@ -109,7 +110,7 @@
             CartSheet: ContentSheet,
         };
 
-        mixins = [];
+        mixins = [authorize];
 
         data = {
             goodsList: [
