@@ -7,8 +7,6 @@
         <view class="wx-dialog">
             <view class="wx-dialog-header">
                 <view class="wx-dialog-title">微信授权</view>
-                <!--<view class="wx-dialog-avatar"><open-data type="userAvatarUrl"></open-data></view>-->
-                <!--<view class="wx-dialog-nickname"><open-data type="userNickName"></open-data></view>-->
             </view>
             <view class="wx-dialog-content">
                 <view>同意当前小程序获取我的微信头像</view>
