@@ -140,6 +140,14 @@
 
         events = {};
 
+        onShow() {
+            let _this = this;
+            this.checkAuthorize(function () {
+                //_this.queryReagentInfo();
+                //_this.reagent = {};
+            });
+        };
+
         onLoad() {
 
         }

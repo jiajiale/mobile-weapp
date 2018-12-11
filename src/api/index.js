@@ -24,7 +24,6 @@ const wxRequest = async(method = 'GET',params = {}, url) => {
     if(res.data.code === 200){
         return res.data;
     }else{
-        tip.toast(res.data.msg);
         return false;
     }
 };

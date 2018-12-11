@@ -1,0 +1,237 @@
+<template>
+    <view class="wx-dialog-container {{showDialog ? 'show' : 'close'}}">
+        <view class="wx-mask"></view>
+        <view class="wx-dialog">
+            <view class="wx-dialog-header">
+                <view class="wx-dialog-title">微信授权</view>
+                <!--<view class="wx-dialog-avatar"><open-data type="userAvatarUrl"></open-data></view>-->
+                <!--<view class="wx-dialog-nickname"><open-data type="userNickName"></open-data></view>-->
+            </view>
+            <view class="wx-dialog-content">
+                <view>同意当前小程序获取我的微信头像</view>
+                <view>同意当前小程序获取我的微信昵称</view>
+            </view>
+            <view class="wx-dialog-footer">
+                <button class="wx-dialog-btn" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">允许</button>
+            </view>
+        </view>
+    </view>
+</template>
+<style lang="scss">
+    .show {
+        display: block;
+    }
+
+    .close {
+        display: none;
+    }
+
+    .wx-mask {
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+    }
+
+    .wx-dialog {
+        position: fixed;
+        z-index: 5000;
+        width: 80%;
+        max-width: 300px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 32rpx;
+
+        background-color: #FFFFFF;
+        text-align: center;
+        border-radius: 3px;
+        overflow: hidden;
+    }
+
+    .wx-dialog-header {
+        padding: 1.3em 1.6em 0.5em;;
+    }
+
+    .wx-dialog-title {
+        font-weight: 400;
+        font-size: 36rpx;
+        margin-bottom: 15rpx;
+    }
+
+    .wx-dialog-avatar {
+        width: 120rpx;
+        height: 120rpx;
+        border-radius: 50%;
+    }
+
+    .wx-dialog-content {
+        padding: 0 1.6em 0.8em;
+        min-height: 80rpx;
+        line-height: 2;
+        word-wrap: break-word;
+        word-break: break-all;
+        color: #808080;
+        text-align: left;
+        font-size: 28rpx;
+        &:first-child {
+            color: #353535;
+        }
+    }
+
+    .wx-dialog-footer {
+        position: relative;
+        line-height: 90rpx;
+        display: flex;
+        font-size: 32rpx;
+        &:after {
+            content: " ";
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            height: 1px;
+            border-top: 1px solid #D5D5D6;
+            color: #D5D5D6;
+            -webkit-transform-origin: 0 0;
+            transform-origin: 0 0;
+            -webkit-transform: scaleY(0.5);
+            transform: scaleY(0.5);
+        }
+    }
+
+    .wx-dialog-btn {
+        display: block;
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        flex: 1;
+        color: #09BB07;
+        text-decoration: none;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        position: relative;
+
+        &:after {
+            content: " ";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1px;
+            bottom: 0;
+            border-left: 1px solid #D5D5D6;
+            color: #D5D5D6;
+            -webkit-transform-origin: 0 0;
+            transform-origin: 0 0;
+            -webkit-transform: scaleX(0.5);
+            transform: scaleX(0.5);
+        }
+        &:first-child {
+            &:after {
+                display: none;
+            }
+        }
+    }
+</style>
+<script>
+    import wepy from 'wepy';
+    import api from '../../api';
+    import tip from '../../utils/tip';
+
+    export default class AuthorizeIndex extends wepy.page {
+        config = {
+            navigationBarTitleText: '授权'
+        };
+        data = {
+            showDialog: false,
+            token: ''
+        };
+
+        events = {};
+
+        methods = {};
+
+        bindGetUserInfo(e) {
+            if (e.detail.userInfo) {
+                this.register(e.detail.encryptedData, e.detail.iv);
+                this.showDialog = false;
+            } else {
+                this.showDialog = true;
+                return;
+            }
+        };
+
+        onShow() {
+            this.login();
+        };
+
+        onLoad(options) {
+
+        }
+
+        setLoginInfo(token) {
+            let current_time = Date.parse(new Date());
+
+            wx.setStorageSync('token', token);
+            wx.setStorageSync('token_expire', current_time + 7000000);
+        }
+
+        login() {
+            let token = wx.setStorageSync('token'), that = this;
+            if (!token) {
+                wx.login({
+                    success: function (res) {
+                        if (res.code) {
+                            tip.loading('登录中，请稍后');
+                            api.login('POST', {
+                                'code': res.code
+                            }).then(resp => {
+                                if (resp.data) {
+                                    that.token = resp.data.token;
+                                    that.setLoginInfo(resp.data.token);
+
+                                    wx.getSetting({
+                                        success(res) {
+                                            if (res.authSetting['scope.userInfo']) {
+                                                wx.getUserInfo({
+                                                    success: function (res) {
+                                                        that.register(res.encryptedData, res.iv);
+                                                    }
+                                                });
+                                            } else {
+                                                that.setData({
+                                                    showDialog: true
+                                                });
+                                                tip.loaded();
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    tip.loaded();
+                                    tip.toast('登陆失败');
+                                }
+                            });
+                        } else {
+                            tip.toast('登陆失败');
+                        }
+                    }
+                });
+            } else {
+                wx.navigateBack();
+            }
+        };
+
+        register(encryptedData, iv) {
+            api.register('POST', {
+                'iv': iv,
+                'encryptedData': encryptedData
+            }).then(resp => {
+                if (resp.data) {
+                    wx.setStorageSync('userInfo', resp.data);
+                    wx.navigateBack();
+                }
+            });
+        }
+    }
+</script>
