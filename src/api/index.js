@@ -22,7 +22,6 @@ const wxRequest = async(method = 'GET',params = {}, url) => {
         data: data,
         header: { 'Content-Type': 'application/json' ,'Accept': 'application/json', 'time': TIMESTAMP,'sign':SIGN},
     });
-
     if(res.data.code === 200){
         return res.data;
     }else{
