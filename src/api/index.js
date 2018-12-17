@@ -32,5 +32,5 @@ const wxRequest = async(method = 'GET',params = {}, url) => {
 export default{
     login: (method,params) => wxRequest(method,params, "/api/public/login"),
     register: (method,params) => wxRequest(method,params, "/api/public/register"),
-    queryGoodsList: (method,params) => wxRequest(method,params, "/api/goods/queryGoodsList"),
+    queryGoodsList: (method,params) => wxRequest(method,params, "/api/goods/index"),
 };

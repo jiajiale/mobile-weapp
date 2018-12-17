@@ -20,7 +20,7 @@
                         <span class="new-price">￥{{item.newPrice}}</span>
                         <span class="old-price">￥{{item.oldPrice}}</span>
                     </view>
-                    <view class="wx-goods-title">{{item.title}}</view>
+                    <view class="wx-goods-title">{{item.goods_name}}</view>
                 </i-col>
             </i-row>
         </view>
@@ -92,6 +92,9 @@
     import wepy from 'wepy';
     import authorize from '../../mixins/authorize';
     import ContentSheet from '../../components/content-sheet';
+    import api from '../../api';
+    import tip from '../../utils/tip';
+    import utils from '../../utils/util';
 
     export default class ServiceIndex extends wepy.page {
         config = {
@@ -124,7 +127,8 @@
             cartMaxHeight: 600,
             goodsVisible: false,
             cartVisible: false,
-            actions2: [1,2]
+            actions2: [1,2],
+            page: 1,
         };
 
         computed = {};
@@ -139,12 +143,33 @@
             }
         };
 
-        events = {};
+        queryReload(){
+            this.page = 1;
+            this.goodsList = [];
+            this.hasPage = true;
+            this.queryItemList();
+        };
+
+        async queryItemList() {
+            tip.loaded();
+            await api.queryGoodsList('POST',{
+                page: this.page,
+                is_goods: false
+            }).then(resp => {
+                console.log(resp);
+                tip.loaded();
+                this.goodsList = this.goodsList.concat(resp.data.items);
+                if(resp.data.pager.index >= resp.data.pager.total){
+                    this.hasPage = false;
+                }
+                this.$apply();
+            });
+        };
 
         onShow() {
             let _this = this;
             this.checkAuthorize(function () {
-                //_this.queryReagentInfo();
+                _this.queryReload();
                 //_this.reagent = {};
             });
         };
