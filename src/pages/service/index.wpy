@@ -29,7 +29,7 @@
     <GoodsSheet :visible.sync="goodsVisible" :maxHeight.sync="goodsMaxHeight"
                 :bottomStyle.sync="goodsBottomStyle"
                 :zIndexStyle.sync="goodsZIndexStyle">
-        <view slot="content">
+        <view slot="content" wx:if="{{goodsInfo.id}}">
             <view class="wx-goods-head-img">
                 <image src="{{goodsImgUrl + goodsInfo.original_img}}"
                        mode="scaleToFill"></image>
