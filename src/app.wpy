@@ -3,8 +3,8 @@
 </style>
 
 <script>
-    import wepy from 'wepy'
-    import 'wepy-async-function'
+    import wepy from 'wepy';
+    import 'wepy-async-function';
 
     export default class extends wepy.app {
 
@@ -26,7 +26,8 @@
         };
 
         globalData = {
-            userInfo: null
+            userInfo: null,
+            goodsImgBaseUrl: '/Public/Uploads/goods/source/'
         };
 
         constructor() {

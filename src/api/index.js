@@ -3,6 +3,7 @@ import util from '../utils/util';
 import md5 from '../utils/md5';
 
 const APP_URL = 'http://test.mobile.com';
+const GOODS_IMG = 'http://www.caryue.com/Public/Uploads/goods/source/';
 // const APP_URL = 'https://reagent.caryue.com';
 const API_SECRET_KEY = 'mapp.kexueshengyin.com';
 const TIMESTAMP = util.getCurrentTime();
@@ -30,6 +31,7 @@ const wxRequest = async(method = 'GET',params = {}, url) => {
 };
 
 export default{
+    GOODS_IMG: GOODS_IMG,
     login: (method,params) => wxRequest(method,params, "/api/public/login"),
     register: (method,params) => wxRequest(method,params, "/api/public/register"),
     queryGoodsList: (method,params) => wxRequest(method,params, "/api/goods/index"),

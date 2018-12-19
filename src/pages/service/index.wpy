@@ -2,11 +2,11 @@
     @import "../../assets/styles/service_index";
 </style>
 <template>
-    <view class="wx-goods-list">
+    <view class="wx-goods-list" wx:if="{{goodsList.length > 0}}">
         <view class="wx-goods-item" wx:for="{{goodsList}}" wx:key="{{item.id}}">
             <i-row class="wx-goods-item-head" data-item="{{item}}">
                 <i-col span="24" i-class="col-class">
-                    <image src="{{item.url}}"
+                    <image src="{{goodsImgUrl + item.original_img}}"
                            mode="scaleToFill"></image>
                 </i-col>
             </i-row>
@@ -17,8 +17,8 @@
                         <icon class="iconfont icon-duigou" bindtap="switchGoodsSheet"/>
                     </view>
                     <view class="wx-goods-price">
-                        <span class="new-price">￥{{item.newPrice}}</span>
-                        <span class="old-price">￥{{item.oldPrice}}</span>
+                        <span class="new-price">￥{{item.shop_price}}</span>
+                        <span class="old-price">￥{{item.market_price}}</span>
                     </view>
                     <view class="wx-goods-title">{{item.goods_name}}</view>
                 </i-col>
@@ -70,7 +70,7 @@
             </i-cell-group>
         </view>
     </CartSheet>
-    <view class="wx-cart-bar">
+    <view class="wx-cart-bar" wx:if="{{goodsList.length > 0}}">
         <i-row>
             <i-col span="16" i-class="col-class">
                 <view class="wx-cart-icon" bindtap="switchCartSheet">
@@ -116,11 +116,8 @@
         mixins = [authorize];
 
         data = {
-            goodsList: [
-                {id:1,url:'https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg',oldPrice:260.00,newPrice:200.00,title:'Macbook air pro苹果电脑包'},
-                {id:2,url:'https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg',oldPrice:506.00,newPrice:426.00,title:'秋冬卫衣专场购买'},
-                {id:3,url:'https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg',oldPrice:10250.00,newPrice:8600.00,title:'iphone XR降价甩卖'},
-            ],
+            goodsImgUrl: api.GOODS_IMG,
+            goodsList: [],
             goodsMaxHeight: 800,
             goodsBottomStyle: 0,
             goodsZIndexStyle: 101,
@@ -151,7 +148,7 @@
         };
 
         async queryItemList() {
-            tip.loaded();
+            tip.loading('正在加载中');
             await api.queryGoodsList('POST',{
                 page: this.page,
                 is_goods: false
@@ -175,7 +172,6 @@
         };
 
         onLoad() {
-
         }
     }
 </script>
