@@ -120,6 +120,7 @@
             goodsInfo: {},
             goodsIndex: 0,
             cartList: [],
+            specInfo: [],
             goodsMaxHeight: 800,
             goodsBottomStyle: 0,
             goodsZIndexStyle: 101,
@@ -144,6 +145,7 @@
                 let item = e.currentTarget.dataset.item;
                 this.goodsVisible = !this.goodsVisible;
                 this.goodsInfo = item;
+                this.specInfo = [];
             },
             selectSpec(e){
                 let item = e.currentTarget.dataset.item;
@@ -154,6 +156,8 @@
                     this.goodsInfo.goods_spec = [];
                     this.goodsInfo.goods_spec[key] = item.item_id;
                 }
+                this.specInfo[key] = item.item;
+
                 this.goodsInfo.spec_list[key].filter(spec => {
                     if(spec.item_id === item.item_id){
                         spec['class'] = 'active';
@@ -168,6 +172,7 @@
                 }else{
                     this.goodsVisible = !this.goodsVisible;
                     if(utils.GoodsInCart(this.cartList,this.goodsInfo) === false){
+                        this.goodsInfo.spec_info = this.specInfo;
                         this.cartList.push(this.goodsInfo);
                         this.syncCartInfo(this.goodsInfo);
                     }
