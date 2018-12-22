@@ -11,10 +11,10 @@
                 </i-col>
             </i-row>
             <i-row class="wx-goods-item-foot">
-                <i-col span="20" i-class="col-class">
-                    <view class="wx-goods-buy-btn" data-item="{{item}}" bindtap="switchGoodsSheet" wx:if="{{item.id != 2}}">我要办理</view>
+                <i-col span="24" i-class="col-class">
+                    <view class="wx-goods-buy-btn" data-item="{{item}}" bindtap="switchGoodsSheet" wx:if="{{!item.selected}}">我要办理</view>
                     <view class="wx-goods-buy-btn" wx:else>
-                        <icon class="iconfont icon-duigou" bindtap="switchGoodsSheet"/>
+                        <icon class="iconfont icon-duigou" data-item="{{item}}" bindtap="cancelSelectGoods"/>
                     </view>
                     <view class="wx-goods-price">
                         <span class="new-price">￥{{item.shop_price}}</span>
@@ -63,9 +63,8 @@
             </view>
         </view>
         <view slot="content">
-            <i-cell-group>
-                <i-cell title="韩版潮流女士连衣裙" label="粉色带花" value="￥100.00"></i-cell>
-                <i-cell title="男士潮版打底衫" value="￥120.00"></i-cell>
+            <i-cell-group class="wx-sheet-cart-item">
+                <i-cell wx:for="{{cartList}}" wx:key="{{item.id}}" title="{{item.goods_name}}" label="粉色带花" value="￥100.00"></i-cell>
             </i-cell-group>
         </view>
     </CartSheet>
@@ -74,7 +73,7 @@
             <i-col span="16" i-class="col-class">
                 <view class="wx-cart-icon" bindtap="switchCartSheet">
                     <icon class="iconfont icon-gouwuche" style="font-size: 40rpx"/>
-                    <view class="wx-cart-num">5</view>
+                    <view class="wx-cart-num">{{cartNum}}</view>
                 </view>
                 <view class="wx-cart-info">
                     未选择任何业务
@@ -116,8 +115,11 @@
 
         data = {
             goodsImgUrl: api.GOODS_IMG,
+            goodsIds: [],
             goodsList: [],
             goodsInfo: {},
+            goodsIndex: 0,
+            cartList: [],
             goodsMaxHeight: 800,
             goodsBottomStyle: 0,
             goodsZIndexStyle: 101,
@@ -125,10 +127,14 @@
             goodsVisible: false,
             cartVisible: false,
             actions2: [1,2],
-            page: 1,
+            page: 1
         };
 
-        computed = {};
+        computed = {
+            cartNum: function () {
+                return this.cartList.length
+            }
+        };
 
         methods = {
             switchCartSheet(){
@@ -161,9 +167,27 @@
                     tip.toast('请选择规格');
                 }else{
                     this.goodsVisible = !this.goodsVisible;
+                    if(utils.GoodsInCart(this.cartList,this.goodsInfo) === false){
+                        this.cartList.push(this.goodsInfo);
+                        this.syncCartInfo(this.goodsInfo);
+                    }
+                }
+            },
+            cancelSelectGoods(e){
+                let item = e.currentTarget.dataset.item;
+                let i = utils.GoodsInCart(this.cartList,item);
+                if(i !== false){
+                    this.cartList.splice(i,1);
+                    this.syncCartInfo(item);
                 }
             }
         };
+
+        syncCartInfo(item){
+            let index = this.goodsIds.indexOf(item.id);
+            this.goodsList[index].selected = !this.goodsList[index].selected;
+            wx.setStorageSync('cartList',this.cartList);
+        }
 
         queryReload(){
             this.page = 1;
@@ -176,10 +200,14 @@
             tip.loading('正在加载中');
             await api.queryGoodsList('POST',{
                 page: this.page,
-//                is_goods: false
+                //is_goods: false
             }).then(resp => {
                 console.log(resp);
                 tip.loaded();
+                resp.data.items.filter(item => {
+                    this.goodsIds.push(item.id);
+                    item.selected = utils.GoodsInCart(this.cartList,item) !== false;
+                });
                 this.goodsList = this.goodsList.concat(resp.data.items);
                 if(resp.data.pager.index >= resp.data.pager.total){
                     this.hasPage = false;
@@ -196,6 +224,7 @@
         };
 
         onLoad() {
+            this.cartList = wx.getStorageSync('cartList');
         }
     }
 </script>

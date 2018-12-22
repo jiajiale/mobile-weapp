@@ -108,19 +108,23 @@ function formatDateTime(date,fmt) {
     return fmt;
 }
 
-function getReagentName(cname,ename) {
-    if(cname && ename){
-        return cname + '(' + ename + ')';
-    }else if(cname){
-        return cname;
-    }else if(ename){
-        return ename;
+/**
+ * @return {boolean}
+ */
+function GoodsInCart(cartList,goods) {
+    let flag = false;
+
+    for(let i in cartList){
+        if(cartList[i].id === goods.id){
+            flag = i;
+        }
     }
+    return flag;
 }
 module.exports = {
     isEmptyObject: isEmptyObject,
     getCurrentTime: getCurrentTime,
     GetDateTimeDiff: GetDateTimeDiff,
     formatDateTime: formatDateTime,
-    getReagentName: getReagentName,
+    GoodsInCart: GoodsInCart
 };
