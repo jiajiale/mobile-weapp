@@ -43,15 +43,14 @@
                 </view>
             </view>
             <view class="wx-goods-specs">
-                <i-panel title="规格">
+                <i-panel title="{{specIndex}}" wx:for="{{goodsInfo.spec_list}}" wx:for-index="specIndex" wx:key="{{index}}">
                     <view class="wx-goods-spec">
-                        <view class="wx-goods-spec-item active">4G+64G土豪金</view>
-                        <view class="wx-goods-spec-item">4G+128G亮黑色</view>
+                        <view class="wx-goods-spec-item {{item.class}}" wx:for="{{item}}" wx:key="{{item.item_id}}" data-key="{{specIndex}}" data-item="{{item}}" bindtap="selectSpec">{{item.item}}</view>
                     </view>
                 </i-panel>
             </view>
             <view>
-                <i-button type="success" size="small" bindtap="switchGoodsSheet">选好了</i-button>
+                <i-button type="success" size="small" bindtap="selectGoodsOk">选好了</i-button>
             </view>
         </view>
     </GoodsSheet>
@@ -139,6 +138,30 @@
                 let item = e.currentTarget.dataset.item;
                 this.goodsVisible = !this.goodsVisible;
                 this.goodsInfo = item;
+            },
+            selectSpec(e){
+                let item = e.currentTarget.dataset.item;
+                let key = e.currentTarget.dataset.key;
+                if(this.goodsInfo.goods_spec !== undefined){
+                    this.goodsInfo.goods_spec[key] = item.item_id;
+                }else{
+                    this.goodsInfo.goods_spec = [];
+                    this.goodsInfo.goods_spec[key] = item.item_id;
+                }
+                this.goodsInfo.spec_list[key].filter(spec => {
+                    if(spec.item_id === item.item_id){
+                        spec['class'] = 'active';
+                    }else{
+                        spec['class'] = '';
+                    }
+                });
+            },
+            selectGoodsOk(){
+                if(!utils.isEmptyObject(this.goodsInfo.spec_list) && this.goodsInfo.goods_spec === undefined){
+                    tip.toast('请选择规格');
+                }else{
+                    this.goodsVisible = !this.goodsVisible;
+                }
             }
         };
 
@@ -153,7 +176,7 @@
             tip.loading('正在加载中');
             await api.queryGoodsList('POST',{
                 page: this.page,
-                is_goods: false
+//                is_goods: false
             }).then(resp => {
                 console.log(resp);
                 tip.loaded();
