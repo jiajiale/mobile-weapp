@@ -121,10 +121,17 @@ function GoodsInCart(cartList,goods) {
     }
     return flag;
 }
+
+function sortNumber(a,b)
+{
+    return a - b;
+}
+
 module.exports = {
     isEmptyObject: isEmptyObject,
     getCurrentTime: getCurrentTime,
     GetDateTimeDiff: GetDateTimeDiff,
     formatDateTime: formatDateTime,
-    GoodsInCart: GoodsInCart
+    GoodsInCart: GoodsInCart,
+    sortNumber: sortNumber,
 };

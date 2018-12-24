@@ -64,7 +64,7 @@
         </view>
         <view slot="content">
             <i-cell-group class="wx-sheet-cart-item">
-                <i-cell wx:for="{{cartList}}" wx:key="{{item.id}}" title="{{item.goods_name}}" label="{{item.spec_info}}" value="￥100.00"></i-cell>
+                <i-cell wx:for="{{cartList}}" wx:key="{{item.id}}" title="{{item.goods_name}}" label="{{item.spec_info}}" value="￥{{item.shop_price}}"></i-cell>
             </i-cell-group>
         </view>
     </CartSheet>
@@ -75,9 +75,10 @@
                     <icon class="iconfont icon-gouwuche" style="font-size: 40rpx"/>
                     <view class="wx-cart-num">{{cartNum}}</view>
                 </view>
-                <view class="wx-cart-info">
-                    未选择任何业务
+                <view class="wx-cart-info" wx:if="{{cartNum > 0}}">
+                    <span class="wx-cart-total">{{cartInfo[0]}}</span>
                 </view>
+                <view class="wx-cart-info" wx:else>未选择任何业务</view>
             </i-col>
             <i-col span="8" i-class="col-class">
                 <i-button type="success" size="small">结算</i-button>
@@ -134,6 +135,16 @@
         computed = {
             cartNum: function () {
                 return this.cartList.length
+            },
+            cartInfo: function () {
+                if(this.cartList.length){
+                    let shopPrice = 0,marketPrice =0;
+                    for(let i in this.cartList){
+                        shopPrice += parseFloat(this.cartList[i]['shop_price']);
+                        marketPrice += parseFloat(this.cartList[i]['market_price']);
+                    }
+                    return ['￥' + shopPrice.toFixed(2),'￥' + marketPrice.toFixed(2)];
+                }
             }
         };
 
@@ -144,8 +155,22 @@
             switchGoodsSheet(e){
                 let item = e.currentTarget.dataset.item;
                 this.goodsVisible = !this.goodsVisible;
-                this.goodsInfo = item;
                 this.specInfo = [];
+                if(this.goodsVisible){
+                    this.goodsInfo = item;
+
+                    if(this.goodsInfo.spec_list !== null){
+                        this.goodsInfo.goods_spec = [];
+
+                        for(let i in this.goodsInfo.spec_list){
+                            this.goodsInfo.goods_spec[i] = this.goodsInfo.spec_list[i][0].item_id;
+                            this.goodsInfo.spec_list[i][0]['class'] = 'active';
+                            this.specInfo[i] = this.goodsInfo.spec_list[i][0].item;
+                        }
+                    }
+                }else{
+                    this.goodsInfo = {};
+                }
             },
             selectSpec(e){
                 let item = e.currentTarget.dataset.item;
@@ -165,6 +190,8 @@
                         spec['class'] = '';
                     }
                 });
+
+                this.changeGoodsPrice();
             },
             selectGoodsOk(){
                 if(!utils.isEmptyObject(this.goodsInfo.spec_list) && this.goodsInfo.goods_spec === undefined){
@@ -191,6 +218,18 @@
                 }
             }
         };
+
+        changeGoodsPrice(){
+            if(this.goodsInfo.spec_price !== null){
+                let goodsSpecArr = [];
+
+                for(let i in this.goodsInfo.goods_spec){
+                    goodsSpecArr.push(this.goodsInfo.goods_spec[i]);
+                }
+                let specKey = goodsSpecArr.sort(utils.sortNumber).join('_');  //排序后组合成 key
+                this.goodsInfo.shop_price = this.goodsInfo.spec_price[specKey]['price'];
+            }
+        }
 
         syncCartInfo(item){
             let index = this.goodsIds.indexOf(item.id);
