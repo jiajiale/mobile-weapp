@@ -64,7 +64,7 @@
         </view>
         <view slot="content">
             <i-cell-group class="wx-sheet-cart-item">
-                <i-cell wx:for="{{cartList}}" wx:key="{{item.id}}" title="{{item.goods_name}}" label="粉色带花" value="￥100.00"></i-cell>
+                <i-cell wx:for="{{cartList}}" wx:key="{{item.id}}" title="{{item.goods_name}}" label="{{item.spec_info}}" value="￥100.00"></i-cell>
             </i-cell-group>
         </view>
     </CartSheet>
@@ -172,7 +172,11 @@
                 }else{
                     this.goodsVisible = !this.goodsVisible;
                     if(utils.GoodsInCart(this.cartList,this.goodsInfo) === false){
-                        this.goodsInfo.spec_info = this.specInfo;
+                        let specStrArr = [];
+                        for(let i in this.specInfo){
+                            specStrArr.push(i + ':' + this.specInfo[i]);
+                        }
+                        this.goodsInfo.spec_info = specStrArr.join(',');
                         this.cartList.push(this.goodsInfo);
                         this.syncCartInfo(this.goodsInfo);
                     }

@@ -2,7 +2,7 @@ import wepy from 'wepy';
 import util from '../utils/util';
 import md5 from '../utils/md5';
 
-const APP_URL = 'http://test.mobile.com';
+const APP_URL = 'http://mobile.caryue.com';
 const GOODS_IMG = 'http://www.caryue.com/Public/Uploads/goods/source/';
 // const APP_URL = 'https://reagent.caryue.com';
 const API_SECRET_KEY = 'mapp.kexueshengyin.com';
