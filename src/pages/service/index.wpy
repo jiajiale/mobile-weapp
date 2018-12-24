@@ -85,12 +85,15 @@
             </i-col>
         </i-row>
     </view>
+
+    <QRModal></QRModal>
 </template>
 
 <script>
     import wepy from 'wepy';
     import authorize from '../../mixins/authorize';
     import ContentSheet from '../../components/content-sheet';
+    import ContentModal from '../../components/content-modal';
     import api from '../../api';
     import tip from '../../utils/tip';
     import utils from '../../utils/util';
@@ -111,6 +114,7 @@
         components = {
             GoodsSheet: ContentSheet,
             CartSheet: ContentSheet,
+            QRModal: ContentModal,
         };
 
         mixins = [authorize];
@@ -130,7 +134,8 @@
             goodsVisible: false,
             cartVisible: false,
             actions2: [1,2],
-            page: 1
+            page: 1,
+            cartQR: ''
         };
 
         computed = {
@@ -290,7 +295,7 @@
             }).then(resp => {
                 tip.loaded();
                 if(resp.status === 'success'){
-
+                    this.cartQR = 'data:image/jpeg;base64,' + resp.data;
                 }else{
                     tip.toast(resp.msg);
                 }

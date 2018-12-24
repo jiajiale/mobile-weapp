@@ -1,5 +1,5 @@
 <style lang="less">
-    .wx-sheet-content{
+    .wx-modal-content{
         position: fixed;
         left: 0;
         width: 100%;
@@ -9,7 +9,7 @@
             overflow: auto;
         }
     }
-    .wx-sheet-mask{
+    .wx-modal-mask{
         position: fixed;
         left: 0;
         top: 0;
@@ -17,25 +17,25 @@
         height: 100%;
         opacity: .5;
         background: #000;
-        z-index: 99;
+        z-index: 102;
     }
 </style>
 <template>
-    <view class="wx-sheet" wx:if="{{visible}}">
-        <view class="wx-sheet-content" style="bottom: {{bottomStyle}}rpx;z-index: {{zIndexStyle}}">
+    <view class="wx-modal">
+        <view class="wx-modal-content" style="bottom: {{bottomStyle}}rpx;z-index: {{zIndexStyle}}">
             <slot name="title"></slot>
-            <view class="wx-sheet-content-body" style="max-height: {{maxHeight}}rpx">
-                <view></view>
+            <view class="wx-modal-content-body" style="max-height: {{maxHeight}}rpx">
+                <view>aaaaaaaa</view>
                 <slot name="content"></slot>
             </view>
         </view>
-        <view class="wx-sheet-mask"></view>
+        <view class="wx-modal-mask"></view>
     </view>
 </template>
 <script>
     import wepy from 'wepy'
 
-    export default class ContentSheet extends wepy.component {
+    export default class ContentModal extends wepy.component {
         props = {
             visible: {
                 type: Boolean
