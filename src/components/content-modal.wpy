@@ -1,9 +1,9 @@
 <style lang="less">
     .wx-modal-content{
         position: fixed;
-        left: 0;
-        width: 100%;
-        transition: all .3s ease-out;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         background: #ffffff;
         .wx-sheet-content-body{
             overflow: auto;
@@ -17,15 +17,15 @@
         height: 100%;
         opacity: .5;
         background: #000;
-        z-index: 102;
+        z-index: 199;
     }
 </style>
 <template>
-    <view class="wx-modal">
-        <view class="wx-modal-content" style="bottom: {{bottomStyle}}rpx;z-index: {{zIndexStyle}}">
+    <view class="wx-modal" wx:if="{{visible}}">
+        <view class="wx-modal-content" style="z-index: {{zIndexStyle}}">
             <slot name="title"></slot>
             <view class="wx-modal-content-body" style="max-height: {{maxHeight}}rpx">
-                <view>aaaaaaaa</view>
+                <view></view>
                 <slot name="content"></slot>
             </view>
         </view>
@@ -44,13 +44,9 @@
                 type: Number,
                 default: 800
             },
-            bottomStyle:{
-                type: Number,
-                default: 100
-            },
             zIndexStyle:{
                 type: Number,
-                default: 100
+                default: 200
             }
         };
 

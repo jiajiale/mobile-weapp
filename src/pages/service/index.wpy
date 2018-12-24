@@ -86,7 +86,17 @@
         </i-row>
     </view>
 
-    <QRModal></QRModal>
+    <QRModal :visible.sync="QRVisible">
+        <view slot="title">
+            <view class="wx-modal-head">
+                共{{cartNum}}项业务
+                <icon class="iconfont icon-guanbi wx-modal-close-icon" bindtap="switchQrModal"/>
+            </view>
+        </view>
+        <view slot="content">
+            <image src="{{cartQR}}" mode="scaleToFill" style="width: 500rpx;height: 500rpx;margin: 0rpx 30rpx 30rpx 30rpx;"></image>
+        </view>
+    </QRModal>
 </template>
 
 <script>
@@ -133,6 +143,7 @@
             cartMaxHeight: 600,
             goodsVisible: false,
             cartVisible: false,
+            QRVisible: false,
             actions2: [1,2],
             page: 1,
             cartQR: ''
@@ -159,6 +170,9 @@
                 if(this.cartList.length){
                     this.cartVisible = !this.cartVisible;
                 }
+            },
+            switchQrModal(){
+                this.QRVisible = !this.QRVisible;
             },
             switchGoodsSheet(e){
                 let item = e.currentTarget.dataset.item;
@@ -295,7 +309,9 @@
             }).then(resp => {
                 tip.loaded();
                 if(resp.status === 'success'){
-                    this.cartQR = 'data:image/jpeg;base64,' + resp.data;
+                    this.cartQR = 'data:image/jpeg;base64,' + resp.data.code;
+                    this.QRVisible = !this.QRVisible;
+                    this.$apply();
                 }else{
                     tip.toast(resp.msg);
                 }
