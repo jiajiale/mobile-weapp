@@ -81,7 +81,7 @@
                 <view class="wx-cart-info" wx:else>未选择任何业务</view>
             </i-col>
             <i-col span="8" i-class="col-class">
-                <i-button type="success" size="small">结算</i-button>
+                <i-button type="success" size="small" bindtap="checkCart">结算</i-button>
             </i-col>
         </i-row>
     </view>
@@ -94,6 +94,7 @@
     import api from '../../api';
     import tip from '../../utils/tip';
     import utils from '../../utils/util';
+    import MSG from '../../utils/msg';
 
     export default class ServiceIndex extends wepy.page {
         config = {
@@ -150,7 +151,9 @@
 
         methods = {
             switchCartSheet(){
-                this.cartVisible = !this.cartVisible;
+                if(this.cartList.length){
+                    this.cartVisible = !this.cartVisible;
+                }
             },
             switchGoodsSheet(e){
                 let item = e.currentTarget.dataset.item;
@@ -167,6 +170,7 @@
                             this.goodsInfo.spec_list[i][0]['class'] = 'active';
                             this.specInfo[i] = this.goodsInfo.spec_list[i][0].item;
                         }
+                        this.changeGoodsPrice();
                     }
                 }else{
                     this.goodsInfo = {};
@@ -195,7 +199,7 @@
             },
             selectGoodsOk(){
                 if(!utils.isEmptyObject(this.goodsInfo.spec_list) && this.goodsInfo.goods_spec === undefined){
-                    tip.toast('请选择规格');
+                    tip.toast(MSG.SELECT_SPEC);
                 }else{
                     this.goodsVisible = !this.goodsVisible;
                     if(utils.GoodsInCart(this.cartList,this.goodsInfo) === false){
@@ -216,6 +220,13 @@
                     this.cartList.splice(i,1);
                     this.syncCartInfo(item);
                 }
+            },
+            checkCart(){
+                if(this.cartList.length){
+                    this.addGoodsCart();
+                }else{
+                    tip.toast(MSG.SELECT_SERVICE);
+                }
             }
         };
 
@@ -228,6 +239,7 @@
                 }
                 let specKey = goodsSpecArr.sort(utils.sortNumber).join('_');  //排序后组合成 key
                 this.goodsInfo.shop_price = this.goodsInfo.spec_price[specKey]['price'];
+                this.goodsInfo.select_spec = goodsSpecArr;
             }
         }
 
@@ -245,12 +257,11 @@
         };
 
         async queryItemList() {
-            tip.loading('正在加载中');
+            tip.loading(MSG.LOADING);
             await api.queryGoodsList('POST',{
                 page: this.page,
                 //is_goods: false
             }).then(resp => {
-                console.log(resp);
                 tip.loaded();
                 resp.data.items.filter(item => {
                     this.goodsIds.push(item.id);
@@ -261,6 +272,28 @@
                     this.hasPage = false;
                 }
                 this.$apply();
+            });
+        };
+
+        async addGoodsCart() {
+            let cartInfo = [];
+            for(let i in this.cartList){
+                cartInfo.push({
+                    goods_id: this.cartList[i].id,
+                    goods_num: 1,
+                    goods_spec: this.cartList[i].select_spec
+                })
+            }
+            tip.loading(MSG.MAKING_QR);
+            await api.addGoodsCart('POST',{
+                cartList: cartInfo,
+            }).then(resp => {
+                tip.loaded();
+                if(resp.status === 'success'){
+
+                }else{
+                    tip.toast(resp.msg);
+                }
             });
         };
 
