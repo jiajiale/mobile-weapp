@@ -2,7 +2,7 @@
     @import "../../assets/styles/check_service";
 </style>
 <template>
-    <view class="wx-check">
+    <view class="wx-check" wx:if="{{cartList.length}}">
         <view class="wx-check-title">可办理的业务</view>
         <view class="wx-check-body">
             <i-row wx:for="{{cartList}}" wx:key="{{item.id}}">
@@ -37,7 +37,7 @@
             <i-row>
                 <view class="wx-check-image">
                     <i-col span="8" i-class="col-class">
-                        <view class="wx-image-upload"><i-icon type="camera_fill" /></view>
+                        <view class="wx-image-upload" bindtap="uploadImage"><i-icon type="camera_fill" /></view>
                         <view class="wx-upload-info">身份证</view>
                     </i-col>
                     <i-col span="8" i-class="col-class">
@@ -71,6 +71,7 @@
     import ContentSheet from '../../components/content-sheet';
     import api from '../../api';
     import tip from '../../utils/tip';
+    import MSG from '../../utils/msg';
 
     export default class CheckService extends wepy.page {
         config = {
@@ -99,13 +100,36 @@
         computed = {};
 
         methods = {
-
+            uploadImage(){
+                wx.chooseImage({
+                    count: 1,
+                    sizeType: ['original', 'compressed'],
+                    sourceType: ['album', 'camera'],
+                    success(res) {
+                        const tempFilePaths = res.tempFilePaths;
+                        wx.uploadFile({
+                            url: 'https://example.weixin.qq.com/upload', // 仅为示例，非真实的接口地址
+                            filePath: tempFilePaths[0],
+                            name: 'file',
+                            formData: {
+                                user: 'test'
+                            },
+                            success(res) {
+                                const data = res.data
+                                // do something
+                            }
+                        })
+                    }
+                })
+            }
         };
 
         async queryCartInfo() {
+            tip.loading(MSG.LOADING);
             await api.queryCartInfo('POST',{
                 sid: this.params.sid !== undefined ? this.params.sid : '',
             }).then(resp => {
+                tip.loaded();
                 if(resp.status === 'success'){
                     this.cartList = resp.data.cartList;
                     this.totalPrice = resp.data.totalPrice.total_fee.toFixed(2);
