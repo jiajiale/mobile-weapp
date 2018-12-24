@@ -108,15 +108,12 @@
                     success(res) {
                         const tempFilePaths = res.tempFilePaths;
                         wx.uploadFile({
-                            url: 'https://example.weixin.qq.com/upload', // 仅为示例，非真实的接口地址
+                            url: api.UPLOAD_IMG_URL,
                             filePath: tempFilePaths[0],
                             name: 'file',
-                            formData: {
-                                user: 'test'
-                            },
+                            formData: {type: 'photo'},
                             success(res) {
-                                const data = res.data
-                                // do something
+                                console.log(res);
                             }
                         })
                     }

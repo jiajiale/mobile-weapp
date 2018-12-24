@@ -130,7 +130,7 @@
         mixins = [authorize];
 
         data = {
-            goodsImgUrl: api.GOODS_IMG,
+            goodsImgUrl: api.GOODS_IMG_URL,
             goodsIds: [],
             goodsList: [],
             goodsInfo: {},
