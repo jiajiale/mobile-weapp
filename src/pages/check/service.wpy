@@ -5,18 +5,18 @@
     <view class="wx-check">
         <view class="wx-check-title">可办理的业务</view>
         <view class="wx-check-body">
-            <i-row>
+            <i-row wx:for="{{cartList}}" wx:key="{{item.id}}">
                 <view class="wx-goods-info">
                     <i-col span="6" i-class="col-class" class="wx-goods-thumb">
                         <image src="https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg"
                                mode="scaleToFill"></image>
                     </i-col>
                     <i-col span="12" i-class="col-class">
-                        <view class="wx-goods-title">秋冬卫衣专场购买</view>
-                        <view class="wx-goods-spec">4G+64G土豪金</view>
+                        <view class="wx-goods-title">{{item.goods_name}}</view>
+                        <view class="wx-goods-spec">{{item.spec_key_name}}</view>
                     </i-col>
                     <i-col span="6" i-class="col-class">
-                        <view class="wx-goods-price">￥120.00</view>
+                        <view class="wx-goods-price">￥{{item.goods_price}}</view>
                     </i-col>
                 </view>
             </i-row>
@@ -55,7 +55,7 @@
         <view class="wx-check-bar">
             <i-row>
                 <i-col span="16" i-class="col-class">
-                    <view class="wx-check-total">￥192.00</view>
+                    <view class="wx-check-total">￥{{totalPrice}}</view>
                 </i-col>
                 <i-col span="8" i-class="col-class">
                     <i-button type="success" size="small">去支付</i-button>
@@ -67,7 +67,10 @@
 
 <script>
     import wepy from 'wepy';
+    import authorize from '../../mixins/authorize';
     import ContentSheet from '../../components/content-sheet';
+    import api from '../../api';
+    import tip from '../../utils/tip';
 
     export default class CheckService extends wepy.page {
         config = {
@@ -85,10 +88,12 @@
             CartSheet: ContentSheet,
         };
 
-        mixins = [];
+        mixins = [authorize];
 
         data = {
-
+            params: null,
+            cartList: [],
+            totalPrice: '0.00'
         };
 
         computed = {};
@@ -97,10 +102,30 @@
 
         };
 
-        events = {};
+        async queryCartInfo() {
+            await api.queryCartInfo('POST',{
+                sid: this.params.sid !== undefined ? this.params.sid : '',
+            }).then(resp => {
+                if(resp.status === 'success'){
+                    this.cartList = resp.data.cartList;
+                    this.totalPrice = resp.data.totalPrice.total_fee.toFixed(2);
+                    this.$apply();
+                }else{
+                    tip.toast(resp.msg);
+                }
+            });
+        };
 
-        onLoad() {
+        onShow() {
+            let _this = this;
+            this.checkAuthorize(function () {
+                _this.queryCartInfo();
+            });
+        };
 
+        onLoad(params) {
+            params.sid = 'ctbpchp17o90pcs3p7f07n7r30';
+            this.params = params;
         }
     }
 </script>
