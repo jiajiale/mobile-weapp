@@ -3,10 +3,10 @@ import util from '../utils/util';
 import tip from '../utils/tip';
 import md5 from '../utils/md5';
 
-const APP_URL = 'http://mobile.caryue.com';
+// const APP_URL = 'http://mobile.caryue.com';
 const GOODS_IMG_URL = 'http://www.caryue.com/Public/Uploads/goods/source/';
 const UPLOAD_IMG_URL = APP_URL + '/Admin/Image/uploadPicture';
-// const APP_URL = 'http://test.mobile.com';
+const APP_URL = 'http://test.mobile.com';
 const API_SECRET_KEY = 'mapp.kexueshengyin.com';
 const TIMESTAMP = util.getCurrentTime();
 const SIGN = md5.hex_md5((TIMESTAMP + API_SECRET_KEY).toLowerCase());
@@ -41,4 +41,6 @@ export default{
     queryGoodsList: (method,params) => wxRequest(method,params, "/api/goods/index"),
     addGoodsCart: (method,params) => wxRequest(method,params, "/api/cart/addGoodsCart"),
     queryCartInfo: (method,params) => wxRequest(method,params, "/api/cart/getCartGoods"),
+    createServiceOrder: (method,params) => wxRequest(method,params, "/api/order/service"),
+    payOrder: (method,params) => wxRequest(method,params, "/api/order/pay"),
 };
