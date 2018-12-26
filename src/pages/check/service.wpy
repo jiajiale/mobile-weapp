@@ -123,25 +123,24 @@
                 api.createServiceOrder('POST',{
 
                 }).then(resp => {
-                    console.log(resp);
                     if(resp){
                         api.payOrder('POST',{
                             order_no: resp.data.order_no
                         }).then(result => {
                             console.log(result);
-//                            wx.requestPayment({
-//                                'timeStamp': result.data.timeStamp,
-//                                'nonceStr': result.data.nonceStr,
-//                                'package': result.data.package,
-//                                'signType': result.data.signType,
-//                                'paySign': result.data.paySign,
-//                                'success':function(res){
-//
-//                                },
-//                                'fail':function(res){
-//                                    tip.toast('支付失败');
-//                                }
-//                            })
+                            wx.requestPayment({
+                                'timeStamp': result.data.timeStamp,
+                                'nonceStr': result.data.nonceStr,
+                                'package': result.data.package,
+                                'signType': result.data.signType,
+                                'paySign': result.data.paySign,
+                                'success':function(res){
+
+                                },
+                                'fail':function(res){
+                                    tip.toast('支付失败');
+                                }
+                            })
                         });
                     }
                 });
