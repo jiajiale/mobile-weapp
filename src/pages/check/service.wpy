@@ -32,21 +32,19 @@
             </view>
         </view>
 
-        <view class="wx-check-body">
+        <view class="wx-check-body" style="margin-bottom: 120rpx;">
             <view class="wx-check-body-title">上传证件</view>
             <i-row>
                 <view class="wx-check-image">
-                    <i-col span="8" i-class="col-class">
+                    <i-col span="6" i-class="col-class" wx:for="{{formData.photos}}" wx:key="{{index}}">
+                        <view class="wx-image-upload">
+                            <image src="{{photoImgUrl + item}}" mode="scaleToFill" style="width: 100%;height: 100%;"></image>
+                        </view>
+                        <view class="wx-upload-info" bindtap="deleteImage" data-index="{{index}}">删除</view>
+                    </i-col>
+                    <i-col span="6" i-class="col-class">
                         <view class="wx-image-upload" bindtap="uploadImage"><i-icon type="camera_fill" /></view>
-                        <view class="wx-upload-info">身份证</view>
-                    </i-col>
-                    <i-col span="8" i-class="col-class">
-                        <view class="wx-image-upload"><i-icon type="camera_fill" /></view>
-                        <view class="wx-upload-info">工作证</view>
-                    </i-col>
-                    <i-col span="8" i-class="col-class">
-                        <view class="wx-image-upload"><i-icon type="camera_fill" /></view>
-                        <view class="wx-upload-info">头像</view>
+                        <view class="wx-upload-info"></view>
                     </i-col>
                 </view>
             </i-row>
@@ -92,15 +90,18 @@
         mixins = [authorize];
 
         data = {
+            photoImgUrl: api.PHOTO_IMG_URL,
             params: null,
             cartList: [],
-            totalPrice: '0.00'
+            totalPrice: '0.00',
+            formData: {}
         };
 
         computed = {};
 
         methods = {
             uploadImage(){
+                let _this = this;
                 wx.chooseImage({
                     count: 1,
                     sizeType: ['original', 'compressed'],
@@ -108,20 +109,33 @@
                     success(res) {
                         const tempFilePaths = res.tempFilePaths;
                         wx.uploadFile({
-                            url: api.UPLOAD_IMG_URL,
+                            url: api.UPLOAD_IMG_URL + '?type=photo',
                             filePath: tempFilePaths[0],
                             name: 'file',
-                            formData: {type: 'photo'},
                             success(res) {
-                                console.log(res);
+                                let result = JSON.parse(res.data);
+                                console.log(result);
+                                if(result.state === 'success'){
+                                    if(_this.formData.photos === undefined){
+                                        _this.formData.photos = [];
+                                    }
+                                    _this.formData.photos.push(result.data)
+                                }else{
+                                    tip.toast(result.msg);
+                                }
                             }
                         })
                     }
                 })
             },
+            deleteImage(e){
+                let index = e.currentTarget.dataset.index;
+                console.log(index);
+                this.formData.photos.splice(index,1);
+            },
             handlePay(){
                 api.createServiceOrder('POST',{
-
+                    is_goods: 0,
                 }).then(resp => {
                     if(resp){
                         api.payOrder('POST',{
