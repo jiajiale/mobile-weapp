@@ -308,6 +308,7 @@
                 cartList: cartInfo,
             }).then(resp => {
                 tip.loaded();
+                console.log(resp);
                 if(resp.status === 'success'){
                     this.cartQR = 'data:image/jpeg;base64,' + resp.data.code;
                     this.QRVisible = !this.QRVisible;
