@@ -24,14 +24,11 @@
         <view class="wx-check-body">
             <view class="wx-check-body-title">填写信息</view>
             <view class="wx-check-info">
-                <i-input value="" title="用户姓名" placeholder="请输入用户姓名" right="true"/>
-                <i-input value="" title="手机号码" placeholder="请输入用户手机号码" right="true"/>
-                <i-input value="" title="身份证号" placeholder="请输入用户身份证号" right="true"/>
-                <i-input value="" title="用户地址" placeholder="请输入用户地址" right="true"/>
+                <i-input wx:for="{{fieldList}}" wx:if="{{item.type == 1}}" wx:key="{{index}}" bindchange="handleInput" data-key="{{item.label}}" title="{{item.name}}" placeholder="请{{item.tips}}" right="true"/>
             </view>
         </view>
 
-        <view class="wx-check-body" style="margin-bottom: 120rpx;">
+        <view class="wx-check-body" style="margin-bottom: 150rpx;" wx:for="{{fieldList}}" wx:if="{{item.type == 2}}">
             <view class="wx-check-body-title">上传证件</view>
             <i-row>
                 <view class="wx-check-image">
@@ -73,6 +70,7 @@
     export default class CheckService extends wepy.page {
         config = {
             navigationBarTitleText: '首页',
+            disableScroll: true,
             usingComponents: {
                 "i-row": "../../iview/row/index",
                 "i-col": "../../iview/col/index",
@@ -93,6 +91,7 @@
             photoImgUrl: api.PHOTO_IMG_URL,
             params: null,
             cartList: [],
+            fieldList: [],
             totalPrice: '0.00',
             formData: {}
         };
@@ -100,6 +99,10 @@
         computed = {};
 
         methods = {
+            handleInput(e){
+                let key = e.currentTarget.dataset.key;
+                this.formData[key] = e.detail.value;
+            },
             uploadImage(){
                 let _this = this;
                 wx.chooseImage({
@@ -130,33 +133,33 @@
             },
             deleteImage(e){
                 let index = e.currentTarget.dataset.index;
-                console.log(index);
                 this.formData.photos.splice(index,1);
             },
             handlePay(){
                 api.createServiceOrder('POST',{
                     is_goods: 0,
+                    formData: this.formData
                 }).then(resp => {
-                    if(resp){
-                        api.payOrder('POST',{
-                            order_no: resp.data.order_no
-                        }).then(result => {
-                            console.log(result);
-                            wx.requestPayment({
-                                'timeStamp': result.data.timeStamp,
-                                'nonceStr': result.data.nonceStr,
-                                'package': result.data.package,
-                                'signType': result.data.signType,
-                                'paySign': result.data.paySign,
-                                'success':function(res){
-
-                                },
-                                'fail':function(res){
-                                    tip.toast('支付失败');
-                                }
-                            })
-                        });
-                    }
+//                    if(resp){
+//                        api.payOrder('POST',{
+//                            order_no: resp.data.order_no
+//                        }).then(result => {
+//                            console.log(result);
+//                            wx.requestPayment({
+//                                'timeStamp': result.data.timeStamp,
+//                                'nonceStr': result.data.nonceStr,
+//                                'package': result.data.package,
+//                                'signType': result.data.signType,
+//                                'paySign': result.data.paySign,
+//                                'success':function(res){
+//
+//                                },
+//                                'fail':function(res){
+//                                    tip.toast('支付失败');
+//                                }
+//                            })
+//                        });
+//                    }
                 });
             }
         };
@@ -169,6 +172,7 @@
                 tip.loaded();
                 if(resp.status === 'success'){
                     this.cartList = resp.data.cartList;
+                    this.fieldList = resp.data.fieldList;
                     this.totalPrice = resp.data.totalPrice.total_fee.toFixed(2);
                     this.$apply();
                 }else{
@@ -185,7 +189,7 @@
         };
 
         onLoad(params) {
-            params.sid = 'ctbpchp17o90pcs3p7f07n7r30';
+            params.sid = '3d9ablvj55lddicl3526fum3lr';
             this.params = params;
         }
     }

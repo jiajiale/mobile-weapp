@@ -3,8 +3,8 @@ import util from '../utils/util';
 import tip from '../utils/tip';
 import md5 from '../utils/md5';
 
-// const APP_URL = 'http://mobile.caryue.com';
-const APP_URL = 'http://test.mobile.com';
+const APP_URL = 'http://mobile.caryue.com';
+// const APP_URL = 'http://test.mobile.com';
 const GOODS_IMG_URL = 'http://www.caryue.com/Public/Uploads/goods/source/';
 const PHOTO_IMG_URL = APP_URL + '/Public/Uploads/photo/';
 const UPLOAD_IMG_URL = APP_URL + '/Admin/Image/uploadPicture';
