@@ -40,6 +40,7 @@ export default{
     UPLOAD_IMG_URL: UPLOAD_IMG_URL,
     login: (method,params) => wxRequest(method,params, "/api/public/login"),
     register: (method,params) => wxRequest(method,params, "/api/public/register"),
+    updateUserPhone: (method,params) => wxRequest(method,params, "/api/public/updateUserPhone"),
     queryGoodsList: (method,params) => wxRequest(method,params, "/api/goods/index"),
     addGoodsCart: (method,params) => wxRequest(method,params, "/api/cart/addGoodsCart"),
     queryCartInfo: (method,params) => wxRequest(method,params, "/api/cart/getCartGoods"),

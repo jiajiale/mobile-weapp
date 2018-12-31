@@ -81,7 +81,7 @@
                 <view class="wx-cart-info" wx:else>未选择任何业务</view>
             </i-col>
             <i-col span="8" i-class="col-class" wx:if="{{cartList.length}}">
-                <i-button wx:if="userInfo.mobile" type="success" size="small" open-type="getPhoneNumber"
+                <i-button wx:if="{{userInfo.mobile}}" type="success" size="small" open-type="getPhoneNumber"
                           bindgetphonenumber="checkCart">结算</i-button>
                 <i-button wx:else type="success" size="small" bindtap="checkCart">结算</i-button>
             </i-col>
@@ -233,7 +233,9 @@
                             specStrArr.push(i + ':' + this.specInfo[i]);
                         }
                         this.goodsInfo.spec_info = specStrArr.join(',');
-                        this.cartList.push(this.goodsInfo);
+                        //this.cartList.push(this.goodsInfo);
+                        this.cartList = [];
+                        this.cartList[this.cartList.length] = this.goodsInfo;
                         this.syncCartInfo(this.goodsInfo);
                     }
                 }
@@ -249,7 +251,7 @@
             checkCart(e){
                 if(this.cartList.length){
                     if(e.detail.errMsg === 'getPhoneNumber:ok'){
-                        api.register('POST',{
+                        api.updateUserPhone('POST',{
                             'iv': e.detail.iv,
                             'encryptedData': e.detail.encryptedData
                         }).then(resp => {
@@ -258,7 +260,7 @@
                                 this.setData({
                                     'userInfo': resp.data,
                                 });
-                                this.addGoodsCart();
+//                                this.addGoodsCart();
                             }
                         });
                     }else{
