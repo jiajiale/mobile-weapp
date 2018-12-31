@@ -80,7 +80,12 @@
                 </view>
                 <view class="wx-cart-info" wx:else>未选择任何业务</view>
             </i-col>
-            <i-col span="8" i-class="col-class">
+            <i-col span="8" i-class="col-class" wx:if="{{cartList.length}}">
+                <i-button wx:if="userInfo.mobile" type="success" size="small" open-type="getPhoneNumber"
+                          bindgetphonenumber="checkCart">结算</i-button>
+                <i-button wx:else type="success" size="small" bindtap="checkCart">结算</i-button>
+            </i-col>
+            <i-col span="8" i-class="col-class" wx:else>
                 <i-button type="success" size="small" bindtap="checkCart">结算</i-button>
             </i-col>
         </i-row>
@@ -130,6 +135,7 @@
         mixins = [authorize];
 
         data = {
+            userInfo: {},
             goodsImgUrl: api.GOODS_IMG_URL,
             goodsIds: [],
             goodsList: [],
@@ -240,9 +246,24 @@
                     this.syncCartInfo(item);
                 }
             },
-            checkCart(){
+            checkCart(e){
                 if(this.cartList.length){
-                    this.addGoodsCart();
+                    if(e.detail.errMsg === 'getPhoneNumber:ok'){
+                        api.register('POST',{
+                            'iv': e.detail.iv,
+                            'encryptedData': e.detail.encryptedData
+                        }).then(resp => {
+                            if(resp){
+                                wx.setStorageSync('userInfo', resp.data);
+                                this.setData({
+                                    'userInfo': resp.data,
+                                });
+                                this.addGoodsCart();
+                            }
+                        });
+                    }else{
+                        this.addGoodsCart();
+                    }
                 }else{
                     tip.toast(MSG.SELECT_SERVICE);
                 }
@@ -322,6 +343,7 @@
         onShow() {
             let _this = this;
             this.checkAuthorize(function () {
+                _this.userInfo = wx.getStorageSync('userInfo');
                 _this.queryReload();
             });
         };
