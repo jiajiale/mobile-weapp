@@ -81,9 +81,9 @@
                 <view class="wx-cart-info" wx:else>未选择任何业务</view>
             </i-col>
             <i-col span="8" i-class="col-class" wx:if="{{cartList.length}}">
-                <i-button wx:if="{{userInfo.mobile}}" type="success" size="small" open-type="getPhoneNumber"
+                <i-button wx:if="{{userInfo.mobile}}" type="success" size="small" bindtap="checkCart">结算</i-button>
+                <i-button wx:else type="success" size="small" open-type="getPhoneNumber"
                           bindgetphonenumber="checkCart">结算</i-button>
-                <i-button wx:else type="success" size="small" bindtap="checkCart">结算</i-button>
             </i-col>
             <i-col span="8" i-class="col-class" wx:else>
                 <i-button type="success" size="small" bindtap="checkCart">结算</i-button>
@@ -249,6 +249,7 @@
                 }
             },
             checkCart(e){
+                let _this = this;
                 if(this.cartList.length){
                     if(e.detail.errMsg === 'getPhoneNumber:ok'){
                         api.updateUserPhone('POST',{
@@ -257,14 +258,12 @@
                         }).then(resp => {
                             if(resp){
                                 wx.setStorageSync('userInfo', resp.data);
-                                this.setData({
-                                    'userInfo': resp.data,
-                                });
-//                                this.addGoodsCart();
+                                _this.userInfo = resp.data;
+                                _this.addGoodsCart();
                             }
                         });
-                    }else{
-                        this.addGoodsCart();
+                    }else if(_this.userInfo.mobile){
+                        _this.addGoodsCart();
                     }
                 }else{
                     tip.toast(MSG.SELECT_SERVICE);
