@@ -24,11 +24,13 @@
         <view class="wx-check-body">
             <view class="wx-check-body-title">填写信息</view>
             <view class="wx-check-info">
+                <i-input  bindchange="handleInput" data-key="name" title="姓　　名" placeholder="请输入办理人姓名" right="true"/>
+                <i-input  bindchange="handleInput" data-key="mobile" title="手机号码" placeholder="请输入办理人手机号码" right="true"/>
                 <i-input wx:for="{{fieldList}}" wx:if="{{item.type == 1}}" wx:key="{{index}}" bindchange="handleInput" data-key="{{item.label}}" title="{{item.name}}" placeholder="请{{item.tips}}" right="true"/>
             </view>
         </view>
 
-        <view class="wx-check-body" style="margin-bottom: 150rpx;" wx:for="{{fieldList}}" wx:if="{{item.type == 2}}">
+        <view class="wx-check-body" style="margin-bottom: 150rpx;" wx:for="{{fieldList}}" wx:if="{{item.type == 2}}" wx:key="{{index}}">
             <view class="wx-check-body-title">上传证件</view>
             <i-row>
                 <view class="wx-check-image">
@@ -93,7 +95,8 @@
             cartList: [],
             fieldList: [],
             totalPrice: '0.00',
-            formData: {}
+            formData: {},
+            orderNo: ''
         };
 
         computed = {};
@@ -101,7 +104,7 @@
         methods = {
             handleInput(e){
                 let key = e.currentTarget.dataset.key;
-                this.formData[key] = e.detail.value;
+                this.formData[key] = e.detail.detail.value;
             },
             uploadImage(){
                 let _this = this;
@@ -136,32 +139,42 @@
                 this.formData.photos.splice(index,1);
             },
             handlePay(){
-                api.createServiceOrder('POST',{
-                    is_goods: 0,
-                    formData: this.formData
-                }).then(resp => {
-//                    if(resp){
-//                        api.payOrder('POST',{
-//                            order_no: resp.data.order_no
-//                        }).then(result => {
-//                            console.log(result);
-//                            wx.requestPayment({
-//                                'timeStamp': result.data.timeStamp,
-//                                'nonceStr': result.data.nonceStr,
-//                                'package': result.data.package,
-//                                'signType': result.data.signType,
-//                                'paySign': result.data.paySign,
-//                                'success':function(res){
-//
-//                                },
-//                                'fail':function(res){
-//                                    tip.toast('支付失败');
-//                                }
-//                            })
-//                        });
-//                    }
+                let _this = this;
+                this.formData['is_goods'] = 0;
+                this.formData['delivery_fee'] = 0;
+                this.formData['session_id'] = this.params.sid;
+                this.formData['cartList'] = this.cartList;
+                api.createServiceOrder('POST',this.formData).then(resp => {
+                    if(resp && resp.status === 'success'){
+                        _this.orderNo = resp.data.order_no;
+                        _this.payOrder();
+                    }else{
+                        tip.toast(resp.msg);
+                    }
                 });
+
             }
+        };
+
+        async payOrder() {
+            api.payOrder('POST',{
+                order_no: this.orderNo
+            }).then(result => {
+                console.log(result);
+                wx.requestPayment({
+                    'timeStamp': result.data.timeStamp,
+                    'nonceStr': result.data.nonceStr,
+                    'package': result.data.package,
+                    'signType': result.data.signType,
+                    'paySign': result.data.paySign,
+                    'success':function(res){
+
+                    },
+                    'fail':function(res){
+                        tip.toast('支付失败');
+                    }
+                })
+            });
         };
 
         async queryCartInfo() {
