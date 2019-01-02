@@ -233,7 +233,11 @@
                             specStrArr.push(i + ':' + this.specInfo[i]);
                         }
                         this.goodsInfo.spec_info = specStrArr.join(',');
+                        if(!this.cartList.length){
+                            this.cartList = [];
+                        }
                         this.cartList.push(this.goodsInfo);
+
                         this.syncCartInfo(this.goodsInfo);
                     }
                 }

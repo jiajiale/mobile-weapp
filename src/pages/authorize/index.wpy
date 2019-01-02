@@ -74,7 +74,7 @@
                                 if (resp.data) {
                                     that.token = resp.data.token;
                                     that.setLoginInfo(resp.data.token);
-
+                                    wx.setStorageSync('userInfo', resp.data.userInfo);
                                     wx.getSetting({
                                         success(res) {
                                             if (res.authSetting['scope.userInfo']) {
