@@ -1,16 +1,13 @@
 import wepy from 'wepy';
-import util from '../utils/util';
 import tip from '../utils/tip';
 import md5 from '../utils/md5';
 
-// const APP_URL = 'http://mobile.caryue.com';
-const APP_URL = 'http://test.mobile.com';
+const APP_URL = 'http://mobile.caryue.com';
+// const APP_URL = 'http://test.mobile.com';
 const GOODS_IMG_URL = 'http://www.caryue.com/Public/Uploads/goods/source/';
 const PHOTO_IMG_URL = APP_URL + '/Public/Uploads/photo/';
 const UPLOAD_IMG_URL = APP_URL + '/Admin/Image/uploadPicture';
 const API_SECRET_KEY = 'mapp.kexueshengyin.com';
-const TIMESTAMP = util.getCurrentTime();
-const SIGN = md5.hex_md5((TIMESTAMP + API_SECRET_KEY).toLowerCase());
 
 const wxRequest = async(method = 'GET',params = {}, url) => {
     let data = params || {};
@@ -24,7 +21,7 @@ const wxRequest = async(method = 'GET',params = {}, url) => {
         url: APP_URL + url,
         method: method,
         data: data,
-        header: { 'Content-Type': 'application/json' ,'Accept': 'application/json', 'time': TIMESTAMP,'sign':SIGN},
+        header: { 'Content-Type': 'application/json' ,'Accept': 'application/json'},
     });
     if(res.statusCode === 200){
         return res.data;
