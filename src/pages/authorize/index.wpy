@@ -113,8 +113,8 @@
             }).then(resp => {
                 if (resp.data) {
                     wx.setStorageSync('userInfo', resp.data);
-                    wx.navigateBack();
                 }
+                wx.navigateBack();
             });
         }
     }
