@@ -81,11 +81,6 @@
 </style>
 <template>
     <!--加载提示-->
-    <view class="kx-loadmore" wx:if="{{hasPage}}">
-        <view class="kx-loading"></view>
-        <view class="kx-loadmore__tips">正在加载中~</view>
-    </view>
-
     <!--触底提示-->
     <!--<view class="kx-loadmore kx-loadmore&#45;&#45;nomore" wx:if="{{!hasPage && itemList.length}}">-->
         <!--<view class="kx-loadmore__tips">-->

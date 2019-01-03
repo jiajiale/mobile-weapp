@@ -158,6 +158,7 @@
             QRVisible: false,
             actions2: [1,2],
             page: 1,
+            hasPage: true,
             cartQR: ''
         };
 
@@ -317,7 +318,7 @@
                     item.selected = utils.GoodsInCart(this.cartList,item) !== false;
                 });
                 this.goodsList = this.goodsList.concat(resp.data.items);
-                if(resp.data.pager.index >= resp.data.pager.total){
+                if(resp.data.pager.index >= resp.data.pager.count){
                     this.hasPage = false;
                 }
                 this.$apply();
