@@ -2,29 +2,32 @@
     @import "../../assets/styles/service_index";
 </style>
 <template>
-    <view class="wx-goods-list" wx:if="{{goodsList.length > 0}}">
-        <view class="wx-goods-item" wx:for="{{goodsList}}" wx:key="{{item.id}}">
-            <i-row class="wx-goods-item-head">
-                <i-col span="24" i-class="col-class">
-                    <image src="{{goodsImgUrl + item.original_img}}"
-                           mode="scaleToFill"></image>
-                </i-col>
-            </i-row>
-            <i-row class="wx-goods-item-foot">
-                <i-col span="24" i-class="col-class">
-                    <view class="wx-goods-buy-btn" data-item="{{item}}" bindtap="switchGoodsSheet" wx:if="{{!item.selected}}">我要办理</view>
-                    <view class="wx-goods-buy-btn" wx:else>
-                        <icon class="iconfont icon-duigou" data-item="{{item}}" bindtap="cancelSelectGoods"/>
-                    </view>
-                    <view class="wx-goods-price">
-                        <span class="new-price">￥{{item.shop_price}}</span>
-                        <span class="old-price">￥{{item.market_price}}</span>
-                    </view>
-                    <view class="wx-goods-title">{{item.goods_name}}</view>
-                </i-col>
-            </i-row>
+    <scroll-view scroll-y bindscrolltolower="onReachBottom">
+        <view class="wx-goods-list" wx:if="{{goodsList.length > 0}}">
+            <view class="wx-goods-item" wx:for="{{goodsList}}" wx:key="{{item.id}}">
+                <i-row class="wx-goods-item-head">
+                    <i-col span="24" i-class="col-class">
+                        <image src="{{goodsImgUrl + item.original_img}}"
+                               mode="scaleToFill"></image>
+                    </i-col>
+                </i-row>
+                <i-row class="wx-goods-item-foot">
+                    <i-col span="24" i-class="col-class">
+                        <view class="wx-goods-buy-btn" data-item="{{item}}" bindtap="switchGoodsSheet" wx:if="{{!item.selected}}">我要办理</view>
+                        <view class="wx-goods-buy-btn" wx:else>
+                            <icon class="iconfont icon-duigou" data-item="{{item}}" bindtap="cancelSelectGoods"/>
+                        </view>
+                        <view class="wx-goods-price">
+                            <span class="new-price">￥{{item.shop_price}}</span>
+                            <span class="old-price">￥{{item.market_price}}</span>
+                        </view>
+                        <view class="wx-goods-title">{{item.goods_name}}</view>
+                    </i-col>
+                </i-row>
+            </view>
         </view>
-    </view>
+        <LoadMore :hasPage.sync="hasPage" :itemList.sync="goodsList" emptyText="暂无业务信息"></LoadMore>
+    </scroll-view>
 
     <GoodsSheet :visible.sync="goodsVisible" :maxHeight.sync="goodsMaxHeight"
                 :bottomStyle.sync="goodsBottomStyle"
@@ -107,8 +110,10 @@
 <script>
     import wepy from 'wepy';
     import authorize from '../../mixins/authorize';
+    import pagination from '../../mixins/pagination';
     import ContentSheet from '../../components/content-sheet';
     import ContentModal from '../../components/content-modal';
+    import LoadMore from '../../components/load-more';
     import api from '../../api';
     import tip from '../../utils/tip';
     import utils from '../../utils/util';
@@ -130,9 +135,10 @@
             GoodsSheet: ContentSheet,
             CartSheet: ContentSheet,
             QRModal: ContentModal,
+            LoadMore: LoadMore,
         };
 
-        mixins = [authorize];
+        mixins = [pagination,authorize];
 
         data = {
             userInfo: {},
