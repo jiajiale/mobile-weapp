@@ -66,11 +66,13 @@
             </view>
         </view>
         <view slot="content">
-            <i-cell-group class="wx-sheet-cart-item">
-                <i-cell wx:for="{{cartList}}" wx:key="{{item.id}}" title="{{item.goods_name}}" label="{{item.spec_info}}">
-                    <view slot="footer">￥{{item.shop_price}}</view>
-                </i-cell>
-            </i-cell-group>
+            <i-swipeout  i-class="wx-sheet-cart-item" actions="{{actions}}" wx:for="{{cartList}}" wx:key="{{item.id}}" data-index="{{index}}" bindchange="delCartItem">
+                <view slot="content">
+                    <i-cell title="{{item.goods_name}}" label="{{item.spec_info}}">
+                        <view slot="footer">￥{{item.shop_price}}</view>
+                    </i-cell>
+                </view>
+            </i-swipeout>
         </view>
     </CartSheet>
     <view class="wx-cart-bar" wx:if="{{goodsList.length > 0}}">
@@ -131,6 +133,7 @@
                 "i-cell-group": "../../iview/cell-group/index",
                 "i-cell": "../../iview/cell/index",
                 "i-panel": "../../iview/panel/index",
+                "i-swipeout": "../../iview/swipeout/index"
             }
         };
         components = {
@@ -160,7 +163,10 @@
             QRVisible: false,
             page: 1,
             hasPage: true,
-            cartQR: ''
+            cartQR: '',
+            actions : [
+                {name : '删除', color : '#fff', fontsize : '20', width : 100, icon : 'trash', background : '#ed3f14'}
+            ]
         };
 
         computed = {
@@ -278,6 +284,10 @@
                 }else{
                     tip.toast(MSG.SELECT_SERVICE);
                 }
+            },
+            delCartItem(e){
+                let index = e.currentTarget.dataset.index;
+                console.log(index);
             }
         };
 
