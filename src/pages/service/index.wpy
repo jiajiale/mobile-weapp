@@ -2,8 +2,8 @@
     @import "../../assets/styles/service_index";
 </style>
 <template>
-    <scroll-view scroll-y bindscrolltolower="onReachBottom">
-        <view class="wx-goods-list" wx:if="{{goodsList.length > 0}}">
+    <scroll-view scroll-y bindscrolltolower="onReachBottom" wx:if="{{goodsList.length > 0}}">
+        <view class="wx-goods-list">
             <view class="wx-goods-item" wx:for="{{goodsList}}" wx:key="{{item.id}}">
                 <i-row class="wx-goods-item-head">
                     <i-col span="24" i-class="col-class">
@@ -327,18 +327,20 @@
             tip.loading(MSG.LOADING);
             await api.queryGoodsList('POST',{
                 page: this.page,
-                //is_goods: false
+                is_goods: false
             }).then(resp => {
                 tip.loaded();
-                resp.data.items.filter(item => {
-                    this.goodsIds.push(item.id);
-                    item.selected = utils.GoodsInCart(this.cartList,item) !== false;
-                });
-                this.goodsList = this.goodsList.concat(resp.data.items);
-                if(resp.data.pager.index >= resp.data.pager.count){
-                    this.hasPage = false;
+                if(resp.data){
+                    resp.data.items.filter(item => {
+                        this.goodsIds.push(item.id);
+                        item.selected = utils.GoodsInCart(this.cartList,item) !== false;
+                    });
+                    this.goodsList = this.goodsList.concat(resp.data.items);
+                    if(resp.data.pager.index >= resp.data.pager.count){
+                        this.hasPage = false;
+                    }
+                    this.$apply();
                 }
-                this.$apply();
             });
         };
 
