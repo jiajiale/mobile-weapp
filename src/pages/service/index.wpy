@@ -360,9 +360,15 @@
                 tip.loaded();
                 console.log(resp);
                 if(resp.status === 'success'){
-                    this.cartQR = 'data:image/jpeg;base64,' + resp.data.code;
-                    this.QRVisible = !this.QRVisible;
-                    this.$apply();
+                    if(resp.data.code !== undefined){
+                        this.cartQR = 'data:image/jpeg;base64,' + resp.data.code;
+                        this.QRVisible = !this.QRVisible;
+                        this.$apply();
+                    }else{
+                        wx.navigateTo({
+                            url: '/pages/check/service?sid=' + resp.data.sid
+                        })
+                    }
                 }else{
                     tip.toast(resp.msg);
                 }
