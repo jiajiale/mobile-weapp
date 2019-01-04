@@ -67,7 +67,9 @@
         </view>
         <view slot="content">
             <i-cell-group class="wx-sheet-cart-item">
-                <i-cell wx:for="{{cartList}}" wx:key="{{item.id}}" title="{{item.goods_name}}" label="{{item.spec_info}}" value="￥{{item.shop_price}}"></i-cell>
+                <i-cell wx:for="{{cartList}}" wx:key="{{item.id}}" title="{{item.goods_name}}" label="{{item.spec_info}}">
+                    <view slot="footer">￥{{item.shop_price}}</view>
+                </i-cell>
             </i-cell-group>
         </view>
     </CartSheet>
@@ -156,7 +158,6 @@
             goodsVisible: false,
             cartVisible: false,
             QRVisible: false,
-            actions2: [1,2],
             page: 1,
             hasPage: true,
             cartQR: ''
