@@ -327,7 +327,7 @@
             tip.loading(MSG.LOADING);
             await api.queryGoodsList('POST',{
                 page: this.page,
-                is_goods: false
+                is_goods: 0
             }).then(resp => {
                 tip.loaded();
                 if(resp.data){
