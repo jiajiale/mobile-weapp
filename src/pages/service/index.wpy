@@ -7,7 +7,7 @@
             <view class="wx-goods-item" wx:for="{{goodsList}}" wx:key="{{item.id}}">
                 <i-row class="wx-goods-item-head">
                     <i-col span="24" i-class="col-class">
-                        <image src="{{goodsImgUrl + item.original_img}}"
+                        <image src="{{goodsImgUrl + (item.app_img ? item.app_img : item.original_img)}}"
                                mode="scaleToFill"></image>
                     </i-col>
                 </i-row>
@@ -34,7 +34,7 @@
                 :zIndexStyle.sync="goodsZIndexStyle">
         <view slot="content" wx:if="{{goodsInfo.id}}">
             <view class="wx-goods-head-img">
-                <image src="{{goodsImgUrl + goodsInfo.original_img}}"
+                <image src="{{goodsImgUrl + (goodsInfo.app_img ? goodsInfo.app_img : goodsInfo.original_img)}}"
                        mode="scaleToFill"></image>
             </view>
             <view class="wx-goods-head-main">
