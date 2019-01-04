@@ -66,7 +66,7 @@
             </view>
         </view>
         <view slot="content">
-            <i-swipeout  i-class="wx-sheet-cart-item" actions="{{actions}}" wx:for="{{cartList}}" wx:key="{{item.id}}" data-index="{{index}}" bindchange="delCartItem">
+            <i-swipeout  i-class="wx-sheet-cart-item" actions="{{actions}}" wx:for="{{cartList}}" wx:key="{{item.id}}" data-item="{{item}}" data-index="{{index}}" bindchange="delCartItem">
                 <view slot="content">
                     <i-cell title="{{item.goods_name}}" label="{{item.spec_info}}">
                         <view slot="footer">￥{{item.shop_price}}</view>
@@ -287,7 +287,13 @@
             },
             delCartItem(e){
                 let index = e.currentTarget.dataset.index;
-                console.log(index);
+                let item = e.currentTarget.dataset.item;
+                this.cartList.splice(index,1);
+                this.syncCartInfo(item);
+                if(!this.cartList.length){
+                    this.cartVisible = false;
+                }
+                this.$apply();
             }
         };
 
