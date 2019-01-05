@@ -162,7 +162,11 @@
                 order_no: this.orderNo
             }).then(result => {
                 if(result.data === true){
-                    console.log(result.data);
+                    tip.toast('下单成功',function () {
+                        wx.navigateTo({
+                            url: '/pages/service/index'
+                        })
+                    },'success')
                 }else{
                     wx.requestPayment({
                         'timeStamp': result.data.timeStamp,
@@ -171,7 +175,11 @@
                         'signType': result.data.signType,
                         'paySign': result.data.paySign,
                         'success':function(res){
-
+                            tip.toast('支付成功',function () {
+                                wx.navigateTo({
+                                    url: '/pages/service/index'
+                                })
+                            },'success')
                         },
                         'fail':function(res){
                             tip.toast('支付失败');
