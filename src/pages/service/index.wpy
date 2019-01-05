@@ -353,7 +353,7 @@
                     goods_spec: this.cartList[i].select_spec
                 })
             }
-            tip.loading(MSG.MAKING_QR);
+            tip.loading(this.userInfo.store_account_id ? MSG.MAKING_QR : MSG.COMMITTING);
             await api.addGoodsCart('POST',{
                 cartList: cartInfo,
             }).then(resp => {
@@ -365,6 +365,8 @@
                         this.QRVisible = !this.QRVisible;
                         this.$apply();
                     }else{
+                        this.cartList = [];
+                        wx.setStorageSync('cartList',this.cartList);
                         wx.navigateTo({
                             url: '/pages/check/service?sid=' + resp.data.sid
                         })
