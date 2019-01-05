@@ -377,6 +377,9 @@
 
         onShow() {
             let _this = this;
+            _this.goodsVisible = false;
+            _this.cartVisible = false;
+            _this.QRVisible = false;
             this.checkAuthorize(function () {
                 _this.userInfo = wx.getStorageSync('userInfo');
                 _this.queryReload();

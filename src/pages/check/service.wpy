@@ -36,7 +36,7 @@
                 <view class="wx-check-image">
                     <i-col span="6" i-class="col-class" wx:for="{{formData.photos}}" wx:key="{{index}}">
                         <view class="wx-image-upload">
-                            <image src="{{photoImgUrl + item}}" mode="scaleToFill" width="100%" height="100%"></image>
+                            <image src="{{photoImgUrl + item}}" mode="scaleToFill" style="width: 100%;height: 100%;"></image>
                         </view>
                         <view class="wx-upload-info" bindtap="deleteImage" data-index="{{index}}">删除</view>
                     </i-col>
@@ -126,6 +126,7 @@
                                         _this.formData.photos = [];
                                     }
                                     _this.formData.photos.push(result.data)
+                                    _this.$apply();
                                 }else{
                                     tip.toast(result.msg);
                                 }
@@ -160,20 +161,24 @@
             api.payOrder('POST',{
                 order_no: this.orderNo
             }).then(result => {
-                console.log(result);
-                wx.requestPayment({
-                    'timeStamp': result.data.timeStamp,
-                    'nonceStr': result.data.nonceStr,
-                    'package': result.data.package,
-                    'signType': result.data.signType,
-                    'paySign': result.data.paySign,
-                    'success':function(res){
+                if(result.data === true){
+                    console.log(result.data);
+                }else{
+                    wx.requestPayment({
+                        'timeStamp': result.data.timeStamp,
+                        'nonceStr': result.data.nonceStr,
+                        'package': result.data.package,
+                        'signType': result.data.signType,
+                        'paySign': result.data.paySign,
+                        'success':function(res){
 
-                    },
-                    'fail':function(res){
-                        tip.toast('支付失败');
-                    }
-                })
+                        },
+                        'fail':function(res){
+                            tip.toast('支付失败');
+                        }
+                    })
+                }
+
             });
         };
 
