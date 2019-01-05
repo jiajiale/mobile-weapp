@@ -363,6 +363,8 @@
                     if(resp.data.code !== undefined){
                         this.cartQR = 'data:image/jpeg;base64,' + resp.data.code;
                         this.QRVisible = !this.QRVisible;
+                        this.cartList = [];
+                        wx.setStorageSync('cartList',this.cartList);
                         this.$apply();
                     }else{
                         this.cartList = [];
