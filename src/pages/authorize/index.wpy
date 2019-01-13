@@ -58,7 +58,7 @@
             let current_time = Date.parse(new Date());
 
             wx.setStorageSync('token', token);
-            wx.setStorageSync('token_expire', current_time + 7000000);
+            //wx.setStorageSync('token_expire', current_time + 10000);
         }
 
         login() {
@@ -77,6 +77,7 @@
                                     wx.setStorageSync('userInfo', resp.data.userInfo);
                                     wx.getSetting({
                                         success(res) {
+                                            console.log(res);
                                             if (res.authSetting['scope.userInfo']) {
                                                 wx.getUserInfo({
                                                     success: function (res) {
@@ -89,6 +90,9 @@
                                                 });
                                                 tip.loaded();
                                             }
+                                        },
+                                        complete(res){
+                                            console.log(res);
                                         }
                                     });
                                 } else {
