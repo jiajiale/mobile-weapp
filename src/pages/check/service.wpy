@@ -203,6 +203,9 @@
                     this.$apply();
                 }else{
                     tip.toast(resp.msg);
+                    wx.navigateTo({
+                        url: '/pages/service/index'
+                    })
                 }
             });
         };
