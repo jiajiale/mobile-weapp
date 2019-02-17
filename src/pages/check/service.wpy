@@ -162,7 +162,7 @@
                 order_no: this.orderNo
             }).then(result => {
                 if(result.data === true){
-                    tip.toast('下单成功',function () {
+                    tip.toast('下单成功',5000,function () {
                         wx.navigateTo({
                             url: '/pages/service/index'
                         })
@@ -175,7 +175,7 @@
                         'signType': result.data.signType,
                         'paySign': result.data.paySign,
                         'success':function(res){
-                            tip.toast('支付成功',function () {
+                            tip.toast('支付成功',5000,function () {
                                 wx.navigateTo({
                                     url: '/pages/service/index'
                                 })
@@ -202,10 +202,11 @@
                     this.totalPrice = resp.data.totalPrice.total_fee.toFixed(2);
                     this.$apply();
                 }else{
-                    tip.toast(resp.msg);
-                    wx.navigateTo({
-                        url: '/pages/service/index'
-                    })
+                    tip.toast(resp.msg,1000,function () {
+                        wx.navigateTo({
+                            url: '/pages/service/index'
+                        })
+                    });
                 }
             });
         };
