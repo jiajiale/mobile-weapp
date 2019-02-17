@@ -2,6 +2,11 @@
     @import "../../assets/styles/service_index";
 </style>
 <template>
+    <view class="wx-search">
+        <input placeholder="业务名称" value="{{keywords}}" data-key="name" bindinput="handleInput"/>
+        <button plain="true" @tap="queryReload">搜索</button>
+    </view>
+
     <scroll-view scroll-y bindscrolltolower="onReachBottom" wx:if="{{goodsList.length > 0}}">
         <view class="wx-goods-list">
             <view class="wx-goods-item" wx:for="{{goodsList}}" wx:key="{{item.id}}">
@@ -166,7 +171,8 @@
             cartQR: '',
             actions : [
                 {name : '删除', color : '#fff', fontsize : '20', width : 100, icon : 'trash', background : '#ed3f14'}
-            ]
+            ],
+            keywords: ''
         };
 
         computed = {
@@ -316,6 +322,11 @@
             wx.setStorageSync('cartList',this.cartList);
         }
 
+        handleInput(e){
+            let key = e.currentTarget.dataset.key;
+            this.keywords = e.detail.value;
+        }
+
         queryReload(){
             this.page = 1;
             this.goodsList = [];
@@ -327,6 +338,7 @@
             tip.loading(MSG.LOADING);
             await api.queryGoodsList('POST',{
                 page: this.page,
+                keywords: this.keywords,
                 is_goods: 0
             }).then(resp => {
                 tip.loaded();
