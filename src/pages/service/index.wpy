@@ -3,7 +3,7 @@
 </style>
 <template>
     <view class="wx-search">
-        <input placeholder="业务名称" value="{{keywords}}" data-key="name" bindinput="handleInput"/>
+        <input placeholder="请输入名称" value="{{keywords}}" data-key="name" bindinput="handleInput"/>
         <button plain="true" @tap="queryReload">搜索</button>
     </view>
 
