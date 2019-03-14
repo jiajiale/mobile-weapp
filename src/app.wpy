@@ -10,6 +10,7 @@
 
         config = {
             pages: [
+                'pages/user/order',
                 'pages/user/index',
                 'pages/home/index',
                 'pages/authorize/index',
@@ -18,7 +19,6 @@
                 'pages/goods/index',
                 'pages/goods/detail',
                 'pages/category/index',
-                'pages/user/order',
                 'pages/user/service',
                 'pages/user/address',
                 'pages/user/question',
@@ -28,7 +28,7 @@
                 backgroundTextStyle: 'light',
                 navigationBarBackgroundColor: '#ec3a3e',
                 navigationBarTitleText: '首页',
-                navigationBarTextStyle: '#ffffff'
+                navigationBarTextStyle: 'white'
             },
             tabBar: {
                 selectedColor: '#f06292',

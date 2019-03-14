@@ -10,32 +10,78 @@
             <i-col span="6" i-class="col-class">col-8</i-col>
         </i-row>
     </view>
-
-    <view class="marginB20">
-        <i-cell-group>
-            <i-cell title="我的订单" is-link url="/pages/user/order"><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
-            <i-cell title="我的业务" is-link url="/pages/user/service"><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
-        </i-cell-group>
+    <view class="wx-user-order marginB20">
+        <i-panel class="cell-panel-demo">
+            <i-cell title="我的订单" is-link value="全部"></i-cell>
+        </i-panel>
+        <i-row i-class="wx-user-order-box">
+            <i-col span="6" i-class="col-class">
+                <view><icon class="iconfont icon-gouwuche"/></view>
+                <view>待付款</view>
+            </i-col>
+            <i-col span="6" i-class="col-class">
+                <view><icon class="iconfont icon-gouwuche"/></view>
+                <view>待发货</view>
+            </i-col>
+            <i-col span="6" i-class="col-class">
+                <view><icon class="iconfont icon-gouwuche"/></view>
+                <view>待收货</view>
+            </i-col>
+            <i-col span="6" i-class="col-class">
+                <view><icon class="iconfont icon-gouwuche"/></view>
+                <view>已完成</view>
+            </i-col>
+        </i-row>
     </view>
 
-    <view class="marginB20">
-        <i-cell-group>
-            <i-cell title="问题反馈" is-link url="/pages/user/address"><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
-            <i-cell title="帮助中心" is-link url="/pages/user/address"><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
-        </i-cell-group>
-    </view>
-
-    <view class="marginB20">
-        <i-cell-group>
-            <i-cell title="问题反馈" is-link url="/pages/user/question"><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
-            <i-cell title="帮助中心" is-link url="/pages/user/help"><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
-        </i-cell-group>
+    <view class="wx-user-module">
+        <i-grid>
+            <i-row>
+                <i-grid-item>
+                    <i-grid-icon>
+                        <icon class="iconfont icon-gouwuche"/>
+                    </i-grid-icon>
+                    <i-grid-label>我的业务</i-grid-label>
+                </i-grid-item>
+                <i-grid-item>
+                    <i-grid-icon>
+                        <icon class="iconfont icon-gouwuche"/>
+                    </i-grid-icon>
+                    <i-grid-label>我的积分</i-grid-label>
+                </i-grid-item>
+                <i-grid-item>
+                    <i-grid-icon>
+                        <icon class="iconfont icon-gouwuche"/>
+                    </i-grid-icon>
+                    <i-grid-label>我的信息</i-grid-label>
+                </i-grid-item>
+            </i-row>
+            <i-row>
+                <i-grid-item>
+                    <i-grid-icon>
+                        <icon class="iconfont icon-gouwuche"/>
+                    </i-grid-icon>
+                    <i-grid-label>我的地址</i-grid-label>
+                </i-grid-item>
+                <i-grid-item>
+                    <i-grid-icon>
+                        <icon class="iconfont icon-gouwuche"/>
+                    </i-grid-icon>
+                    <i-grid-label>我的反馈</i-grid-label>
+                </i-grid-item>
+                <i-grid-item>
+                    <i-grid-icon>
+                        <icon class="iconfont icon-gouwuche"/>
+                    </i-grid-icon>
+                    <i-grid-label>帮助中心</i-grid-label>
+                </i-grid-item>
+            </i-row>
+        </i-grid>
     </view>
 </template>
 
 <script>
     import wepy from 'wepy';
-    import ContentSheet from '../../components/content-sheet';
 
     export default class UserIndex extends wepy.page {
         config = {
@@ -45,11 +91,13 @@
                 "i-col": "../../iview/col/index",
                 "i-cell-group": "../../iview/cell-group/index",
                 "i-cell": "../../iview/cell/index",
+                "i-grid": "../../iview/grid/index",
+                "i-grid-item": "../../iview/grid-item/index",
+                "i-grid-icon": "../../iview/grid-icon/index",
+                "i-grid-label": "../../iview/grid-label/index"
             }
         };
         components = {
-            GoodsSheet: ContentSheet,
-            CartSheet: ContentSheet,
         };
 
         mixins = [];

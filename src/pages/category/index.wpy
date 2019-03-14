@@ -22,8 +22,7 @@
             }
         };
         components = {
-            GoodsSheet: ContentSheet,
-            CartSheet: ContentSheet,
+
         };
 
         mixins = [];

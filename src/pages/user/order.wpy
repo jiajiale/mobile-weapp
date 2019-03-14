@@ -2,28 +2,34 @@
     @import "../../assets/styles/service_index";
 </style>
 <template>
-
+    <view>
+        <i-tabs current="{{ current }}">
+            <i-tab key="tab1" title="待付款"></i-tab>
+            <i-tab key="tab2" title="待发货"></i-tab>
+            <i-tab key="tab3" title="待收货"></i-tab>
+            <i-tab key="tab3" title="已完成"></i-tab>
+        </i-tabs>
+    </view>
 </template>
 
 <script>
     import wepy from 'wepy';
-    import ContentSheet from '../../components/content-sheet';
 
     export default class UserOrder extends wepy.page {
         config = {
             navigationBarTitleText: '订单',
             usingComponents: {
+                "i-tabs": "../../iview/tabs/index",
+                "i-tab": "../../iview/tab/index"
             }
         };
         components = {
-            GoodsSheet: ContentSheet,
-            CartSheet: ContentSheet,
         };
 
         mixins = [];
 
         data = {
-
+            current: 'tab1'
         };
 
         computed = {};
