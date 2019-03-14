@@ -1,8 +1,36 @@
 <style lang="less">
-    @import "../../assets/styles/service_index";
+    @import "../../assets/styles/user_index";
 </style>
 <template>
+    <view class="wx-user-head">
+        <i-row>
+            <i-col span="18" i-class="col-class">
+                <view class="user-thumb"><open-data type="userAvatarUrl"></open-data></view>
+            </i-col>
+            <i-col span="6" i-class="col-class">col-8</i-col>
+        </i-row>
+    </view>
 
+    <view class="marginB20">
+        <i-cell-group>
+            <i-cell title="我的订单" is-link><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
+            <i-cell title="我的业务" is-link><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
+        </i-cell-group>
+    </view>
+
+    <view class="marginB20">
+        <i-cell-group>
+            <i-cell title="问题反馈" is-link><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
+            <i-cell title="帮助中心" is-link><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
+        </i-cell-group>
+    </view>
+
+    <view class="marginB20">
+        <i-cell-group>
+            <i-cell title="问题反馈" is-link><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
+            <i-cell title="帮助中心" is-link><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
+        </i-cell-group>
+    </view>
 </template>
 
 <script>
@@ -15,10 +43,8 @@
             usingComponents: {
                 "i-row": "../../iview/row/index",
                 "i-col": "../../iview/col/index",
-                "i-button": "../../iview/button/index",
                 "i-cell-group": "../../iview/cell-group/index",
                 "i-cell": "../../iview/cell/index",
-                "i-panel": "../../iview/panel/index",
             }
         };
         components = {
