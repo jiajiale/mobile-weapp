@@ -1,5 +1,5 @@
 <style lang="less">
-    @import "../../assets/styles/service_index";
+    @import "../../assets/styles/user_index";
 </style>
 <template>
     <view>
@@ -9,6 +9,12 @@
             <i-tab key="tab3" title="待收货"></i-tab>
             <i-tab key="tab3" title="已完成"></i-tab>
         </i-tabs>
+    </view>
+    <view class="marginT20">
+        <i-card title="卡片标题卡片标题卡片标题卡片标题" full extra="额外内容" thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
+            <view slot="content">内容不错</view>
+            <view slot="footer">尾部内容</view>
+        </i-card>
     </view>
 </template>
 
@@ -20,7 +26,8 @@
             navigationBarTitleText: '订单',
             usingComponents: {
                 "i-tabs": "../../iview/tabs/index",
-                "i-tab": "../../iview/tab/index"
+                "i-tab": "../../iview/tab/index",
+                "i-card": "../../iview/card/index"
             }
         };
         components = {
