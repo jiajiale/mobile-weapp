@@ -41,8 +41,14 @@
                         selectedIconPath: './assets/images/tab/scan-active.png'
                     },
                     {
+                        pagePath: 'pages/category/index',
+                        text: '分类',
+                        iconPath: './assets/images/tab/scan.png',
+                        selectedIconPath: './assets/images/tab/scan-active.png'
+                    },
+                    {
                         pagePath: 'pages/home/index',
-                        text: '商品',
+                        text: '购物车',
                         iconPath: './assets/images/tab/search.png',
                         selectedIconPath: './assets/images/tab/search-active.png'
                     },
