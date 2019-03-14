@@ -1,0 +1,41 @@
+<style lang="less">
+    @import "../../assets/styles/service_index";
+</style>
+<template>
+
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import ContentSheet from '../../components/content-sheet';
+
+    export default class UserHelp extends wepy.page {
+        config = {
+            navigationBarTitleText: '首页',
+            usingComponents: {
+            }
+        };
+        components = {
+            GoodsSheet: ContentSheet,
+            CartSheet: ContentSheet,
+        };
+
+        mixins = [];
+
+        data = {
+
+        };
+
+        computed = {};
+
+        methods = {
+
+        };
+
+        events = {};
+
+        onLoad() {
+
+        }
+    }
+</script>

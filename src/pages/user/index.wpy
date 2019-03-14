@@ -13,22 +13,22 @@
 
     <view class="marginB20">
         <i-cell-group>
-            <i-cell title="我的订单" is-link><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
-            <i-cell title="我的业务" is-link><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
+            <i-cell title="我的订单" is-link url="/pages/user/order"><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
+            <i-cell title="我的业务" is-link url="/pages/user/service"><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
         </i-cell-group>
     </view>
 
     <view class="marginB20">
         <i-cell-group>
-            <i-cell title="问题反馈" is-link><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
-            <i-cell title="帮助中心" is-link><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
+            <i-cell title="问题反馈" is-link url="/pages/user/address"><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
+            <i-cell title="帮助中心" is-link url="/pages/user/address"><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
         </i-cell-group>
     </view>
 
     <view class="marginB20">
         <i-cell-group>
-            <i-cell title="问题反馈" is-link><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
-            <i-cell title="帮助中心" is-link><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
+            <i-cell title="问题反馈" is-link url="/pages/user/question"><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
+            <i-cell title="帮助中心" is-link url="/pages/user/help"><icon class="iconfont icon-wodedingdan" slot="icon"/></i-cell>
         </i-cell-group>
     </view>
 </template>
@@ -37,7 +37,7 @@
     import wepy from 'wepy';
     import ContentSheet from '../../components/content-sheet';
 
-    export default class HomeIndex extends wepy.page {
+    export default class UserIndex extends wepy.page {
         config = {
             navigationBarTitleText: '首页',
             usingComponents: {

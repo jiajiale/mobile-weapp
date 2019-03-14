@@ -12,10 +12,17 @@
             pages: [
                 'pages/user/index',
                 'pages/home/index',
+                'pages/authorize/index',
                 'pages/service/index',
                 'pages/check/service',
                 'pages/goods/index',
-                'pages/authorize/index'
+                'pages/goods/detail',
+                'pages/category/index',
+                'pages/user/order',
+                'pages/user/service',
+                'pages/user/address',
+                'pages/user/question',
+                'pages/user/help',
             ],
             window: {
                 backgroundTextStyle: 'light',
