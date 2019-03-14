@@ -39,7 +39,7 @@
 
     export default class UserIndex extends wepy.page {
         config = {
-            navigationBarTitleText: '首页',
+            navigationBarTitleText: '我的',
             usingComponents: {
                 "i-row": "../../iview/row/index",
                 "i-col": "../../iview/col/index",

@@ -11,7 +11,7 @@
 
     export default class UserAddress extends wepy.page {
         config = {
-            navigationBarTitleText: '首页',
+            navigationBarTitleText: '地址',
             usingComponents: {
             }
         };

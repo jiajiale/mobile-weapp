@@ -11,7 +11,7 @@
 
     export default class UserQuestion extends wepy.page {
         config = {
-            navigationBarTitleText: '首页',
+            navigationBarTitleText: '反馈',
             usingComponents: {
             }
         };

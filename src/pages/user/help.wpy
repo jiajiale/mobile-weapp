@@ -11,7 +11,7 @@
 
     export default class UserHelp extends wepy.page {
         config = {
-            navigationBarTitleText: '首页',
+            navigationBarTitleText: '帮助',
             usingComponents: {
             }
         };

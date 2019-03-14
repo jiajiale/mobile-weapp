@@ -11,7 +11,7 @@
 
     export default class UserService extends wepy.page {
         config = {
-            navigationBarTitleText: '首页',
+            navigationBarTitleText: '业务',
             usingComponents: {
             }
         };
