@@ -11,8 +11,10 @@
         </i-tabs>
     </view>
     <view class="marginT20">
-        <i-card title="卡片标题卡片标题卡片标题卡片标题" full extra="额外内容" thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
-            <view slot="content">内容不错</view>
+        <i-card title="KY201707210847590968" full extra="额外内容">
+            <view slot="content">
+                <GoodsItem></GoodsItem>
+            </view>
             <view slot="footer">尾部内容</view>
         </i-card>
     </view>
@@ -20,6 +22,7 @@
 
 <script>
     import wepy from 'wepy';
+    import GoodsItem from '../../components/goods-item';
 
     export default class UserOrder extends wepy.page {
         config = {
@@ -31,6 +34,7 @@
             }
         };
         components = {
+            GoodsItem: GoodsItem,
         };
 
         mixins = [];

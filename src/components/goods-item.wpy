@@ -1,0 +1,26 @@
+<style lang="less">
+
+</style>
+<template>
+    <view>
+        <view></view>
+        <view></view>
+        <view></view>
+    </view>
+</template>
+<script>
+    import wepy from 'wepy'
+
+    export default class ContentSheet extends wepy.component {
+        props = {
+
+        };
+
+        methods = {
+
+        };
+
+        onLoad() {
+        }
+    }
+</script>
