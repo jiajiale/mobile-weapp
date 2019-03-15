@@ -1,11 +1,39 @@
 <style lang="less">
-
+    .wx-goods-info{
+        overflow: hidden;
+        .wx-goods-image{
+            float: left;
+            width: 120rpx;
+            height: 120rpx;
+            margin-right: 20rpx;
+            image{
+                width: 100%;
+                height: 100%;
+            }
+        }
+        .wx-goods-content{
+            float: left;
+            width: calc(100% - 300rpx);
+        }
+        .wx-goods-extra{
+            float: right;
+            height: 120rpx;
+            line-height: 120rpx;
+        }
+    }
 </style>
 <template>
-    <view>
-        <view></view>
-        <view></view>
-        <view></view>
+    <view class="wx-goods-info">
+        <view class="wx-goods-image">
+            <image src="{{thumb}}" mode="scaleToFill"></image>
+        </view>
+        <view class="wx-goods-content">
+            <slot name="title"></slot>
+            <slot name="tags"></slot>
+        </view>
+        <view class="wx-goods-extra">
+            <slot name="extra"></slot>
+        </view>
     </view>
 </template>
 <script>
@@ -13,7 +41,9 @@
 
     export default class ContentSheet extends wepy.component {
         props = {
-
+            thumb: {
+                type: String
+            },
         };
 
         methods = {
