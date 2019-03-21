@@ -1,5 +1,5 @@
 <style lang="less">
-    @import "../../assets/styles/home_index";
+    @import "../../assets/styles/home";
 </style>
 <template>
     <swiper indicator-dots="{{indicatorDots}}" style="height: 400rpx;"

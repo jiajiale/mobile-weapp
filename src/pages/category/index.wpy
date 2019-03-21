@@ -1,5 +1,5 @@
 <style lang="less">
-    @import "../../assets/styles/category_index";
+    @import "../../assets/styles/category";
 </style>
 <template>
     <view class="wx-cate-search">

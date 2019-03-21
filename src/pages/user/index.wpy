@@ -1,5 +1,5 @@
 <style lang="less">
-    @import "../../assets/styles/user_index";
+    @import "../../assets/styles/user";
 </style>
 <template>
     <view class="wx-user-head">

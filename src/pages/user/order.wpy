@@ -1,5 +1,5 @@
 <style lang="less">
-    @import "../../assets/styles/user_order";
+    @import "../../assets/styles/user";
 </style>
 <template>
     <view>

@@ -1,5 +1,5 @@
 <style lang="less">
-    @import "../../assets/styles/authorize_index";
+    @import "../../assets/styles/authorize";
 </style>
 <template>
     <view class="wx-dialog-container {{showDialog ? 'show' : 'close'}}">

@@ -2,9 +2,7 @@
     .wx-goods-info{
         overflow: hidden;
         .wx-goods-image{
-            float: left;
-            width: 120rpx;
-            height: 120rpx;
+            height: 300rpx;
             margin-right: 20rpx;
             image{
                 width: 100%;
@@ -12,13 +10,12 @@
             }
         }
         .wx-goods-content{
-            float: left;
-            width: calc(100% - 300rpx);
+            height: 60rpx;
+            line-height: 80rpx;
         }
         .wx-goods-extra{
-            float: right;
-            height: 120rpx;
-            line-height: 120rpx;
+            height: 60rpx;
+            line-height: 60rpx;
         }
     }
 </style>
@@ -29,7 +26,6 @@
         </view>
         <view class="wx-goods-content">
             <slot name="title"></slot>
-            <slot name="tags"></slot>
         </view>
         <view class="wx-goods-extra">
             <slot name="extra"></slot>
