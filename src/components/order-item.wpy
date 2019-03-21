@@ -1,7 +1,7 @@
 <style lang="less">
-    .wx-goods-info{
+    .wx-order-info{
         overflow: hidden;
-        .wx-goods-image{
+        .wx-order-image{
             float: left;
             width: 120rpx;
             height: 120rpx;
@@ -11,11 +11,11 @@
                 height: 100%;
             }
         }
-        .wx-goods-content{
+        .wx-order-content{
             float: left;
             width: calc(100% - 300rpx);
         }
-        .wx-goods-extra{
+        .wx-order-extra{
             float: right;
             height: 120rpx;
             line-height: 120rpx;
@@ -23,15 +23,15 @@
     }
 </style>
 <template>
-    <view class="wx-goods-info">
-        <view class="wx-goods-image">
+    <view class="wx-order-info">
+        <view class="wx-order-image">
             <image src="{{thumb}}" mode="scaleToFill"></image>
         </view>
-        <view class="wx-goods-content">
+        <view class="wx-order-content">
             <slot name="title"></slot>
             <slot name="tags"></slot>
         </view>
-        <view class="wx-goods-extra">
+        <view class="wx-order-extra">
             <slot name="extra"></slot>
         </view>
     </view>

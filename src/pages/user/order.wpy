@@ -14,7 +14,7 @@
         <view class="marginB20">
             <i-card title="KY201707210847590968" full extra="额外内容">
                 <view slot="content">
-                    <GoodsItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
+                    <OrderItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
                         <view slot="title">夏季流行中长款文化衫</view>
                         <view slot="tags">
                             <view class="marginT10">
@@ -22,7 +22,7 @@
                             </view>
                         </view>
                         <view slot="extra">￥120.00</view>
-                    </GoodsItem>
+                    </OrderItem>
                 </view>
                 <view slot="footer">
                 </view>
@@ -33,7 +33,7 @@
 
 <script>
     import wepy from 'wepy';
-    import GoodsItem from '../../components/goods-item';
+    import OrderItem from '../../components/order-item';
 
     export default class UserOrder extends wepy.page {
         config = {
@@ -47,7 +47,7 @@
             }
         };
         components = {
-            GoodsItem: GoodsItem,
+            OrderItem: OrderItem,
         };
 
         mixins = [];
