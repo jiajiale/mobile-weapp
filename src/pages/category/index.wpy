@@ -4,7 +4,7 @@
 <template>
     <view class="wx-cate-search">
         <input placeholder="商品搜索" auto-focus />
-        <view class="wx-search-icon"><i-icon type="search" size="26"/></view>
+        <view class="wx-search-icon"><i-icon type="search" size="20" color="#999999"/></view>
     </view>
 
     <view class="wx-cate-list">

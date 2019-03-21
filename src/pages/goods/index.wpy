@@ -2,12 +2,45 @@
     @import "../../assets/styles/goods";
 </style>
 <template>
-    <view>
-
+    <view class="wx-goods-search">
+        <input placeholder="商品搜索" auto-focus />
+        <view class="wx-search-icon"><i-icon type="search" size="20" color="#999999"/></view>
+        <view class="wx-search-btn">搜索</view>
     </view>
+
     <view class="wx-goods-list">
         <i-row>
-            <i-col span="12" i-class="wx-goods-item">
+            <i-col span="12" i-class="wx-goods-col">
+                <GoodsItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
+                    <view slot="title">夏季流行中长款文化衫</view>
+                    <view slot="extra"><span class="wx-goods-price">￥120.00</span></view>
+                </GoodsItem>
+            </i-col>
+            <i-col span="12" i-class="wx-goods-col">
+                <GoodsItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
+                    <view slot="title">夏季流行中长款文化衫</view>
+                    <view slot="extra">￥120.00</view>
+                </GoodsItem>
+            </i-col>
+            <i-col span="12" i-class="wx-goods-col">
+                <GoodsItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
+                    <view slot="title">夏季流行中长款文化衫</view>
+                    <view slot="extra">￥120.00</view>
+                </GoodsItem>
+            </i-col>
+            <i-col span="12" i-class="wx-goods-col">
+                <GoodsItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
+                    <view slot="title">夏季流行中长款文化衫</view>
+                    <view slot="extra">￥120.00</view>
+                </GoodsItem>
+            </i-col>
+            <i-col span="12" i-class="wx-goods-col">
+                <GoodsItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
+                    <view slot="title">夏季流行中长款文化衫</view>
+                    <view slot="extra">￥120.00</view>
+                </GoodsItem>
+            </i-col>
+            <i-col span="12" i-class="wx-goods-col">
                 <GoodsItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
                     <view slot="title">夏季流行中长款文化衫</view>
                     <view slot="extra">￥120.00</view>
@@ -28,6 +61,7 @@
             usingComponents: {
                 "i-row": "../../iview/row/index",
                 "i-col": "../../iview/col/index",
+                "i-icon": "../../iview/icon/index"
             }
         };
         components = {

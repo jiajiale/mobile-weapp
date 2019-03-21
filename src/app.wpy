@@ -11,10 +11,10 @@
         config = {
             pages: [
                 'pages/goods/index',
+                'pages/category/index',
                 'pages/user/order',
                 'pages/user/index',
                 'pages/home/index',
-                'pages/category/index',
                 'pages/authorize/index',
                 'pages/service/index',
                 'pages/check/service',
