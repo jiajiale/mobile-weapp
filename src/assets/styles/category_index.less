@@ -1,0 +1,54 @@
+page{
+  background: #F2F2F2;
+}
+.wx-cate-search{
+  padding: 20rpx 30rpx;
+  position: relative;
+  input{
+    background: #fff;
+    border-radius: 20rpx;
+    height: 60rpx;
+    line-height: 60rpx;
+    padding-left: 80rpx;
+  }
+  .wx-search-icon{
+    position: absolute;
+    top:22rpx;
+    left:40rpx;
+  }
+}
+.wx-cate-list{
+  background: #fff;
+  height: calc(100% - 100rpx);
+  .wx-cate-row{
+    height: 100%;
+  }
+  .wx-cate-left{
+    height: 100%;
+    border-right: 1px solid #e8e8e8;
+    text-align: center;
+    overflow: scroll;
+    .wx-cate-item{
+      height: 80rpx;
+      line-height: 80rpx;
+    }
+    .active{
+      border-left: 6rpx solid #ec3a3e;
+      color: #ec3a3e;
+    }
+  }
+  .wx-cate-right{
+    padding-top: 20rpx;
+    height: 100%;
+    overflow: scroll;
+    .wx-cate-info{
+      text-align: center;
+      font-size: 24rpx;
+      padding: 15rpx 0rpx;
+      image{
+        width: 120rpx;
+        height: 120rpx;
+      }
+    }
+  }
+}
