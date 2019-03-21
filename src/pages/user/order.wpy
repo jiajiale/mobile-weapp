@@ -1,5 +1,5 @@
 <style lang="less">
-    @import "../../assets/styles/user_index";
+    @import "../../assets/styles/user_order";
 </style>
 <template>
     <view>
@@ -11,18 +11,23 @@
         </i-tabs>
     </view>
     <view class="marginT20">
-        <i-card title="KY201707210847590968" full extra="额外内容">
-            <view slot="content">
-                <GoodsItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
-                    <view slot="title">夏季流行中长款文化衫</view>
-                    <view slot="tags">
-                        <i-tag type="border">标签一</i-tag>
-                    </view>
-                    <view slot="extra">￥120.00</view>
-                </GoodsItem>
-            </view>
-            <view slot="footer">尾部内容</view>
-        </i-card>
+        <view class="marginB20">
+            <i-card title="KY201707210847590968" full extra="额外内容">
+                <view slot="content">
+                    <GoodsItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
+                        <view slot="title">夏季流行中长款文化衫</view>
+                        <view slot="tags">
+                            <view class="marginT10">
+                                <i-tag type="border">标签一</i-tag>
+                            </view>
+                        </view>
+                        <view slot="extra">￥120.00</view>
+                    </GoodsItem>
+                </view>
+                <view slot="footer">
+                </view>
+            </i-card>
+        </view>
     </view>
 </template>
 
@@ -37,7 +42,8 @@
                 "i-tabs": "../../iview/tabs/index",
                 "i-tab": "../../iview/tab/index",
                 "i-card": "../../iview/card/index",
-                "i-tag": "../../iview/tag/index"
+                "i-tag": "../../iview/tag/index",
+                "i-button": "../../iview/button/index"
             }
         };
         components = {
@@ -53,7 +59,9 @@
         computed = {};
 
         methods = {
+            handleClick(){
 
+            }
         };
 
         events = {};

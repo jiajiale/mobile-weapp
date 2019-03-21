@@ -2,13 +2,33 @@ page{
   background: #F2F2F2;
 }
 .wx-user-head{
-  background: #fff url('https://raw.githubusercontent.com/weilanwl/ColorUI/master/demo/images/wave.gif');
-  padding: 20rpx 30rpx;
-  .user-thumb{
-    width: 140rpx;
-    height: 140rpx;
-    border-radius: 50%;
-    overflow: hidden;
+  background: #cccccc;
+  overflow: hidden;
+  .wx-user-info{
+    text-align: center;
+    background: #fff;
+    margin: 80rpx 30rpx 20rpx 30rpx;
+    box-shadow: 0 2px 2px rgba(0,0,0,.2);
+    border-radius: 10rpx;
+    .user-thumb{
+      width: 140rpx;
+      height: 140rpx;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 0rpx auto;
+      border:6rpx solid #fff;
+    }
+    .user-name{
+      height: 50rpx;
+      line-height: 50rpx;
+    }
+  }
+  .wx-user-wallet{
+    top:-30rpx;
+    position:relative;
+    .wx-border-right{
+      border-right: 1px solid #e8e8e8;
+    }
   }
 }
 .wx-user-order{
