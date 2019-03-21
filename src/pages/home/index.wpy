@@ -2,23 +2,52 @@
     @import "../../assets/styles/home";
 </style>
 <template>
-    <swiper indicator-dots="{{indicatorDots}}" style="height: 400rpx;"
-            autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
-        <block wx:for="{{focusList}}" wx:key="{{item.id}}">
-            <swiper-item>
-                <image src="{{item.url}}" class="wx-slide-image" height="400rpx" data-item="{{item}}"/>
-            </swiper-item>
-        </block>
-    </swiper>
+    <view class="wx-focus">
+        <swiper indicator-dots="{{indicatorDots}}" style="height: 400rpx;"
+                autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+            <block wx:for="{{focusList}}" wx:key="{{item.id}}">
+                <swiper-item>
+                    <image src="{{item.url}}" data-item="{{item}}"/>
+                </swiper-item>
+            </block>
+        </swiper>
+    </view>
 
-    <view>
+    <view class="wx-adv-item">
+        <image src="https://www.caryue.com/Public/Uploads/adv/source/20181109/5be51b0c9ecc8.jpg" mode="scaleToFill"></image>
+    </view>
 
+    <view class="wx-goods-new">
+        <i-row>
+            <i-col span="8" i-class="wx-goods-col">
+                <GoodsItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
+                    <view slot="title">夏季流行中长款文化衫</view>
+                    <view slot="extra"><span class="wx-goods-price">￥120.00</span></view>
+                </GoodsItem>
+            </i-col>
+            <i-col span="8" i-class="wx-goods-col">
+                <GoodsItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
+                    <view slot="title">夏季流行中长款文化衫</view>
+                    <view slot="extra">￥120.00</view>
+                </GoodsItem>
+            </i-col>
+            <i-col span="8" i-class="wx-goods-col">
+                <GoodsItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
+                    <view slot="title">夏季流行中长款文化衫</view>
+                    <view slot="extra">￥120.00</view>
+                </GoodsItem>
+            </i-col>
+        </i-row>
+    </view>
+
+    <view class="wx-adv-item">
+        <image src="https://www.caryue.com/Public/Uploads/adv/source/20181109/5be51b0c9ecc8.jpg" mode="scaleToFill"></image>
     </view>
 </template>
 
 <script>
     import wepy from 'wepy';
-    import ContentSheet from '../../components/content-sheet';
+    import GoodsItem from '../../components/goods-item';
 
     export default class HomeIndex extends wepy.page {
         config = {
@@ -29,8 +58,7 @@
             }
         };
         components = {
-            GoodsSheet: ContentSheet,
-            CartSheet: ContentSheet,
+            GoodsItem: GoodsItem,
         };
 
         mixins = [];
