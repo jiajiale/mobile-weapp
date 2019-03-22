@@ -10,15 +10,13 @@
     <view class="wx-cate-list">
         <i-row i-class="wx-cate-row">
             <i-col span="6" i-class="wx-cate-left">
-                <view class="wx-cate-item active">家具生活</view>
-                <view class="wx-cate-item">服饰鞋包</view>
-                <view class="wx-cate-item">全球美食</view>
+                <view class="{{activeIndex == index ? 'wx-cate-item active' : 'wx-cate-item'}}" wx:for="{{categoryList}}" wx:key="{{item.id}}" bindtap="changeCategory" data-index="{{index}}">{{item.name}}</view>
             </i-col>
             <i-col span="18" i-class="wx-cate-right">
                 <i-row>
-                    <i-col span="8" i-class="wx-cate-info">
-                        <image src="https://i.loli.net/2017/08/21/599a521472424.jpg" mode="scaleToFill"></image>
-                        <view>生活日用</view>
+                    <i-col span="8" i-class="wx-cate-info" wx:for="{{subCategoryList}}" wx:key="{{item.id}}">
+                        <image src="{{categoryImgUrl + item.image}}" mode="scaleToFill"></image>
+                        <view>{{item.name}}</view>
                     </i-col>
                 </i-row>
             </i-col>
@@ -28,7 +26,11 @@
 
 <script>
     import wepy from 'wepy';
-    import ContentSheet from '../../components/content-sheet';
+    import authorize from '../../mixins/authorize';
+    import api from '../../api';
+    import tip from '../../utils/tip';
+    import utils from '../../utils/util';
+    import MSG from '../../utils/msg';
 
     export default class CategoryIndex extends wepy.page {
         config = {
@@ -39,26 +41,40 @@
                 "i-icon": "../../iview/icon/index"
             }
         };
-        components = {
 
-        };
-
-        mixins = [];
+        mixins = [authorize];
 
         data = {
-
+            categoryImgUrl: api.CATEGORY_IMG_URL,
+            categoryList: [],
+            subCategoryList: [],
+            activeIndex: 0
         };
-
-        computed = {};
 
         methods = {
-
+            changeCategory(e){
+                let index = e.currentTarget.dataset.index;
+                this.activeIndex = index;
+                this.subCategoryList = this.categoryList[index].subCategory;
+            }
         };
 
-        events = {};
-
-        onLoad() {
-
-        }
+        async queryItemList() {
+            tip.loading(MSG.LOADING);
+            await api.queryCategoryList('POST',null).then(resp => {
+                tip.loaded();
+                if(resp.data && resp.data.length){
+                    this.categoryList = resp.data;
+                    this.subCategoryList = resp.data[0].subCategory;
+                }
+                this.$apply();
+            });
+        };
+        onShow() {
+            let _this = this;
+            this.checkAuthorize(function () {
+                _this.queryItemList();
+            });
+        };
     }
 </script>

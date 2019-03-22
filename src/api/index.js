@@ -1,9 +1,10 @@
 import wepy from 'wepy';
 import tip from '../utils/tip';
 
-const APP_URL = 'https://www.caryue.com';
-// const APP_URL = 'http://www.mobile.com';
+// const APP_URL = 'https://www.caryue.com';
+const APP_URL = 'https://111.230.96.241';
 const GOODS_IMG_URL = APP_URL + '/Public/Uploads/goods/source/';
+const CATEGORY_IMG_URL = APP_URL + '/Public/Uploads/category/source/';
 const PHOTO_IMG_URL = APP_URL + '/Public/Uploads/photo/';
 const UPLOAD_IMG_URL = APP_URL + '/Admin/Image/uploadPicture';
 
@@ -30,12 +31,14 @@ const wxRequest = async(method = 'GET',params = {}, url) => {
 
 export default{
     GOODS_IMG_URL: GOODS_IMG_URL,
+    CATEGORY_IMG_URL: CATEGORY_IMG_URL,
     PHOTO_IMG_URL: PHOTO_IMG_URL,
     UPLOAD_IMG_URL: UPLOAD_IMG_URL,
     login: (method,params) => wxRequest(method,params, "/api/public/login"),
     register: (method,params) => wxRequest(method,params, "/api/public/register"),
     updateUserPhone: (method,params) => wxRequest(method,params, "/api/public/updateUserPhone"),
     queryGoodsList: (method,params) => wxRequest(method,params, "/api/goods/index"),
+    queryCategoryList: (method,params) => wxRequest(method,params, "/api/goods/category"),
     addGoodsCart: (method,params) => wxRequest(method,params, "/api/cart/addGoodsCart"),
     queryCartInfo: (method,params) => wxRequest(method,params, "/api/cart/getCartGoods"),
     createServiceOrder: (method,params) => wxRequest(method,params, "/api/order/service"),
