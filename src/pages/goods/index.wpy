@@ -10,40 +10,10 @@
 
     <view class="wx-goods-list">
         <i-row>
-            <i-col span="12" i-class="wx-goods-col">
+            <i-col span="12" i-class="wx-goods-col" wx:for="{{goodsList}}" wx:key="{{item.id}}">
                 <GoodsItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
-                    <view slot="title">夏季流行中长款文化衫</view>
-                    <view slot="extra"><span class="wx-goods-price">￥120.00</span></view>
-                </GoodsItem>
-            </i-col>
-            <i-col span="12" i-class="wx-goods-col">
-                <GoodsItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
-                    <view slot="title">夏季流行中长款文化衫</view>
-                    <view slot="extra">￥120.00</view>
-                </GoodsItem>
-            </i-col>
-            <i-col span="12" i-class="wx-goods-col">
-                <GoodsItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
-                    <view slot="title">夏季流行中长款文化衫</view>
-                    <view slot="extra">￥120.00</view>
-                </GoodsItem>
-            </i-col>
-            <i-col span="12" i-class="wx-goods-col">
-                <GoodsItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
-                    <view slot="title">夏季流行中长款文化衫</view>
-                    <view slot="extra">￥120.00</view>
-                </GoodsItem>
-            </i-col>
-            <i-col span="12" i-class="wx-goods-col">
-                <GoodsItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
-                    <view slot="title">夏季流行中长款文化衫</view>
-                    <view slot="extra">￥120.00</view>
-                </GoodsItem>
-            </i-col>
-            <i-col span="12" i-class="wx-goods-col">
-                <GoodsItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
-                    <view slot="title">夏季流行中长款文化衫</view>
-                    <view slot="extra">￥120.00</view>
+                    <view slot="title">{{item.goods_name}}</view>
+                    <view slot="extra"><span class="wx-goods-price">￥{{item.shop_price}}</span></view>
                 </GoodsItem>
             </i-col>
         </i-row>
@@ -53,6 +23,11 @@
 <script>
     import wepy from 'wepy';
     import GoodsItem from '../../components/goods-item';
+    import authorize from '../../mixins/authorize';
+    import api from '../../api';
+    import tip from '../../utils/tip';
+    import utils from '../../utils/util';
+    import MSG from '../../utils/msg';
 
     export default class GoodsIndex extends wepy.page {
         config = {
@@ -67,10 +42,12 @@
             GoodsItem: GoodsItem
         };
 
-        mixins = [];
+        mixins = [authorize];
 
         data = {
-
+            goodsImgUrl: api.GOODS_IMG_URL,
+            goodsList: [],
+            keywords: ''
         };
 
         computed = {};
@@ -79,7 +56,37 @@
 
         };
 
-        events = {};
+        queryReload(){
+            this.page = 1;
+            this.goodsList = [];
+            this.hasPage = true;
+            this.queryItemList();
+        };
+
+        async queryItemList() {
+            tip.loading(MSG.LOADING);
+            await api.queryGoodsList('POST',{
+                page: this.page,
+                keywords: this.keywords,
+                is_goods: 1
+            }).then(resp => {
+                tip.loaded();
+                if(resp.data){
+                    this.goodsList = this.goodsList.concat(resp.data.items);
+                    if(resp.data.pager.index >= resp.data.pager.count){
+                        this.hasPage = false;
+                    }
+                    this.$apply();
+                }
+            });
+        };
+
+        onShow() {
+            let _this = this;
+            this.checkAuthorize(function () {
+                _this.queryReload();
+            });
+        };
 
         onLoad() {
 

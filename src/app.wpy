@@ -10,9 +10,9 @@
 
         config = {
             pages: [
+                'pages/goods/index',
                 'pages/category/index',
                 'pages/home/index',
-                'pages/goods/index',
                 'pages/user/order',
                 'pages/user/index',
                 'pages/authorize/index',
