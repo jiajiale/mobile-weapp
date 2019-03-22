@@ -17,6 +17,18 @@
             </view>
         </i-radio-group>
     </view>
+    <i-modal title="标题" visible="{{visibleModal}}" bind:ok="handleSubmit" bind:cancel="handleCancel">
+        <view>一些文本</view>
+        <view>一些文本</view>
+        <view>一些文本</view>
+        <view>一些文本</view>
+        <view>一些文本</view>
+        <view>一些文本</view>
+        <view>一些文本</view>
+        <view>一些文本</view>
+        <view>一些文本</view>
+    </i-modal>
+    <view class="wx-address-add" ><i-icon type="add" size="20" color="#ec3a3e" bindtap="handleAddAddress"/>新增地址</view>
 </template>
 
 <script>
@@ -32,7 +44,9 @@
             navigationBarTitleText: '地址',
             usingComponents: {
                 "i-radio-group": "../../iview/radio-group/index",
-                "i-radio": "../../iview/radio/index"
+                "i-radio": "../../iview/radio/index",
+                "i-icon": "../../iview/icon/index",
+                "i-modal": "../../iview/modal/index"
             }
         };
         components = {
@@ -42,12 +56,22 @@
 
         data = {
             isDefault: false,
+            visibleModal: false,
             addressList: [],
             cityList: []
         };
         methods = {
             handleChangeAddress({ detail = {} }){
                 console.log(detail.value)
+            },
+            handleAddAddress(){
+                this.visibleModal = true;
+            },
+            handleSubmit(){
+
+            },
+            handleCancel(){
+
             }
         };
 
