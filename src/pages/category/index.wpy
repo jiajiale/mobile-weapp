@@ -3,7 +3,7 @@
 </style>
 <template>
     <view class="wx-cate-search">
-        <input placeholder="商品搜索" auto-focus />
+        <input placeholder="商品搜索" auto-focus="true"/>
         <view class="wx-search-icon"><i-icon type="search" size="20" color="#999999"/></view>
     </view>
 

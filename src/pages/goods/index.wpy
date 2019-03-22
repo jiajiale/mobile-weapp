@@ -3,27 +3,33 @@
 </style>
 <template>
     <view class="wx-goods-search">
-        <input placeholder="商品搜索" auto-focus />
+        <input placeholder="商品搜索" auto-focus="true" value="{{keywords}}" data-key="name" bindinput="handleSearchInput"/>
         <view class="wx-search-icon"><i-icon type="search" size="20" color="#999999"/></view>
-        <view class="wx-search-btn">搜索</view>
+        <view class="wx-search-btn" @tap="queryReload">搜索</view>
     </view>
 
-    <view class="wx-goods-list">
-        <i-row>
-            <i-col span="12" i-class="wx-goods-col" wx:for="{{goodsList}}" wx:key="{{item.id}}">
-                <GoodsItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
-                    <view slot="title">{{item.goods_name}}</view>
-                    <view slot="extra"><span class="wx-goods-price">￥{{item.shop_price}}</span></view>
-                </GoodsItem>
-            </i-col>
-        </i-row>
-    </view>
+    <scroll-view scroll-y bindscrolltolower="onReachBottom" wx:if="{{goodsList.length > 0}}">
+        <view class="wx-goods-list">
+            <i-row>
+                <i-col span="12" i-class="wx-goods-col" wx:for="{{goodsList}}" wx:key="{{item.id}}">
+                    <GoodsItem>
+                        <view slot="thumb" style="height: 100%;"><image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image></view>
+                        <view slot="title">{{item.goods_name}}</view>
+                        <view slot="extra"><span class="wx-goods-price">￥{{item.shop_price}}</span></view>
+                    </GoodsItem>
+                </i-col>
+            </i-row>
+        </view>
+        <LoadMore :hasPage.sync="hasPage" :itemList.sync="goodsList" emptyText="暂无商品信息"></LoadMore>
+    </scroll-view>
 </template>
 
 <script>
     import wepy from 'wepy';
     import GoodsItem from '../../components/goods-item';
+    import LoadMore from '../../components/load-more';
     import authorize from '../../mixins/authorize';
+    import pagination from '../../mixins/pagination';
     import api from '../../api';
     import tip from '../../utils/tip';
     import utils from '../../utils/util';
@@ -39,15 +45,18 @@
             }
         };
         components = {
-            GoodsItem: GoodsItem
+            GoodsItem: GoodsItem,
+            LoadMore: LoadMore,
         };
 
-        mixins = [authorize];
+        mixins = [pagination,authorize];
 
         data = {
             goodsImgUrl: api.GOODS_IMG_URL,
             goodsList: [],
-            keywords: ''
+            keywords: '',
+            page: 1,
+            hasPage: true,
         };
 
         computed = {};
@@ -55,6 +64,11 @@
         methods = {
 
         };
+
+        handleSearchInput(e){
+            let key = e.currentTarget.dataset.key;
+            this.keywords = e.detail.value;
+        }
 
         queryReload(){
             this.page = 1;
