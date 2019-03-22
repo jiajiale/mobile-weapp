@@ -11,18 +11,21 @@
         </i-tabs>
     </view>
     <view class="marginT20">
-        <view class="marginB20">
-            <i-card title="KY201707210847590968" full extra="额外内容">
+        <view class="marginB20" wx:for="{{orderList}}" wx:key="{{item.id}}">
+            <i-card title="{{item.order_sn}}" full extra="额外内容">
                 <view slot="content">
-                    <OrderItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
-                        <view slot="title">夏季流行中长款文化衫</view>
-                        <view slot="tags">
-                            <view class="marginT10">
-                                <i-tag type="border">标签一</i-tag>
+                    <repeat for="{{item.goods_list}}" key="{{goodsItem.id}}" item="goodsItem">
+                        <OrderItem>
+                            <view slot="thumb" style="height: 100%;"><image src="{{goodsImgUrl + goodsItem.original_img}}" mode="scaleToFill"></image></view>
+                            <view slot="title">{{goodsItem.goods_name}}</view>
+                            <view slot="tags">
+                                <view class="marginT10">
+                                    <i-tag type="border">标签一</i-tag>
+                                </view>
                             </view>
-                        </view>
-                        <view slot="extra">￥120.00</view>
-                    </OrderItem>
+                            <view slot="extra">￥120.00</view>
+                        </OrderItem>
+                    </repeat>
                 </view>
                 <view slot="footer">
                 </view>
@@ -34,6 +37,13 @@
 <script>
     import wepy from 'wepy';
     import OrderItem from '../../components/order-item';
+    import LoadMore from '../../components/load-more';
+    import authorize from '../../mixins/authorize';
+    import pagination from '../../mixins/pagination';
+    import api from '../../api';
+    import tip from '../../utils/tip';
+    import utils from '../../utils/util';
+    import MSG from '../../utils/msg';
 
     export default class UserOrder extends wepy.page {
         config = {
@@ -43,28 +53,55 @@
                 "i-tab": "../../iview/tab/index",
                 "i-card": "../../iview/card/index",
                 "i-tag": "../../iview/tag/index",
-                "i-button": "../../iview/button/index"
             }
         };
         components = {
             OrderItem: OrderItem,
         };
 
-        mixins = [];
+        mixins = [pagination,authorize];
 
         data = {
-            current: 'tab1'
+            current: 'tab1',
+            goodsImgUrl: api.GOODS_IMG_URL,
+            orderList: [],
+            page: 1,
+            hasPage: true,
         };
 
-        computed = {};
 
         methods = {
-            handleClick(){
-
-            }
         };
 
-        events = {};
+        queryReload(){
+            this.page = 1;
+            this.goodsList = [];
+            this.hasPage = true;
+            this.queryItemList();
+        };
+
+        async queryItemList() {
+            tip.loading(MSG.LOADING);
+            await api.queryOrderList('POST',{
+                page: this.page,
+            }).then(resp => {
+                tip.loaded();
+                if(resp.data){
+                    this.orderList = this.orderList.concat(resp.data.items);
+                    if(resp.data.pager.index >= resp.data.pager.count){
+                        this.hasPage = false;
+                    }
+                    this.$apply();
+                }
+            });
+        };
+
+        onShow() {
+            let _this = this;
+            this.checkAuthorize(function () {
+                _this.queryReload();
+            });
+        };
 
         onLoad() {
 

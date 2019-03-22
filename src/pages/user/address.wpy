@@ -1,38 +1,74 @@
 <style lang="less">
-    @import "../../assets/styles/service_index";
+    @import "../../assets/styles/user";
 </style>
 <template>
-
+    <view class="wx-address-list">
+        <i-radio-group current="{{current}}" bindchange="handleChangeAddress">
+            <view class="wx-address-item">
+                <view class="wx-address-content">
+                    <view class="wx-address-user">测试：15088704326</view>
+                    <view class="wx-address-info">浙江省杭州市余杭区文一西路利尔达物联网科技园1101室</view>
+                </view>
+                <view class="wx-address-footer">
+                    <view>
+                        <i-radio value="{{isDefault}}"></i-radio>设为默认地址
+                    </view>
+                </view>
+            </view>
+        </i-radio-group>
+    </view>
 </template>
 
 <script>
     import wepy from 'wepy';
-    import ContentSheet from '../../components/content-sheet';
+    import authorize from '../../mixins/authorize';
+    import api from '../../api';
+    import tip from '../../utils/tip';
+    import utils from '../../utils/util';
+    import MSG from '../../utils/msg';
 
     export default class UserAddress extends wepy.page {
         config = {
             navigationBarTitleText: '地址',
             usingComponents: {
+                "i-radio-group": "../../iview/radio-group/index",
+                "i-radio": "../../iview/radio/index"
             }
         };
         components = {
-            GoodsSheet: ContentSheet,
-            CartSheet: ContentSheet,
         };
 
-        mixins = [];
+        mixins = [authorize];
 
         data = {
-
+            isDefault: false,
+            addressList: [],
+            cityList: []
         };
-
-        computed = {};
-
         methods = {
-
+            handleChangeAddress({ detail = {} }){
+                console.log(detail.value)
+            }
         };
 
-        events = {};
+        async queryItemList() {
+            tip.loading(MSG.LOADING);
+            await api.queryAddressList('POST',null).then(resp => {
+                tip.loaded();
+                if(resp.data){
+                    this.addressList = resp.data.addressList;
+                    this.cityList = resp.data.cityList;
+                    this.$apply();
+                }
+            });
+        };
+
+        onShow() {
+            let _this = this;
+            this.checkAuthorize(function () {
+                _this.queryItemList();
+            });
+        };
 
         onLoad() {
 

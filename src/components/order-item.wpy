@@ -25,7 +25,7 @@
 <template>
     <view class="wx-order-info">
         <view class="wx-order-image">
-            <image src="{{thumb}}" mode="scaleToFill"></image>
+            <slot name="thumb"></slot>
         </view>
         <view class="wx-order-content">
             <slot name="title"></slot>
@@ -40,10 +40,6 @@
     import wepy from 'wepy'
 
     export default class OrderItem extends wepy.component {
-        props = {
-            thumb: {
-                type: String
-            },
-        };
+
     }
 </script>
