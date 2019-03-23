@@ -18,17 +18,21 @@
         </i-radio-group>
     </view>
     <i-modal title="标题" visible="{{visibleModal}}" bind:ok="handleSubmit" bind:cancel="handleCancel">
-        <view>一些文本</view>
-        <view>一些文本</view>
-        <view>一些文本</view>
-        <view>一些文本</view>
-        <view>一些文本</view>
-        <view>一些文本</view>
-        <view>一些文本</view>
-        <view>一些文本</view>
-        <view>一些文本</view>
+        <i-row>
+            <i-col span="12"><i-input value="{{ formInfo.name }}" placeholder="姓名" /></i-col>
+            <i-col span="12"><i-input value="{{ formInfo.name }}" placeholder="手机号" /></i-col>
+        </i-row>
+        <i-row>
+            <i-col span="24"><i-input value="{{ formInfo.name }}" placeholder="详细地址" /></i-col>
+        </i-row>
+        <i-row>
+            <i-col span="24"><i-input value="{{ formInfo.name }}" placeholder="详细地址" /></i-col>
+        </i-row>
+        <i-row>
+            <i-col span="24"><i-input value="{{ formInfo.name }}" placeholder="详细地址" /></i-col>
+        </i-row>
     </i-modal>
-    <view class="wx-address-add" ><i-icon type="add" size="20" color="#ec3a3e" bindtap="handleAddAddress"/>新增地址</view>
+    <view class="wx-address-add" bindtap="handleAddAddress"><i-icon type="add" size="20" color="#ec3a3e"/>新增地址</view>
 </template>
 
 <script>
@@ -46,7 +50,10 @@
                 "i-radio-group": "../../iview/radio-group/index",
                 "i-radio": "../../iview/radio/index",
                 "i-icon": "../../iview/icon/index",
-                "i-modal": "../../iview/modal/index"
+                "i-modal": "../../iview/modal/index",
+                "i-input": "../../iview/input/index",
+                "i-row": "../../iview/row/index",
+                "i-col": "../../iview/col/index"
             }
         };
         components = {
@@ -56,9 +63,12 @@
 
         data = {
             isDefault: false,
-            visibleModal: false,
+            visibleModal: true,
             addressList: [],
-            cityList: []
+            cityList: [],
+            formInfo: {
+                name: ''
+            }
         };
         methods = {
             handleChangeAddress({ detail = {} }){
@@ -68,10 +78,10 @@
                 this.visibleModal = true;
             },
             handleSubmit(){
-
+                this.visibleModal = false;
             },
             handleCancel(){
-
+                this.visibleModal = false;
             }
         };
 
