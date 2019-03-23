@@ -10,11 +10,11 @@
 
         config = {
             pages: [
+                'pages/home/index',
                 'pages/user/address',
                 'pages/user/order',
                 'pages/goods/index',
                 'pages/category/index',
-                'pages/home/index',
                 'pages/user/index',
                 'pages/authorize/index',
                 'pages/service/index',
@@ -33,24 +33,25 @@
             tabBar: {
                 selectedColor: '#f06292',
                 color: '#707070',
+                borderStyle: 'white',
                 list: [
                     {
                         pagePath: 'pages/home/index',
                         text: '首页',
-                        iconPath: './assets/images/tab/scan.png',
-                        selectedIconPath: './assets/images/tab/scan-active.png'
+                        iconPath: './assets/images/tab/home.png',
+                        selectedIconPath: './assets/images/tab/home-active.png'
                     },
                     {
                         pagePath: 'pages/category/index',
                         text: '分类',
-                        iconPath: './assets/images/tab/scan.png',
-                        selectedIconPath: './assets/images/tab/scan-active.png'
+                        iconPath: './assets/images/tab/cate.png',
+                        selectedIconPath: './assets/images/tab/cate-active.png'
                     },
                     {
                         pagePath: 'pages/home/index',
                         text: '购物车',
-                        iconPath: './assets/images/tab/search.png',
-                        selectedIconPath: './assets/images/tab/search-active.png'
+                        iconPath: './assets/images/tab/cart.png',
+                        selectedIconPath: './assets/images/tab/cart-active.png'
                     },
                     {
                         pagePath: 'pages/user/index',
