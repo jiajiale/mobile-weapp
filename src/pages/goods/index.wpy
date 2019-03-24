@@ -11,13 +11,15 @@
     <scroll-view scroll-y bindscrolltolower="onReachBottom" wx:if="{{goodsList.length > 0}}">
         <view class="wx-goods-list">
             <i-row>
-                <i-col span="12" i-class="wx-goods-col" wx:for="{{goodsList}}" wx:key="{{item.id}}">
-                    <GoodsItem>
-                        <view slot="thumb" style="height: 100%;"><image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image></view>
-                        <view slot="title">{{item.goods_name}}</view>
-                        <view slot="extra"><span class="wx-goods-price">￥{{item.shop_price}}</span></view>
-                    </GoodsItem>
-                </i-col>
+                <navigator open-type="navigate" hover-class="none" url="/pages/goods/detail?id={{item.id}}">
+                    <i-col span="12" i-class="wx-goods-col" wx:for="{{goodsList}}" wx:key="{{item.id}}">
+                        <GoodsItem>
+                            <view slot="thumb" style="height: 100%;"><image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image></view>
+                            <view slot="title">{{item.goods_name}}</view>
+                            <view slot="extra"><span class="wx-goods-price">￥{{item.shop_price}}</span></view>
+                        </GoodsItem>
+                    </i-col>
+                </navigator>
             </i-row>
         </view>
         <LoadMore :hasPage.sync="hasPage" :itemList.sync="goodsList" emptyText="暂无商品信息"></LoadMore>

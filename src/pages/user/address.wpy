@@ -11,17 +11,17 @@
                 </view>
                 <view class="wx-address-footer">
                     <view>
-                        <i-radio value="{{isDefault}}"></i-radio>设为默认地址
+                        <i-radio value="{{isDefault}}" i-class="wx-default-radio" color="#ec3a3e"></i-radio>设为默认地址
                     </view>
                 </view>
             </view>
         </i-radio-group>
     </view>
-    <i-modal title="标题" visible="{{visibleModal}}" bind:ok="handleSubmit" bind:cancel="handleCancel">
-        <i-row>
-            <i-col span="12"><i-input value="{{ formInfo.name }}" placeholder="姓名" /></i-col>
-            <i-col span="12"><i-input value="{{ formInfo.name }}" placeholder="手机号" /></i-col>
-        </i-row>
+    <i-modal title="{{modalTitle}}" visible="{{visibleModal}}" bind:ok="handleSubmit" bind:cancel="handleCancel" class="wx-address-modal">
+        <i-grid>
+            <i-grid-item i-class="wx-modal-user"><i-input value="{{ formInfo.name }}" placeholder="姓名" /></i-grid-item>
+            <i-grid-item i-class="wx-modal-user"><i-input value="{{ formInfo.name }}" placeholder="手机号" /></i-grid-item>
+        </i-grid>
         <i-row>
             <i-col span="24"><i-input value="{{ formInfo.name }}" placeholder="详细地址" /></i-col>
         </i-row>
@@ -52,6 +52,8 @@
                 "i-icon": "../../iview/icon/index",
                 "i-modal": "../../iview/modal/index",
                 "i-input": "../../iview/input/index",
+                "i-grid": "../../iview/grid/index",
+                "i-grid-item": "../../iview/grid-item/index",
                 "i-row": "../../iview/row/index",
                 "i-col": "../../iview/col/index"
             }
@@ -63,7 +65,8 @@
 
         data = {
             isDefault: false,
-            visibleModal: true,
+            visibleModal: false,
+            modalTitle: '新增地址',
             addressList: [],
             cityList: [],
             formInfo: {
@@ -75,6 +78,7 @@
                 console.log(detail.value)
             },
             handleAddAddress(){
+                this.modalTitle = '新增地址';
                 this.visibleModal = true;
             },
             handleSubmit(){

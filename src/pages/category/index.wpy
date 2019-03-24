@@ -14,10 +14,12 @@
             </i-col>
             <i-col span="18" i-class="wx-cate-right">
                 <i-row>
-                    <i-col span="8" i-class="wx-cate-info" wx:for="{{subCategoryList}}" wx:key="{{item.id}}">
-                        <image src="{{categoryImgUrl + item.image}}" mode="scaleToFill"></image>
-                        <view>{{item.name}}</view>
-                    </i-col>
+                    <navigator open-type="navigate" hover-class="none" url="/pages/goods/index?id={{item.id}}">
+                        <i-col span="8" i-class="wx-cate-info" wx:for="{{subCategoryList}}" wx:key="{{item.id}}">
+                            <image src="{{categoryImgUrl + item.image}}" mode="scaleToFill"></image>
+                            <view>{{item.name}}</view>
+                        </i-col>
+                    </navigator>
                 </i-row>
             </i-col>
         </i-row>
