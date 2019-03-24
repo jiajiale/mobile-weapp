@@ -1,5 +1,5 @@
 <style lang="less">
-    @import "../../assets/styles/check_service";
+    @import "../../assets/styles/check";
 </style>
 <template>
     <view class="wx-check" wx:if="{{cartList.length}}">

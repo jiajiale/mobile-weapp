@@ -34,7 +34,7 @@
 
     <view class="wx-cart-actions">
         <i-row>
-            <i-col span="18" i-class="wx-cart-action">
+            <i-col span="18" i-class="wx-cart-money">
                 <view>
                     <radio value="aaa" /><span class="wx-price">￥120.00</span>
                 </view>

@@ -86,3 +86,68 @@
     }
   }
 }
+
+.wx-order-goods{
+  background: #fff;
+  .wx-goods-title{
+    height: 80rpx;
+    line-height: 80rpx;
+    padding: 0rpx 20px;
+    border-top: 1px solid #e8e8e8;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  .wx-goods-info{
+    overflow: hidden;
+    padding: 20rpx;
+    border-bottom: 1px solid #e8e8e8;
+    .wx-goods-image{
+      float: left;
+      width: 120rpx;
+      height: 120rpx;
+      margin-right: 20rpx;
+      image{
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .wx-goods-content{
+      float: left;
+      width: calc(100% - 220rpx);
+      .wx-title{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        height:45rpx;
+        line-height:40rpx;
+      }
+      .wx-spec{
+        font-size: 24rpx;
+        height: 40rpx;
+        color: #999;
+      }
+      .wx-price{
+        color:#ec3a3e;
+      }
+    }
+  }
+}
+
+.wx-order-actions{
+  position: fixed;
+  bottom: 0rpx;
+  width: 100%;
+  height: 100rpx;
+  line-height: 100rpx;
+  background: #fff;
+  .wx-order-money{
+    padding: 0rpx 20rpx;
+    .wx-price{
+      color:#ec3a3e;
+    }
+  }
+  .wx-buy-action{
+    text-align: center;
+    background: #ec3a3e;
+    color: #Fff;
+  }
+}

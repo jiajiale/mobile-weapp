@@ -10,6 +10,7 @@
 
         config = {
             pages: [
+                'pages/check/order',
                 'pages/cart/index',
                 'pages/goods/detail',
                 'pages/home/index',

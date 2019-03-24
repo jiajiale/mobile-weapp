@@ -1,0 +1,99 @@
+<style lang="less">
+    @import "../../assets/styles/check";
+    page{
+        background: #F2F2F2;
+    }
+</style>
+<template>
+    <view class="wx-order-address">
+        <i-cell-group>
+            <i-cell title="夏佳，15088704145" i-class="wx-spec-item" is-link>
+                <view slot="icon"><icon class="iconfont icon-gouwuche"/></view>
+                <view>浙江省，杭州市，余杭区文一西路1101</view>
+            </i-cell>
+        </i-cell-group>
+    </view>
+
+    <view class="wx-order-goods marginT20">
+        <view class="wx-goods-title">下单商品</view>
+        <view class="wx-goods-info">
+            <view class="wx-goods-image">
+                <image src="https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg"/>
+            </view>
+            <view class="wx-goods-content">
+                <view class="wx-title">春夏秋冬款打底衫款打底衫款打底衫</view>
+                <view class="wx-spec">黑色，XXL</view>
+                <view class="wx-price">￥120.00</view>
+            </view>
+            <view class="wx-goods-extra">X2</view>
+        </view>
+        <view class="wx-goods-info">
+            <view class="wx-goods-image">
+                <image src="https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg"/>
+            </view>
+            <view class="wx-goods-content">
+                <view class="wx-title">春夏秋冬款打底衫款打底衫款打底衫</view>
+                <view class="wx-spec">黑色，XXL</view>
+                <view class="wx-price">￥120.00</view>
+            </view>
+            <view class="wx-goods-extra">X2</view>
+        </view>
+    </view>
+
+    <view class="marginT20 wx-goods-spec">
+        <i-cell-group>
+            <i-cell title="配送方式" i-class="wx-spec-item" is-link></i-cell>
+            <i-cell title="配送方式" i-class="wx-spec-item" is-link></i-cell>
+        </i-cell-group>
+    </view>
+
+    <view class="wx-order-actions">
+        <i-row>
+            <i-col span="18" i-class="wx-order-money">
+                <view class="wx-price">￥120.00</view>
+            </i-col>
+            <i-col span="6" i-class="wx-buy-action">
+                <view>提交订单</view>
+            </i-col>
+        </i-row>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import ContentSheet from '../../components/content-sheet';
+
+    export default class CartIndex extends wepy.page {
+        config = {
+            navigationBarTitleText: '下单',
+            usingComponents: {
+                "i-row": "../../iview/row/index",
+                "i-col": "../../iview/col/index",
+                "i-cell-group": "../../iview/cell-group/index",
+                "i-cell": "../../iview/cell/index",
+            }
+        };
+        components = {
+            GoodsSheet: ContentSheet,
+            CartSheet: ContentSheet,
+        };
+
+        mixins = [];
+
+        data = {
+
+        };
+
+        computed = {};
+
+        methods = {
+
+        };
+
+        events = {};
+
+        onLoad() {
+
+        }
+    }
+</script>
