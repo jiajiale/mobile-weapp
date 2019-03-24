@@ -10,11 +10,12 @@
 
         config = {
             pages: [
+                'pages/cart/index',
                 'pages/goods/detail',
                 'pages/home/index',
                 'pages/user/address',
                 'pages/user/order',
-//                'pages/goods/index',
+                'pages/goods/index',
                 'pages/category/index',
                 'pages/user/index',
                 'pages/authorize/index',
@@ -48,7 +49,7 @@
                         selectedIconPath: './assets/images/tab/cate-active.png'
                     },
                     {
-                        pagePath: 'pages/home/index',
+                        pagePath: 'pages/cart/index',
                         text: '购物车',
                         iconPath: './assets/images/tab/cart.png',
                         selectedIconPath: './assets/images/tab/cart-active.png'
