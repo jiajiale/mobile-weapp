@@ -45,4 +45,7 @@ export default{
     payOrder: (method,params) => wxRequest(method,params, "/api/order/pay"),
     queryOrderList: (method,params) => wxRequest(method,params, "/api/user/getOrderList"),
     queryAddressList: (method,params) => wxRequest(method,params, "/api/user/getAddressList"),
+    saveAddress: (method,params) => wxRequest(method,params, "/api/user/saveAddress"),
+    delAddress: (method,params) => wxRequest(method,params, "/api/user/delAddress"),
+    setDefaultAddress: (method,params) => wxRequest(method,params, "/api/user/setDefaultAddress"),
 };
