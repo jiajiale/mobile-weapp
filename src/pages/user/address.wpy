@@ -3,33 +3,68 @@
 </style>
 <template>
     <view class="wx-address-list">
-        <i-radio-group current="{{current}}" bindchange="handleChangeAddress">
+        <radio-group class="radio-group" bindchange="handleChangeAddress">
+            <view class="wx-address-item marginB20">
+                <view class="wx-address-content">
+                    <view class="wx-address-user">测试：15088704326</view>
+                    <view class="wx-address-info">浙江省杭州市余杭区文一西路利尔达物联网科技园1101室</view>
+                    <view class="wx-address-close"><i-icon type="close" /></view>
+                </view>
+                <view class="wx-address-footer">
+                    <i-row>
+                        <i-col span="18">
+                            <label><radio value="{{isDefault}}" color="#ec3a3e"/>设为默认地址</label>
+                        </i-col>
+                        <i-col span="6">
+                            <view style="text-align: right;padding-right: 10rpx;color: #999;">编辑</view>
+                        </i-col>
+                    </i-row>
+                </view>
+            </view>
             <view class="wx-address-item">
                 <view class="wx-address-content">
                     <view class="wx-address-user">测试：15088704326</view>
                     <view class="wx-address-info">浙江省杭州市余杭区文一西路利尔达物联网科技园1101室</view>
+                    <view class="wx-address-close"><i-icon type="close" /></view>
                 </view>
                 <view class="wx-address-footer">
-                    <view>
-                        <i-radio value="{{isDefault}}" i-class="wx-default-radio" color="#ec3a3e"></i-radio>设为默认地址
-                    </view>
+                    <i-row>
+                        <i-col span="18">
+                            <label><radio value="{{isDefault}}" color="#ec3a3e"/>设为默认地址</label>
+                        </i-col>
+                        <i-col span="6">
+                            <view style="text-align: right;padding-right: 10rpx;color: #999;">编辑</view>
+                        </i-col>
+                    </i-row>
                 </view>
             </view>
-        </i-radio-group>
+        </radio-group>
     </view>
+
     <i-modal title="{{modalTitle}}" visible="{{visibleModal}}" bind:ok="handleSubmit" bind:cancel="handleCancel" class="wx-address-modal">
         <i-grid>
             <i-grid-item i-class="wx-modal-user"><i-input value="{{ formInfo.name }}" placeholder="姓名" /></i-grid-item>
             <i-grid-item i-class="wx-modal-user"><i-input value="{{ formInfo.name }}" placeholder="手机号" /></i-grid-item>
         </i-grid>
         <i-row>
-            <i-col span="24"><i-input value="{{ formInfo.name }}" placeholder="详细地址" /></i-col>
+            <i-col span="24" style="text-align: left">
+                <picker
+                        mode="multiSelector"
+                        bindchange="handlePickerChange"
+                        bindcolumnchange="handlePickerColumnChange"
+                        value="{{cityIdxArr}}"
+                        range-key="name"
+                        range="{{cityArr}}"
+                >
+                    <i-cell title="选择地址" is-link ><view slot="footer"></view></i-cell>
+                </picker>
+            </i-col>
         </i-row>
         <i-row>
-            <i-col span="24"><i-input value="{{ formInfo.name }}" placeholder="详细地址" /></i-col>
+            <i-col span="24" style="text-align: left"><i-input value="{{ formInfo.name }}" placeholder="输入详细地址" /></i-col>
         </i-row>
         <i-row>
-            <i-col span="24"><i-input value="{{ formInfo.name }}" placeholder="详细地址" /></i-col>
+            <i-col span="24" style="text-align: left"><i-input value="{{ formInfo.name }}" placeholder="输入邮政编码" /></i-col>
         </i-row>
     </i-modal>
     <view class="wx-address-add" bindtap="handleAddAddress"><i-icon type="add" size="20" color="#ec3a3e"/>新增地址</view>
@@ -47,15 +82,14 @@
         config = {
             navigationBarTitleText: '地址',
             usingComponents: {
-                "i-radio-group": "../../iview/radio-group/index",
-                "i-radio": "../../iview/radio/index",
                 "i-icon": "../../iview/icon/index",
                 "i-modal": "../../iview/modal/index",
                 "i-input": "../../iview/input/index",
                 "i-grid": "../../iview/grid/index",
                 "i-grid-item": "../../iview/grid-item/index",
                 "i-row": "../../iview/row/index",
-                "i-col": "../../iview/col/index"
+                "i-col": "../../iview/col/index",
+                "i-cell": "../../iview/cell/index"
             }
         };
         components = {
@@ -64,14 +98,16 @@
         mixins = [authorize];
 
         data = {
-            isDefault: false,
-            visibleModal: false,
+            isDefault: true,
+            visibleModal: true,
             modalTitle: '新增地址',
             addressList: [],
             cityList: [],
+            cityArr: [],
+            cityIdxArr: [0,0,0],
             formInfo: {
                 name: ''
-            }
+            },
         };
         methods = {
             handleChangeAddress({ detail = {} }){
@@ -86,7 +122,26 @@
             },
             handleCancel(){
                 this.visibleModal = false;
-            }
+            },
+            handlePickerChange(e) {
+                console.log('picker发送选择改变，携带值为', e.detail.value)
+
+            },
+            handlePickerColumnChange(e) {
+                let column = e.detail.column;
+                let columnIdx = e.detail.value;
+
+                if(column === 0){
+                    this.cityIdxArr = [columnIdx,0,0];
+                    this.cityArr[1] = this.cityList[columnIdx].childrens;
+                    this.cityArr[2] = this.cityList[columnIdx].childrens[0].childrens;
+                }else if(column === 1){
+                    this.cityIdxArr = [this.cityIdxArr[0],columnIdx,0];
+                    this.cityArr[2] = this.cityList[this.cityIdxArr[0]].childrens[columnIdx].childrens;
+                }else if(column === 2){
+                    this.cityIdxArr = [this.cityIdxArr[0],this.cityIdxArr[1],columnIdx];
+                }
+            },
         };
 
         async queryItemList() {
@@ -96,6 +151,7 @@
                 if(resp.data){
                     this.addressList = resp.data.addressList;
                     this.cityList = resp.data.cityList;
+                    this.cityArr = [this.cityList,this.cityList[0].childrens,this.cityList[0].childrens[0].childrens];
                     this.$apply();
                 }
             });
