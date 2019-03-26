@@ -27,7 +27,7 @@
     <i-modal title="{{modalTitle}}" visible="{{visibleModal}}" bind:ok="handleSubmit" bind:cancel="handleCancel" class="wx-address-modal">
         <i-grid>
             <i-grid-item i-class="wx-modal-user"><i-input value="{{ formInfo.name }}" placeholder="姓名" /></i-grid-item>
-            <i-grid-item i-class="wx-modal-user"><i-input value="{{ formInfo.name }}" placeholder="手机号" /></i-grid-item>
+            <i-grid-item i-class="wx-modal-user"><i-input value="{{ formInfo.mobile }}" placeholder="手机号" /></i-grid-item>
         </i-grid>
         <i-row>
             <i-col span="24" style="text-align: left">
@@ -39,15 +39,15 @@
                         range-key="name"
                         range="{{cityArr}}"
                 >
-                    <i-cell title="选择地址" is-link ><view slot="footer"></view></i-cell>
+                    <i-cell title="选择地址" is-link ><view slot="footer">{{ cityStr }}</view></i-cell>
                 </picker>
             </i-col>
         </i-row>
         <i-row>
-            <i-col span="24" style="text-align: left"><i-input value="{{ formInfo.name }}" placeholder="输入详细地址" /></i-col>
+            <i-col span="24" style="text-align: left"><i-input value="{{ formInfo.address }}" placeholder="输入详细地址" /></i-col>
         </i-row>
         <i-row>
-            <i-col span="24" style="text-align: left"><i-input value="{{ formInfo.name }}" placeholder="输入邮政编码" /></i-col>
+            <i-col span="24" style="text-align: left"><i-input value="{{ formInfo.zipcode }}" placeholder="输入邮政编码" /></i-col>
         </i-row>
     </i-modal>
 
@@ -104,9 +104,8 @@
             cityList: [],
             cityArr: [],
             cityIdxArr: [0,0,0],
-            formInfo: {
-                name: ''
-            },
+            cityStr: '',
+            formInfo: {},
         };
         methods = {
             handleChangeAddress({ detail = {} }){
@@ -129,8 +128,12 @@
                 this.confirmModal = false;
             },
             handlePickerChange(e) {
-                console.log('picker发送选择改变，携带值为', e.detail.value)
+                let cityIdxArr = e.detail.value;
+                let provice = this.cityList[cityIdxArr[0]].name;
+                let city = this.cityList[cityIdxArr[0]].childrens[cityIdxArr[1]].name;
+                let district = this.cityList[cityIdxArr[0]].childrens[cityIdxArr[1]].childrens[cityIdxArr[2]].name;
 
+                this.cityStr = provice + ',' + city + ',' + district;
             },
             handlePickerColumnChange(e) {
                 let column = e.detail.column;

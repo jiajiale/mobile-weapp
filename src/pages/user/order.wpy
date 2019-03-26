@@ -12,8 +12,8 @@
         </i-tabs>
     </view>
     <view class="marginT20">
-        <view class="marginB20" wx:for="{{orderList}}" wx:key="{{item.id}}" wx-if="{{orderList.length}}">
-            <i-card title="{{item.order_sn}}" full extra="{{item.status_desc}}">
+        <view class="marginB20" wx:for="{{orderList}}" wx:key="{{item.id}}" wx:if="{{orderList.length}}">
+            <i-card title="{{item.gmt_create}}" full extra="{{item.status_desc}}">
                 <view slot="content">
                     <repeat for="{{item.goods_list}}" key="{{goodsItem.id}}" item="goodsItem">
                         <OrderItem>
@@ -24,11 +24,18 @@
                                     <i-tag type="border">{{goodsItem.spec_key_name}}</i-tag>
                                 </view>
                             </view>
-                            <view slot="extra">￥120.00</view>
+                            <view slot="extra">
+                                <view style="color: #ec3a3e;">￥{{goodsItem.goods_price}}</view>
+                                <view style="color: #999;">X{{goodsItem.goods_num}}</view>
+                            </view>
+                            <view slot="footer">
+                                sdf
+                            </view>
                         </OrderItem>
                     </repeat>
                 </view>
                 <view slot="footer">
+                    fsdf
                 </view>
             </i-card>
         </view>
@@ -95,10 +102,13 @@
             await api.queryOrderList('POST',{
                 page: this.page,
                 type: this.current,
-                is_goods: 1
+                //is_goods: 1
             }).then(resp => {
                 tip.loaded();
                 if(resp.data){
+                    resp.data.items.filter(item => {
+                        item.gmt_create = utils.formatDateTime(item.gmt_create,'yyyy-MM-dd');
+                    });
                     this.orderList = this.orderList.concat(resp.data.items);
                     if(resp.data.pager.index >= resp.data.pager.count){
                         this.hasPage = false;

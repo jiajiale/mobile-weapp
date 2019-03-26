@@ -4,6 +4,7 @@
 <template>
     <view>
         <i-tabs current="{{ current }}">
+            <i-tab key="tab1" title="全部"></i-tab>
             <i-tab key="tab1" title="待付款"></i-tab>
             <i-tab key="tab2" title="待办理"></i-tab>
             <i-tab key="tab3" title="已办理"></i-tab>

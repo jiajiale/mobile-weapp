@@ -21,7 +21,11 @@
         .wx-order-extra{
             float: right;
             height: 120rpx;
-            line-height: 120rpx;
+            line-height: 60rpx;
+            text-align: right;
+        }
+        .wx-order-footer{
+            clear: both;
         }
     }
 </style>
@@ -36,6 +40,9 @@
         </view>
         <view class="wx-order-extra">
             <slot name="extra"></slot>
+        </view>
+        <view class="wx-order-footer">
+            <slot name="footer"></slot>
         </view>
     </view>
 </template>
