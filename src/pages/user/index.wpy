@@ -29,22 +29,22 @@
 
     <view class="wx-user-order marginB20">
         <i-panel class="cell-panel-demo">
-            <i-cell title="我的订单" is-link value="全部"></i-cell>
+            <i-cell title="我的订单" is-link value="全部" data-key="order" @tap="handleGo"></i-cell>
         </i-panel>
         <i-row i-class="wx-user-order-box">
-            <i-col span="6" i-class="col-class">
+            <i-col span="6" i-class="col-class" data-key="order" @tap="handleGo">
                 <view><icon class="iconfont icon-gouwuche"/></view>
                 <view>待付款</view>
             </i-col>
-            <i-col span="6" i-class="col-class">
+            <i-col span="6" i-class="col-class" data-key="order" @tap="handleGo">
                 <view><icon class="iconfont icon-gouwuche"/></view>
                 <view>待发货</view>
             </i-col>
-            <i-col span="6" i-class="col-class">
+            <i-col span="6" i-class="col-class" data-key="order" @tap="handleGo">
                 <view><icon class="iconfont icon-gouwuche"/></view>
                 <view>待收货</view>
             </i-col>
-            <i-col span="6" i-class="col-class">
+            <i-col span="6" i-class="col-class" data-key="order" @tap="handleGo">
                 <view><icon class="iconfont icon-gouwuche"/></view>
                 <view>已完成</view>
             </i-col>
@@ -54,19 +54,19 @@
     <view class="wx-user-module">
         <i-grid>
             <i-row>
-                <i-grid-item>
+                <i-grid-item data-key="order" @tap="handleGo">
                     <i-grid-icon>
                         <icon class="iconfont icon-gouwuche"/>
                     </i-grid-icon>
                     <i-grid-label>我的业务</i-grid-label>
                 </i-grid-item>
-                <i-grid-item>
+                <i-grid-item data-key="order" @tap="handleGo">
                     <i-grid-icon>
                         <icon class="iconfont icon-gouwuche"/>
                     </i-grid-icon>
                     <i-grid-label>我的积分</i-grid-label>
                 </i-grid-item>
-                <i-grid-item>
+                <i-grid-item data-key="order" @tap="handleGo">
                     <i-grid-icon>
                         <icon class="iconfont icon-gouwuche"/>
                     </i-grid-icon>
@@ -74,19 +74,19 @@
                 </i-grid-item>
             </i-row>
             <i-row>
-                <i-grid-item>
+                <i-grid-item data-key="order" @tap="handleGo">
                     <i-grid-icon>
                         <icon class="iconfont icon-gouwuche"/>
                     </i-grid-icon>
                     <i-grid-label>我的地址</i-grid-label>
                 </i-grid-item>
-                <i-grid-item>
+                <i-grid-item data-key="order" @tap="handleGo">
                     <i-grid-icon>
                         <icon class="iconfont icon-gouwuche"/>
                     </i-grid-icon>
                     <i-grid-label>我的反馈</i-grid-label>
                 </i-grid-item>
-                <i-grid-item>
+                <i-grid-item data-key="order" @tap="handleGo">
                     <i-grid-icon>
                         <icon class="iconfont icon-gouwuche"/>
                     </i-grid-icon>
@@ -126,10 +126,10 @@
         computed = {};
 
         methods = {
-
+            handleGo(){
+                console.log('aaa');
+            }
         };
-
-        events = {};
 
         onLoad() {
 
