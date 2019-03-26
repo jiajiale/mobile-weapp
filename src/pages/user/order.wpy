@@ -3,16 +3,17 @@
 </style>
 <template>
     <view>
-        <i-tabs current="{{ current }}">
-            <i-tab key="tab1" title="待付款"></i-tab>
-            <i-tab key="tab2" title="待发货"></i-tab>
-            <i-tab key="tab3" title="待收货"></i-tab>
-            <i-tab key="tab3" title="已完成"></i-tab>
+        <i-tabs current="{{ current }}" bindchange="handleChangeStatus">
+            <i-tab key="ALL" title="全部"></i-tab>
+            <i-tab key="UNPAY" title="待付款"></i-tab>
+            <i-tab key="UNSEND" title="待发货"></i-tab>
+            <i-tab key="UNRECEIVE" title="待收货"></i-tab>
+            <i-tab key="FINISH" title="已完成"></i-tab>
         </i-tabs>
     </view>
     <view class="marginT20">
-        <view class="marginB20" wx:for="{{orderList}}" wx:key="{{item.id}}">
-            <i-card title="{{item.order_sn}}" full extra="额外内容">
+        <view class="marginB20" wx:for="{{orderList}}" wx:key="{{item.id}}" wx-if="{{orderList.length}}">
+            <i-card title="{{item.order_sn}}" full extra="{{item.status_desc}}">
                 <view slot="content">
                     <repeat for="{{item.goods_list}}" key="{{goodsItem.id}}" item="goodsItem">
                         <OrderItem>
@@ -20,7 +21,7 @@
                             <view slot="title">{{goodsItem.goods_name}}</view>
                             <view slot="tags">
                                 <view class="marginT10">
-                                    <i-tag type="border">标签一</i-tag>
+                                    <i-tag type="border">{{goodsItem.spec_key_name}}</i-tag>
                                 </view>
                             </view>
                             <view slot="extra">￥120.00</view>
@@ -31,6 +32,9 @@
                 </view>
             </i-card>
         </view>
+        <view>
+            <NoInfo emptyText="暂无订单信息" marginTop="200"></NoInfo>
+        </view>
     </view>
 </template>
 
@@ -38,6 +42,7 @@
     import wepy from 'wepy';
     import OrderItem from '../../components/order-item';
     import LoadMore from '../../components/load-more';
+    import NoInfo from '../../components/no-info';
     import authorize from '../../mixins/authorize';
     import pagination from '../../mixins/pagination';
     import api from '../../api';
@@ -57,12 +62,13 @@
         };
         components = {
             OrderItem: OrderItem,
+            NoInfo: NoInfo,
         };
 
         mixins = [pagination,authorize];
 
         data = {
-            current: 'tab1',
+            current: 'ALL',
             goodsImgUrl: api.GOODS_IMG_URL,
             orderList: [],
             page: 1,
@@ -71,6 +77,10 @@
 
 
         methods = {
+            handleChangeStatus({ detail }){
+                this.current = detail.key;
+                this.queryReload();
+            }
         };
 
         queryReload(){
@@ -84,6 +94,8 @@
             tip.loading(MSG.LOADING);
             await api.queryOrderList('POST',{
                 page: this.page,
+                type: this.current,
+                is_goods: 1
             }).then(resp => {
                 tip.loaded();
                 if(resp.data){
@@ -91,8 +103,10 @@
                     if(resp.data.pager.index >= resp.data.pager.count){
                         this.hasPage = false;
                     }
-                    this.$apply();
+                }else{
+                    this.orderList = [];
                 }
+                this.$apply();
             });
         };
 

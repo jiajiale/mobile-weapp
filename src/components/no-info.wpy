@@ -1,0 +1,28 @@
+<style lang="less">
+    .wx-empty{
+        text-align: center;
+        color: #aaa;
+        .wx-empty-icon{
+            font-size: 60px;
+            margin-bottom: 20rpx;
+        }
+    }
+</style>
+<template>
+    <view class="wx-empty" style="margin-top: {{marginTop}}rpx;">
+        <icon class="wx-empty-icon iconfont icon-wodedingdan"/>
+        <view class="wx-empty-txt">{{ emptyText || '暂无数据' }}</view>
+    </view>
+</template>
+<script>
+    import wepy from 'wepy'
+    export default class NoInfo extends wepy.component {
+        props = {
+            emptyText: {},
+            marginTop:{
+                type: String,
+                default: 0
+            },
+        };
+    }
+</script>
