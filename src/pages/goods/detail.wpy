@@ -201,6 +201,11 @@
                 this.changeGoodsPrice();
             },
             handleAddCart(){
+                if(!utils.isEmptyObject(this.goodsSpecList) && this.goods.goods_spec === undefined){
+                    tip.toast(MSG.SELECT_SPEC);
+                    return;
+                }
+
                 if(!this.cartList.length){
                     this.cartList = [];
                 }
@@ -258,13 +263,13 @@
             let _this = this;
             this.checkAuthorize(function () {
                 _this.queryItem();
+                _this.cartList = wx.getStorageSync('goodsCart');
             });
         };
 
         onLoad(params) {
             params.id = 1881;
             this.params = params;
-            this.cartList = wx.getStorageSync('goodsCart');
         }
     }
 </script>
