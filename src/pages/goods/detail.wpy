@@ -23,7 +23,9 @@
 
     <view class="marginT20 wx-goods-spec">
         <i-cell-group>
-            <i-cell title="选择规格：" i-class="wx-spec-item" is-link bind:click="switchGoodsSheet"></i-cell>
+            <i-cell title="选择规格：" i-class="wx-spec-item" is-link bind:click="switchGoodsSheet">
+                <view slot="footer" style="font-size: 24rpx;color: #999;">{{goods.spec_info}}</view>
+            </i-cell>
             <i-cell title="选择数量：" i-class="wx-spec-item">
                 <i-input-number slot="footer" value="num" min="1" max="100" bindchange="handleChangeNum" />
             </i-cell>
@@ -42,12 +44,16 @@
             <i-col span="8">
                 <i-grid>
                     <i-grid-item i-class="wx-nav-action">
-                        <view><icon class="iconfont icon-shouye"/></view>
-                        <view>首页</view>
+                        <navigator open-type="switchTab" hover-class="none" url="/pages/home/index">
+                            <view><icon class="iconfont icon-shouye"/></view>
+                            <view>首页</view>
+                        </navigator>
                     </i-grid-item>
                     <i-grid-item i-class="wx-nav-action">
-                        <view><icon class="iconfont icon-gouwuche"/></view>
-                        <view>购物车</view>
+                        <navigator open-type="switchTab" hover-class="none" url="/pages/cart/index">
+                            <view><icon class="iconfont icon-gouwuche"/></view>
+                            <view>购物车</view>
+                        </navigator>
                     </i-grid-item>
                 </i-grid>
             </i-col>
@@ -77,7 +83,7 @@
                 </view>
             </view>
             <view class="wx-goods-specs">
-                <i-panel title="{{specIndex}}" wx:for="{{goodsInfo.spec_list}}" wx:for-index="specIndex" wx:key="{{index}}">
+                <i-panel title="{{specIndex}}" wx:for="{{goodsSpecList}}" wx:for-index="specIndex" wx:key="{{index}}">
                     <view class="wx-goods-spec">
                         <view class="wx-goods-spec-item {{item.class}}" wx:for="{{item}}" wx:key="{{item.item_id}}" data-key="{{specIndex}}" data-item="{{item}}" bindtap="selectSpec">{{item.item}}</view>
                     </view>
@@ -113,6 +119,7 @@
                 "i-cell": "../../iview/cell/index",
                 "i-input-number": "../../iview/input-number/index",
                 "i-button": "../../iview/button/index",
+                "i-panel": "../../iview/panel/index",
             }
         };
         components = {
@@ -126,6 +133,9 @@
             params: [],
             goods: [],
             goodsImages: [],
+            goodsSpecList: [],
+            specInfo: [],
+            goodsSpecPrice: [],
             goodsMaxHeight: 800,
             goodsBottomStyle: 0,
             goodsZIndexStyle: 101,
@@ -135,17 +145,77 @@
         computed = {};
 
         methods = {
-            switchGoodsSheet(){
+            switchGoodsSheet(e){
+                let item = e.currentTarget.dataset.item;
                 this.goodsVisible = !this.goodsVisible;
+                this.specInfo = [];
+                if(this.goodsVisible){
+                    this.goodsInfo = item;
+
+                    if(this.goodsSpecList !== null){
+                        this.goods.goods_spec = [];
+
+                        for(let i in this.goodsSpecList){
+                            this.goods.goods_spec[i] = this.goodsSpecList[i][0].item_id;
+                            this.goodsSpecList[i][0]['class'] = 'active';
+                            this.specInfo[i] = this.goodsSpecList[i][0].item;
+                        }
+                        this.changeGoodsPrice();
+                    }
+                }else{
+                }
             },
             selectGoodsOk(){
+                if(!utils.isEmptyObject(this.goodsSpecList) && this.goods.goods_spec === undefined){
+                    tip.toast(MSG.SELECT_SPEC);
+                }else{
+                    this.goodsVisible = !this.goodsVisible;
+                    let specStrArr = [];
+                    for(let i in this.specInfo){
+                        specStrArr.push(i + ':' + this.specInfo[i]);
+                    }
+                    this.goods.spec_info = specStrArr.join(',');
+                }
+            },
+            selectSpec(e){
+                let item = e.currentTarget.dataset.item;
+                let key = e.currentTarget.dataset.key;
+                if(this.goods.goods_spec !== undefined){
+                    this.goods.goods_spec[key] = item.item_id;
+                }else{
+                    this.goods.goods_spec = [];
+                    this.goods.goods_spec[key] = item.item_id;
+                }
+                this.specInfo[key] = item.item;
 
+                this.goodsSpecList[key].filter(spec => {
+                    if(spec.item_id === item.item_id){
+                        spec['class'] = 'active';
+                    }else{
+                        spec['class'] = '';
+                    }
+                });
+
+                this.changeGoodsPrice();
             },
             handleChangeNum(){
 
-            }
+            },
         };
 
+        changeGoodsPrice(){
+            if(this.goodsSpecPrice !== null){
+                let goodsSpecArr = [];
+
+                for(let i in this.goods.goods_spec){
+                    goodsSpecArr.push(this.goods.goods_spec[i]);
+                }
+                let specKey = goodsSpecArr.sort(utils.sortNumber).join('_');  //排序后组合成 key
+
+                this.goods.shop_price = this.goodsSpecPrice[specKey]['price'];
+                this.goods.select_spec = goodsSpecArr;
+            }
+        }
         async queryItem() {
             tip.loading(MSG.LOADING);
             await api.queryGoodsDetail('POST',{
@@ -155,6 +225,8 @@
                 if(resp.data){
                     this.goods = resp.data.goods;
                     this.goodsImages = resp.data.goodsImages;
+                    this.goodsSpecList = resp.data.goodsSpec;
+                    this.goodsSpecPrice = resp.data.goodsSpecPrice;
                     this.$apply();
                 }
             });
@@ -168,7 +240,7 @@
         };
 
         onLoad(params) {
-            params.id = 11;
+            params.id = 1881;
             this.params = params;
         }
     }
