@@ -8,22 +8,22 @@
     <view class="wx-goods-album">
         <swiper indicator-dots="{{indicatorDots}}" style="height: 400rpx;"
                 autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
-            <block wx:for="{{focusList}}" wx:key="{{item.id}}">
+            <block wx:for="{{goodsImages}}" wx:key="{{item.id}}">
                 <swiper-item>
-                    <image src="{{item.url}}" data-item="{{item}}"/>
+                    <image src="{{goodsImgUrl + item.image_url}}" data-item="{{item}}"/>
                 </swiper-item>
             </block>
         </swiper>
     </view>
     <view class="wx-goods-info">
-        <view class="wx-title">威化夹心饼干150g</view>
-        <view class="wx-sub-title">多种选择，口味随心，优质原料</view>
-        <view class="wx-price">￥9.9</view>
+        <view class="wx-title">{{goods.goods_name}}</view>
+        <view class="wx-sub-title">{{goods.goods_remark}}</view>
+        <view class="wx-price">￥{{goods.shop_price}}</view>
     </view>
 
     <view class="marginT20 wx-goods-spec">
         <i-cell-group>
-            <i-cell title="选择规格：" i-class="wx-spec-item" is-link></i-cell>
+            <i-cell title="选择规格：" i-class="wx-spec-item" is-link bind:click="switchGoodsSheet"></i-cell>
             <i-cell title="选择数量：" i-class="wx-spec-item">
                 <i-input-number slot="footer" value="num" min="1" max="100" bindchange="handleChangeNum" />
             </i-cell>
@@ -59,10 +59,45 @@
             </i-col>
         </i-row>
     </view>
+
+    <GoodsSheet :visible.sync="goodsVisible" :maxHeight.sync="goodsMaxHeight"
+                :bottomStyle.sync="goodsBottomStyle"
+                :zIndexStyle.sync="goodsZIndexStyle">
+        <view slot="content" wx:if="{{goods.id}}">
+            <view class="wx-goods-head-img">
+                <image src="{{goodsImgUrl + (goods.app_img ? goods.app_img : goods.original_img)}}"
+                       mode="scaleToFill"></image>
+            </view>
+            <view class="wx-goods-head-main">
+                <icon class="iconfont icon-guanbi wx-sheet-close-icon" bindtap="switchGoodsSheet"/>
+                <view class="wx-goods-title">{{goods.goods_name}}</view>
+                <view class="wx-goods-price">
+                    <span class="new-price">￥{{goods.shop_price}}</span>
+                    <span class="old-price">￥{{goods.market_price}}</span>
+                </view>
+            </view>
+            <view class="wx-goods-specs">
+                <i-panel title="{{specIndex}}" wx:for="{{goodsInfo.spec_list}}" wx:for-index="specIndex" wx:key="{{index}}">
+                    <view class="wx-goods-spec">
+                        <view class="wx-goods-spec-item {{item.class}}" wx:for="{{item}}" wx:key="{{item.item_id}}" data-key="{{specIndex}}" data-item="{{item}}" bindtap="selectSpec">{{item.item}}</view>
+                    </view>
+                </i-panel>
+            </view>
+            <view>
+                <i-button type="success" size="small" bindtap="selectGoodsOk">选好了</i-button>
+            </view>
+        </view>
+    </GoodsSheet>
 </template>
 
 <script>
     import wepy from 'wepy';
+    import ContentSheet from '../../components/content-sheet';
+    import authorize from '../../mixins/authorize';
+    import api from '../../api';
+    import tip from '../../utils/tip';
+    import utils from '../../utils/util';
+    import MSG from '../../utils/msg';
 
     export default class GoodsIndex extends wepy.page {
         config = {
@@ -77,31 +112,64 @@
                 "i-cell-group": "../../iview/cell-group/index",
                 "i-cell": "../../iview/cell/index",
                 "i-input-number": "../../iview/input-number/index",
+                "i-button": "../../iview/button/index",
             }
         };
         components = {
+            GoodsSheet: ContentSheet,
         };
 
-        mixins = [];
+        mixins = [authorize];
 
         data = {
-            focusList: [
-                {id:1,url:'https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg'},
-                {id:2,url:'https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg'},
-                {id:3,url:'https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg'},
-            ],
+            goodsImgUrl: api.GOODS_IMG_URL,
+            params: [],
+            goods: [],
+            goodsImages: [],
+            goodsMaxHeight: 800,
+            goodsBottomStyle: 0,
+            goodsZIndexStyle: 101,
+            goodsVisible: false,
         };
 
         computed = {};
 
         methods = {
+            switchGoodsSheet(){
+                this.goodsVisible = !this.goodsVisible;
+            },
+            selectGoodsOk(){
+
+            },
             handleChangeNum(){
 
             }
         };
 
-        onLoad() {
+        async queryItem() {
+            tip.loading(MSG.LOADING);
+            await api.queryGoodsDetail('POST',{
+                goods_id: this.params.id,
+            }).then(resp => {
+                tip.loaded();
+                if(resp.data){
+                    this.goods = resp.data.goods;
+                    this.goodsImages = resp.data.goodsImages;
+                    this.$apply();
+                }
+            });
+        };
 
+        onShow() {
+            let _this = this;
+            this.checkAuthorize(function () {
+                _this.queryItem();
+            });
+        };
+
+        onLoad(params) {
+            params.id = 11;
+            this.params = params;
         }
     }
 </script>

@@ -24,7 +24,7 @@
         </radio-group>
     </view>
 
-    <i-modal title="{{modalTitle}}" visible="{{visibleModal}}" bind:ok="handleSubmit" bind:cancel="handleCancel" class="wx-address-modal">
+    <i-modal title="{{modalTitle}}" visible="{{visibleModal}}" actions="{{ confirmBtn }}" bind:click="handleSubmit" class="wx-address-modal">
         <i-grid>
             <i-grid-item i-class="wx-modal-user"><i-input value="{{ formInfo.name }}" placeholder="姓名" /></i-grid-item>
             <i-grid-item i-class="wx-modal-user"><i-input value="{{ formInfo.mobile }}" placeholder="手机号" /></i-grid-item>
@@ -47,7 +47,7 @@
             <i-col span="24" i-class="address-item"><i-input value="{{ formInfo.address }}" placeholder="输入详细地址" /></i-col>
         </i-row>
         <i-row>
-            <i-col span="24" i-class="address-item"><i-input value="{{ formInfo.zipcode }}" placeholder="输入邮政编码" /></i-col>
+            <i-col span="24" style="text-align: left;"><i-input value="{{ formInfo.zipcode }}" placeholder="输入邮政编码" /></i-col>
         </i-row>
     </i-modal>
 
@@ -95,7 +95,6 @@
                 },
                 {
                     name: '删除',
-                    color: '#ed3f14',
                     loading: false
                 }
             ],
@@ -105,7 +104,9 @@
             cityArr: [],
             cityIdxArr: [0,0,0],
             cityStr: '',
-            formInfo: {},
+            formInfo: {
+                name: ''
+            },
             delItem: {}
         };
         methods = {
@@ -114,34 +115,47 @@
             },
             handleAddAddress(){
                 this.modalTitle = '新增地址';
+                this.confirmBtn[1].name = '提交';
                 this.visibleModal = true;
+                this.cityIdxArr = [0,0,0];
+                this.cityStr = '';
             },
             handleDelAddress(e){
                 this.delItem = e.currentTarget.dataset.item;
                 this.confirmModal = true;
+                this.confirmBtn[1].name = '删除';
             },
-            handleSubmit(){
-                tip.loading(MSG.COMMITTING);
-                api.saveAddress('POST',this.formInfo).then(resp => {
-                    tip.loaded();
-                    if(resp.data){
-                        this.visibleModal = false;
-                        this.queryItemList();
-                    }
-                });
+            handleSubmit({ detail }){
+                if(detail.index === 0){
+                    this.visibleModal = false;
+                }else{
+                    //this.confirmBtn[1].loading = true;
+                    api.saveAddress('POST',this.formInfo).then(resp => {
+                        //this.confirmBtn[1].loading = false;
+                        if(resp.code === 200){
+                            this.visibleModal = false;
+                            this.queryItemList();
+                        }else{
+                            tip.toast(resp.msg);
+                        }
+                    });
+                }
             },
-            handleCancel(){
-                this.visibleModal = false;
-            },
-            handleConfirm(){
-                tip.loading(MSG.DELETE);
-                api.delAddress('POST',{address_id: this.delItem.id}).then(resp => {
-                    tip.loaded();
-                    if(resp.code = 200){
-                        this.confirmModal = false;
-                        this.queryItemList();
-                    }
-                });
+            handleConfirm({ detail }){
+                if(detail.index === 0){
+                    this.visibleModal = false;
+                }else{
+                    this.confirmBtn[1].loading = true;
+                    api.delAddress('POST',{address_id: this.delItem.id}).then(resp => {
+                        this.confirmBtn[1].loading = false;
+                        if(resp.code === 200){
+                            this.confirmModal = false;
+                            this.queryItemList();
+                        }else{
+                            tip.toast(resp.msg);
+                        }
+                    });
+                }
             },
             handlePickerChange(e) {
                 let cityIdxArr = e.detail.value;

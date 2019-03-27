@@ -1,8 +1,8 @@
 import wepy from 'wepy';
 import tip from '../utils/tip';
 
-// const APP_URL = 'http://test.mobile.com';
-const APP_URL = 'https://111.230.96.241';
+const APP_URL = 'http://test.mobile.com';
+// const APP_URL = 'https://111.230.96.241';
 const GOODS_IMG_URL = APP_URL + '/Public/Uploads/goods/source/';
 const CATEGORY_IMG_URL = APP_URL + '/Public/Uploads/category/source/';
 const PHOTO_IMG_URL = APP_URL + '/Public/Uploads/photo/';
@@ -38,6 +38,7 @@ export default{
     register: (method,params) => wxRequest(method,params, "/api/public/register"),
     updateUserPhone: (method,params) => wxRequest(method,params, "/api/public/updateUserPhone"),
     queryGoodsList: (method,params) => wxRequest(method,params, "/api/goods/index"),
+    queryGoodsDetail: (method,params) => wxRequest(method,params, "/api/goods/detail"),
     queryCategoryList: (method,params) => wxRequest(method,params, "/api/goods/category"),
     addGoodsCart: (method,params) => wxRequest(method,params, "/api/cart/addGoodsCart"),
     queryCartInfo: (method,params) => wxRequest(method,params, "/api/cart/getCartGoods"),
