@@ -8,7 +8,7 @@
                 <view class="wx-address-content">
                     <view class="wx-address-user">{{item.consignee}}：{{item.mobile}}</view>
                     <view class="wx-address-info">{{item.region}}{{item.address}}</view>
-                    <view class="wx-address-close" @tap="handleDelAddress"><i-icon type="close" /></view>
+                    <view class="wx-address-close" @tap="handleDelAddress" data-item="{{item}}"><i-icon type="close" /></view>
                 </view>
                 <view class="wx-address-footer">
                     <i-row>
@@ -30,7 +30,7 @@
             <i-grid-item i-class="wx-modal-user"><i-input value="{{ formInfo.mobile }}" placeholder="手机号" /></i-grid-item>
         </i-grid>
         <i-row>
-            <i-col span="24" style="text-align: left">
+            <i-col span="24" i-class="address-item">
                 <picker
                         mode="multiSelector"
                         bindchange="handlePickerChange"
@@ -39,15 +39,15 @@
                         range-key="name"
                         range="{{cityArr}}"
                 >
-                    <i-cell title="选择地址" is-link ><view slot="footer">{{ cityStr }}</view></i-cell>
+                    <view style="padding: 25rpx 30rpx;">请选择地址<span style="float: right;">{{ cityStr }}</span></view>
                 </picker>
             </i-col>
         </i-row>
         <i-row>
-            <i-col span="24" style="text-align: left"><i-input value="{{ formInfo.address }}" placeholder="输入详细地址" /></i-col>
+            <i-col span="24" i-class="address-item"><i-input value="{{ formInfo.address }}" placeholder="输入详细地址" /></i-col>
         </i-row>
         <i-row>
-            <i-col span="24" style="text-align: left"><i-input value="{{ formInfo.zipcode }}" placeholder="输入邮政编码" /></i-col>
+            <i-col span="24" i-class="address-item"><i-input value="{{ formInfo.zipcode }}" placeholder="输入邮政编码" /></i-col>
         </i-row>
     </i-modal>
 
@@ -106,6 +106,7 @@
             cityIdxArr: [0,0,0],
             cityStr: '',
             formInfo: {},
+            delItem: {}
         };
         methods = {
             handleChangeAddress({ detail = {} }){
@@ -115,25 +116,43 @@
                 this.modalTitle = '新增地址';
                 this.visibleModal = true;
             },
-            handleDelAddress(){
+            handleDelAddress(e){
+                this.delItem = e.currentTarget.dataset.item;
                 this.confirmModal = true;
             },
             handleSubmit(){
-                this.visibleModal = false;
+                tip.loading(MSG.COMMITTING);
+                api.saveAddress('POST',this.formInfo).then(resp => {
+                    tip.loaded();
+                    if(resp.data){
+                        this.visibleModal = false;
+                        this.queryItemList();
+                    }
+                });
             },
             handleCancel(){
                 this.visibleModal = false;
             },
             handleConfirm(){
-                this.confirmModal = false;
+                tip.loading(MSG.DELETE);
+                api.delAddress('POST',{address_id: this.delItem.id}).then(resp => {
+                    tip.loaded();
+                    if(resp.code = 200){
+                        this.confirmModal = false;
+                        this.queryItemList();
+                    }
+                });
             },
             handlePickerChange(e) {
                 let cityIdxArr = e.detail.value;
-                let provice = this.cityList[cityIdxArr[0]].name;
-                let city = this.cityList[cityIdxArr[0]].childrens[cityIdxArr[1]].name;
-                let district = this.cityList[cityIdxArr[0]].childrens[cityIdxArr[1]].childrens[cityIdxArr[2]].name;
+                let provice = this.cityList[cityIdxArr[0]];
+                let city = this.cityList[cityIdxArr[0]].childrens[cityIdxArr[1]];
+                let district = this.cityList[cityIdxArr[0]].childrens[cityIdxArr[1]].childrens[cityIdxArr[2]];
 
-                this.cityStr = provice + ',' + city + ',' + district;
+                this.cityStr = provice.name + ',' + city.name + ',' + district.name;
+                this.formInfo.provice = provice.id;
+                this.formInfo.city = city.id;
+                this.formInfo.district = district.id;
             },
             handlePickerColumnChange(e) {
                 let column = e.detail.column;
