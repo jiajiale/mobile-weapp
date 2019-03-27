@@ -6,4 +6,5 @@ export default{
     MAKING_QR: '生成小程序码中',
     SELECT_SPEC: '请选择规格',
     SELECT_SERVICE: '请选择业务',
+    ADD_CART_SUCCESS: '添加成功',
 };

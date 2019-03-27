@@ -27,7 +27,7 @@
                 <view slot="footer" style="font-size: 24rpx;color: #999;">{{goods.spec_info}}</view>
             </i-cell>
             <i-cell title="选择数量：" i-class="wx-spec-item">
-                <i-input-number slot="footer" value="num" min="1" max="100" bindchange="handleChangeNum" />
+                <i-input-number slot="footer" value="{{goods.goods_num}}" min="1" max="100" bindchange="handleChangeNum" />
             </i-cell>
         </i-cell-group>
     </view>
@@ -52,12 +52,12 @@
                     <i-grid-item i-class="wx-nav-action">
                         <navigator open-type="switchTab" hover-class="none" url="/pages/cart/index">
                             <view><icon class="iconfont icon-gouwuche"/></view>
-                            <view>购物车</view>
+                            <view>购物车<span class="wx-cart-num" wx:if="{{cartList.length}}">{{cartList.length}}</span></view>
                         </navigator>
                     </i-grid-item>
                 </i-grid>
             </i-col>
-            <i-col span="8" i-class="wx-cart-action">
+            <i-col span="8" i-class="wx-cart-action" @tap="handleAddCart">
                 <view>加入购物车</view>
             </i-col>
             <i-col span="8" i-class="wx-buy-action">
@@ -131,6 +131,7 @@
         data = {
             goodsImgUrl: api.GOODS_IMG_URL,
             params: [],
+            goodsIds: [],
             goods: [],
             goodsImages: [],
             goodsSpecList: [],
@@ -140,6 +141,7 @@
             goodsBottomStyle: 0,
             goodsZIndexStyle: 101,
             goodsVisible: false,
+            cartList: [],
         };
 
         computed = {};
@@ -198,8 +200,22 @@
 
                 this.changeGoodsPrice();
             },
-            handleChangeNum(){
+            handleAddCart(){
+                if(!this.cartList.length){
+                    this.cartList = [];
+                }
 
+                let index = utils.GoodsInCart(this.cartList,this.goods)
+                if(index === false){
+                    this.cartList.push(this.goods);
+                }else{
+                    this.cartList[index].goods_num += this.goods.goods_num;
+                }
+                this.syncCartInfo();
+                tip.success(MSG.ADD_CART_SUCCESS);
+            },
+            handleChangeNum({ detail }){
+                this.goods.goods_num = detail.value;
             },
         };
 
@@ -216,6 +232,11 @@
                 this.goods.select_spec = goodsSpecArr;
             }
         }
+
+        syncCartInfo(){
+            wx.setStorageSync('goodsCart',this.cartList);
+        }
+
         async queryItem() {
             tip.loading(MSG.LOADING);
             await api.queryGoodsDetail('POST',{
@@ -224,6 +245,7 @@
                 tip.loaded();
                 if(resp.data){
                     this.goods = resp.data.goods;
+                    this.goods.goods_num = 1;
                     this.goodsImages = resp.data.goodsImages;
                     this.goodsSpecList = resp.data.goodsSpec;
                     this.goodsSpecPrice = resp.data.goodsSpecPrice;
@@ -242,6 +264,7 @@
         onLoad(params) {
             params.id = 1881;
             this.params = params;
+            this.cartList = wx.getStorageSync('goodsCart');
         }
     }
 </script>
