@@ -14,7 +14,7 @@
                         <checkbox value="{{index}}" color="#ec3a3e" checked="{{ goods.checked }}"/>
                     </view>
                     <view class="wx-cart-image">
-                        <image src="https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg"/>
+                        <image src="{{goodsImgUrl + goods.original_img}}"/>
                     </view>
                     <view class="wx-cart-content">
                         <view class="wx-title">{{goods.goods_name}}</view>
@@ -40,7 +40,7 @@
                 </view>
             </i-col>
             <i-col span="6" i-class="wx-buy-action">
-                <view>下单结算</view>
+                <view bindtap="handleCheck">下单结算</view>
             </i-col>
         </i-row>
     </view>
@@ -73,6 +73,7 @@
             goodsImgUrl: api.GOODS_IMG_URL,
             selectAll: 0,
             cartList: [],
+            hasSelect: false,
             cartAmount: '0.00',
             actions : [
                 {name : '删除', color : '#fff', fontsize : '20', width : 100, icon : 'trash', background : '#ed3f14'}
@@ -95,6 +96,7 @@
             },
             handleChangeSelect({ detail }){
                 let selectArr = detail.value;
+                this.hasSelect = !!selectArr.length;
 
                 this.cartList.filter((item,index) => {
                     item.checked = !!utils.isInArray(selectArr, String(index));
@@ -109,6 +111,8 @@
             },
             handleChangeSelectAll({ detail }){
                 let selectArr = detail.value;
+                this.hasSelect = !!selectArr.length;
+
                 this.cartList.filter(item => {
                     item.checked = !!selectArr.length;
                     if(selectArr.length){
@@ -118,6 +122,13 @@
                     }
                 });
                 this.calcCartAmount();
+            },
+            handleCheck(){
+                if(this.hasSelect){
+
+                }else{
+                    tip.toast(MSG.SELECT_GOODS);
+                }
             }
         };
 
