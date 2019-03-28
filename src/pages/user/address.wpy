@@ -3,7 +3,7 @@
 </style>
 <template>
     <view class="wx-address-list">
-        <radio-group class="radio-group" bindchange="handleChangeAddress">
+        <radio-group class="radio-group" bindchange="handleChangeDefault">
             <view class="wx-address-item marginB20" wx:for="{{addressList}}" wx:key="{{item.id}}">
                 <view class="wx-address-content">
                     <view class="wx-address-user">{{item.consignee}}：{{item.mobile}}</view>
@@ -13,10 +13,10 @@
                 <view class="wx-address-footer">
                     <i-row>
                         <i-col span="18">
-                            <label><radio value="{{isDefault}}" color="#ec3a3e" checked="{{item.is_default}}"/>设为默认地址</label>
+                            <label><radio value="{{item.id}}" color="#ec3a3e" checked="{{item.is_default == '1'}}"/>设为默认地址</label>
                         </i-col>
                         <i-col span="6">
-                            <view style="text-align: right;padding-right: 10rpx;color: #999;">编辑</view>
+                            <view style="text-align: right;padding-right: 10rpx;color: #999;" bindtap="handleSaveAddress" data-item="{{item}}">编辑</view>
                         </i-col>
                     </i-row>
                 </view>
@@ -26,7 +26,7 @@
 
     <i-modal title="{{modalTitle}}" visible="{{visibleModal}}" actions="{{ confirmBtn }}" bind:click="handleSubmit" class="wx-address-modal">
         <i-grid>
-            <i-grid-item i-class="wx-modal-user"><i-input value="{{ formData.name }}" placeholder="姓名" data-key="name" bindchange="handleInput"/></i-grid-item>
+            <i-grid-item i-class="wx-modal-user"><i-input value="{{ formData.consignee }}" placeholder="姓名" data-key="consignee" bindchange="handleInput"/></i-grid-item>
             <i-grid-item i-class="wx-modal-user"><i-input value="{{ formData.mobile }}" placeholder="手机号" data-key="mobile" bindchange="handleInput"/></i-grid-item>
         </i-grid>
         <i-row>
@@ -55,7 +55,7 @@
         <view style="margin-bottom: 20rpx;">确定要删除吗？</view>
     </i-modal>
 
-    <view class="wx-address-add" bindtap="handleAddAddress"><i-icon type="add" size="20" color="#ec3a3e"/>新增地址</view>
+    <view class="wx-address-add" bindtap="handleSaveAddress" data-item=""><i-icon type="add" size="20" color="#ec3a3e"/>新增地址</view>
 </template>
 
 <script>
@@ -104,9 +104,7 @@
             cityArr: [],
             cityIdxArr: [0,0,0],
             cityStr: '',
-            formData: {
-                name: ''
-            },
+            formData: {},
             delItem: {}
         };
         methods = {
@@ -114,15 +112,34 @@
                 let key = e.currentTarget.dataset.key;
                 this.formData[key] = e.detail.detail.value;
             },
-            handleChangeAddress({ detail = {} }){
-                console.log(detail.value)
+            handleChangeDefault({ detail = {} }){
+                api.setDefaultAddress('POST',{address_id: detail.value,checked: true}).then(resp => {
+                    if(resp.code === 200){
+                        tip.success(resp.msg);
+                        this.queryItemList(false);
+                    }else{
+                        tip.error(resp.msg);
+                    }
+                });
             },
-            handleAddAddress(){
-                this.modalTitle = '新增地址';
+            handleSaveAddress({ currentTarget }){
+                let item = currentTarget.dataset.item;
+
+                if(item){
+                    this.modalTitle = '修改地址';
+                    this.cityStr = item.region;
+                    this.formData = item;
+                    this.cityIdxArr[0] = utils.findArrIndex(this.cityList,'id',item.province);
+                    this.cityIdxArr[1] = utils.findArrIndex(this.cityList[this.cityIdxArr[0]].childrens,'id',item.city);
+                    this.cityIdxArr[2] = utils.findArrIndex(this.cityList[this.cityIdxArr[0]].childrens[this.cityIdxArr[1]].childrens,'id',item.district);
+                }else{
+                    this.modalTitle = '新增地址';
+                    this.cityIdxArr = [0,0,0];
+                    this.cityStr = '';
+                    this.formData = {};
+                }
                 this.confirmBtn[1].name = '提交';
                 this.visibleModal = true;
-                this.cityIdxArr = [0,0,0];
-                this.cityStr = '';
             },
             handleDelAddress(e){
                 this.delItem = e.currentTarget.dataset.item;
@@ -137,10 +154,11 @@
                     api.saveAddress('POST',this.formData).then(resp => {
                         //this.confirmBtn[1].loading = false;
                         if(resp.code === 200){
+                            tip.success(resp.msg);
                             this.visibleModal = false;
-                            this.queryItemList();
+                            this.queryItemList(false);
                         }else{
-                            tip.toast(resp.msg);
+                            tip.error(resp.msg);
                         }
                     });
                 }
@@ -150,13 +168,17 @@
                     this.visibleModal = false;
                 }else{
                     this.confirmBtn[1].loading = true;
+                    let _this = this;
                     api.delAddress('POST',{address_id: this.delItem.id}).then(resp => {
                         this.confirmBtn[1].loading = false;
                         if(resp.code === 200){
                             this.confirmModal = false;
-                            this.queryItemList();
+                            tip.success(MSG.DELETE_SUCCESS);
+                            setTimeout(function () {
+                                _this.queryItemList(false);
+                            },500)
                         }else{
-                            tip.toast(resp.msg);
+                            tip.error(resp.msg)
                         }
                     });
                 }
@@ -189,10 +211,10 @@
             },
         };
 
-        async queryItemList() {
-            tip.loading(MSG.LOADING);
+        async queryItemList(loading) {
+            if(loading) tip.loading(MSG.LOADING);
             await api.queryAddressList('POST',null).then(resp => {
-                tip.loaded();
+                if(loading) tip.loaded();
                 if(resp.data){
                     this.addressList = resp.data.addressList;
                     this.cityList = resp.data.cityList;
@@ -205,7 +227,7 @@
         onShow() {
             let _this = this;
             this.checkAuthorize(function () {
-                _this.queryItemList();
+                _this.queryItemList(true);
             });
         };
 

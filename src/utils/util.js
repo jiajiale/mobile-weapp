@@ -127,6 +127,12 @@ function sortNumber(a,b)
     return a - b;
 }
 
+/**
+ * 是否在数组中
+ * @param arr
+ * @param value
+ * @returns {boolean}
+ */
 function isInArray(arr,value){
     for(let i = 0; i < arr.length; i++){
         if(value === arr[i]){
@@ -135,6 +141,22 @@ function isInArray(arr,value){
     }
     return false;
 }
+
+/**
+ * 在对象数组中的位置
+ * @param arr
+ * @param field
+ * @param val
+ * @returns {number}
+ */
+function findArrIndex(arr,field,val){
+    return arr.findIndex(item => {
+        if(item[field] === val){
+            return true;
+        }
+    });
+}
+
 module.exports = {
     isEmptyObject: isEmptyObject,
     getCurrentTime: getCurrentTime,
@@ -143,4 +165,5 @@ module.exports = {
     GoodsInCart: GoodsInCart,
     sortNumber: sortNumber,
     isInArray: isInArray,
+    findArrIndex: findArrIndex,
 };
