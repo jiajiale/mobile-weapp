@@ -10,16 +10,14 @@
     <view class="wx-cate-list">
         <i-row i-class="wx-cate-row">
             <i-col span="6" i-class="wx-cate-left">
-                <view class="{{activeIndex == index ? 'wx-cate-item active' : 'wx-cate-item'}}" wx:for="{{categoryList}}" wx:key="{{item.id}}" bindtap="changeCategory" data-index="{{index}}">{{item.name}}</view>
+                <view class="{{activeIndex == index ? 'wx-cate-item active' : 'wx-cate-item'}}" wx:for="{{categoryList}}" wx:for-item="cate" wx:key="{{cate.id}}" bindtap="changeCategory" data-index="{{index}}">{{cate.name}}</view>
             </i-col>
             <i-col span="18" i-class="wx-cate-right">
                 <i-row>
-                    <navigator open-type="navigate" hover-class="none" url="/pages/goods/index?id={{item.id}}">
-                        <i-col span="8" i-class="wx-cate-info" wx:for="{{subCategoryList}}" wx:key="{{item.id}}">
-                            <image src="{{categoryImgUrl + item.image}}" mode="scaleToFill"></image>
-                            <view>{{item.name}}</view>
-                        </i-col>
-                    </navigator>
+                    <i-col span="8" i-class="wx-cate-info" wx:for="{{subCategoryList}}" wx:for-item="category" wx:key="{{category.id}}" bindtap="handleNavigation" data-index="{{index}}">
+                        <image src="{{categoryImgUrl + category.image}}" mode="scaleToFill"></image>
+                        <view>{{category.name}}</view>
+                    </i-col>
                 </i-row>
             </i-col>
         </i-row>
@@ -36,7 +34,7 @@
 
     export default class CategoryIndex extends wepy.page {
         config = {
-            navigationBarTitleText: '首页',
+            navigationBarTitleText: '分类',
             usingComponents: {
                 "i-row": "../../iview/row/index",
                 "i-col": "../../iview/col/index",
@@ -58,6 +56,14 @@
                 let index = e.currentTarget.dataset.index;
                 this.activeIndex = index;
                 this.subCategoryList = this.categoryList[index].subCategory;
+            },
+            handleNavigation(e){
+                let index = e.currentTarget.dataset.index;
+                let cate = this.categoryList[this.activeIndex];
+                let category = this.categoryList[this.activeIndex].subCategory[index];
+                wepy.navigateTo({
+                    url: "/pages/goods/index?cate=" + cate.id + "&category_id=" + category.id
+                })
             }
         };
 

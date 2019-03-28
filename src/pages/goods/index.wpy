@@ -2,11 +2,15 @@
     @import "../../assets/styles/goods";
 </style>
 <template>
-    <view class="wx-goods-search">
+    <view class="wx-goods-search" wx:if="{{!params.cate}}">
         <input placeholder="商品搜索" value="{{keywords}}" data-key="name" bindinput="handleSearchInput"/>
         <view class="wx-search-icon"><i-icon type="search" size="20" color="#999999"/></view>
         <view class="wx-search-btn" @tap="queryReload">搜索</view>
     </view>
+
+    <i-tabs wx:else current="{{ activeCategory }}" color="#ec3a3e" scroll bindchange="handleChangeCategory">
+        <i-tab key="{{item.id}}" title="{{item.name}}" wx:for="{{categoryList}}" wx:key="{{item.id}}"></i-tab>
+    </i-tabs>
 
     <scroll-view scroll-y bindscrolltolower="onReachBottom" wx:if="{{goodsList.length > 0}}">
         <view class="wx-goods-list">
@@ -43,7 +47,9 @@
             usingComponents: {
                 "i-row": "../../iview/row/index",
                 "i-col": "../../iview/col/index",
-                "i-icon": "../../iview/icon/index"
+                "i-icon": "../../iview/icon/index",
+                "i-tabs": "../../iview/tabs/index",
+                "i-tab": "../../iview/tab/index"
             }
         };
         components = {
@@ -55,16 +61,23 @@
 
         data = {
             goodsImgUrl: api.GOODS_IMG_URL,
+            params: [],
             goodsList: [],
+            categoryList: [],
             keywords: '',
             page: 1,
             hasPage: true,
+            activeCategory: null,
         };
 
         computed = {};
 
         methods = {
-
+            handleChangeCategory({ detail }){
+                this.activeCategory = detail.key;
+                this.goodsList = [];
+                this.queryItemList();
+            }
         };
 
         handleSearchInput(e){
@@ -81,19 +94,29 @@
 
         async queryItemList() {
             tip.loading(MSG.LOADING);
-            await api.queryGoodsList('POST',{
+            let conditions = {
                 page: this.page,
                 keywords: this.keywords,
                 is_goods: 1
-            }).then(resp => {
+            };
+
+            if(this.params.cate){
+                conditions.cate = this.params.cate;
+                conditions.cat_id = this.activeCategory;
+
+            }
+            await api.queryGoodsList('POST',conditions).then(resp => {
                 tip.loaded();
-                if(resp.data){
-                    this.goodsList = this.goodsList.concat(resp.data.items);
-                    if(resp.data.pager.index >= resp.data.pager.count){
+                if(resp.data.goodsList){
+                    this.goodsList = this.goodsList.concat(resp.data.goodsList.items);
+                    if(resp.data.goodsList.pager.index >= resp.data.goodsList.pager.count){
                         this.hasPage = false;
                     }
-                    this.$apply();
                 }
+                if(resp.data.categoryList){
+                    this.categoryList = resp.data.categoryList;
+                }
+                this.$apply();
             });
         };
 
@@ -104,8 +127,11 @@
             });
         };
 
-        onLoad() {
-
+        onLoad(params) {
+            if(params.category_id){
+                this.activeCategory = params.category_id;
+            }
+            this.params = params;
         }
     }
 </script>
