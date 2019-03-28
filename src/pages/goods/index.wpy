@@ -3,7 +3,7 @@
 </style>
 <template>
     <view class="wx-goods-search">
-        <input placeholder="商品搜索" auto-focus="true" value="{{keywords}}" data-key="name" bindinput="handleSearchInput"/>
+        <input placeholder="商品搜索" value="{{keywords}}" data-key="name" bindinput="handleSearchInput"/>
         <view class="wx-search-icon"><i-icon type="search" size="20" color="#999999"/></view>
         <view class="wx-search-btn" @tap="queryReload">搜索</view>
     </view>

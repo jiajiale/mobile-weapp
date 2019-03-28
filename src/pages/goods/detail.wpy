@@ -60,7 +60,7 @@
             <i-col span="8" i-class="wx-cart-action" @tap="handleAddCart">
                 <view>加入购物车</view>
             </i-col>
-            <i-col span="8" i-class="wx-buy-action">
+            <i-col span="8" i-class="wx-buy-action" @tap="handleCheckOrder">
                 <view>立即购买</view>
             </i-col>
         </i-row>
@@ -218,6 +218,14 @@
                 }
                 this.syncCartInfo();
                 tip.success(MSG.ADD_CART_SUCCESS);
+            },
+            handleCheckOrder(){
+                if(!utils.isEmptyObject(this.goodsSpecList) && this.goods.goods_spec === undefined){
+                    tip.toast(MSG.SELECT_SPEC);
+                    return;
+                }
+
+
             },
             handleChangeNum({ detail }){
                 this.goods.goods_num = detail.value;
