@@ -8,8 +8,8 @@
     <i-swipeout  i-class="wx-sheet-cart-item" actions="{{actions}}" wx:for="{{cartList}}" wx:for-item="goods" wx:key="{{goods.id}}" data-item="{{goods}}" data-index="{{index}}" bindchange="delCartItem">
         <view slot="content">
             <view class="wx-cart-info">
-                <view class="wx-cart-radio">
-                    <radio value="aaa" />
+                <view class="wx-cart-checkbox">
+                    <checkbox value="aaa" />
                 </view>
                 <view class="wx-cart-image">
                     <image src="https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg"/>
@@ -17,9 +17,8 @@
                 <view class="wx-cart-content">
                     <view class="wx-title">{{goods.goods_name}}</view>
                     <view class="wx-spec">{{goods.spec_info}}</view>
-                    <view class="wx-price">￥{{goods.shop_price}}
-                        <i-input-number value="{{goods.goods_num}}" min="1" max="100" bindchange="handleChangeNum" />
-                    </view>
+                    <view class="wx-price">￥{{goods.shop_price}}</view>
+                    <view><i-input-number i-class="wx-input-num" value="{{goods.goods_num}}" min="1" max="100" bindchange="handleChangeNum" /></view>
                 </view>
             </view>
         </view>

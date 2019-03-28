@@ -3,7 +3,27 @@
   background: #fff;
   padding: 20rpx;
   border-bottom: 1px solid #e8e8e8;
-  .wx-cart-radio{
+  checkbox .wx-checkbox-input{
+    height: 35rpx;
+    width: 35rpx;
+    border-radius: 50%;
+  }
+  checkbox .wx-checkbox-input.wx-checkbox-input-checked{
+    background: red;
+  }
+  checkbox .wx-checkbox-input.wx-checkbox-input-checked::before{
+    border-radius: 50%;
+    width: 35rpx;
+    height: 35rpx;
+    line-height: 35rpx;
+    text-align: center;
+    font-size:30rpx;
+    color:#fff;
+    background: transparent;
+    transform:translate(-50%, -50%) scale(1);
+    -webkit-transform:translate(-50%, -50%) scale(1);
+  }
+  .wx-cart-checkbox{
     float: left;
     height: 120rpx;
     line-height: 120rpx;
