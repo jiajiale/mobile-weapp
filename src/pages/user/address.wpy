@@ -26,8 +26,8 @@
 
     <i-modal title="{{modalTitle}}" visible="{{visibleModal}}" actions="{{ confirmBtn }}" bind:click="handleSubmit" class="wx-address-modal">
         <i-grid>
-            <i-grid-item i-class="wx-modal-user"><i-input value="{{ formInfo.name }}" placeholder="姓名" /></i-grid-item>
-            <i-grid-item i-class="wx-modal-user"><i-input value="{{ formInfo.mobile }}" placeholder="手机号" /></i-grid-item>
+            <i-grid-item i-class="wx-modal-user"><i-input value="{{ formData.name }}" placeholder="姓名" data-key="name" bindchange="handleInput"/></i-grid-item>
+            <i-grid-item i-class="wx-modal-user"><i-input value="{{ formData.mobile }}" placeholder="手机号" data-key="mobile" bindchange="handleInput"/></i-grid-item>
         </i-grid>
         <i-row>
             <i-col span="24" i-class="address-item">
@@ -44,10 +44,10 @@
             </i-col>
         </i-row>
         <i-row>
-            <i-col span="24" i-class="address-item"><i-input value="{{ formInfo.address }}" placeholder="输入详细地址" /></i-col>
+            <i-col span="24" i-class="address-item"><i-input value="{{ formData.address }}" placeholder="输入详细地址" data-key="address" bindchange="handleInput"/></i-col>
         </i-row>
         <i-row>
-            <i-col span="24" style="text-align: left;"><i-input value="{{ formInfo.zipcode }}" placeholder="输入邮政编码" /></i-col>
+            <i-col span="24" style="text-align: left;"><i-input value="{{ formData.zipcode }}" placeholder="输入邮政编码" data-key="zipcode" bindchange="handleInput"/></i-col>
         </i-row>
     </i-modal>
 
@@ -104,12 +104,16 @@
             cityArr: [],
             cityIdxArr: [0,0,0],
             cityStr: '',
-            formInfo: {
+            formData: {
                 name: ''
             },
             delItem: {}
         };
         methods = {
+            handleInput(e){
+                let key = e.currentTarget.dataset.key;
+                this.formData[key] = e.detail.detail.value;
+            },
             handleChangeAddress({ detail = {} }){
                 console.log(detail.value)
             },
@@ -130,7 +134,7 @@
                     this.visibleModal = false;
                 }else{
                     //this.confirmBtn[1].loading = true;
-                    api.saveAddress('POST',this.formInfo).then(resp => {
+                    api.saveAddress('POST',this.formData).then(resp => {
                         //this.confirmBtn[1].loading = false;
                         if(resp.code === 200){
                             this.visibleModal = false;
@@ -159,14 +163,14 @@
             },
             handlePickerChange(e) {
                 let cityIdxArr = e.detail.value;
-                let provice = this.cityList[cityIdxArr[0]];
+                let province = this.cityList[cityIdxArr[0]];
                 let city = this.cityList[cityIdxArr[0]].childrens[cityIdxArr[1]];
                 let district = this.cityList[cityIdxArr[0]].childrens[cityIdxArr[1]].childrens[cityIdxArr[2]];
 
-                this.cityStr = provice.name + ',' + city.name + ',' + district.name;
-                this.formInfo.provice = provice.id;
-                this.formInfo.city = city.id;
-                this.formInfo.district = district.id;
+                this.cityStr = province.name + ',' + city.name + ',' + district.name;
+                this.formData.province = province.id;
+                this.formData.city = city.id;
+                this.formData.district = district.id;
             },
             handlePickerColumnChange(e) {
                 let column = e.detail.column;
