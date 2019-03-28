@@ -5,30 +5,38 @@
     }
 </style>
 <template>
-    <i-swipeout  i-class="wx-sheet-cart-item" actions="{{actions}}" wx:for="{{cartList}}" wx:for-item="goods" wx:key="{{goods.id}}" data-item="{{goods}}" data-index="{{index}}" bindchange="delCartItem">
+    <checkbox-group bindchange="handleChangeSelect">
+    <i-swipeout  i-class="wx-sheet-cart-item marginB20" actions="{{actions}}" wx:for="{{cartList}}" wx:for-item="goods" wx:key="{{goods.id}}" data-item="{{goods}}" data-index="{{index}}" bindchange="delCartItem">
         <view slot="content">
             <view class="wx-cart-info">
-                <view class="wx-cart-checkbox">
-                    <checkbox value="aaa" />
+                <view class="wx-cart-main">
+                    <view class="wx-cart-checkbox">
+                        <checkbox value="{{index}}" color="#ec3a3e" checked="{{ goods.checked }}"/>
+                    </view>
+                    <view class="wx-cart-image">
+                        <image src="https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg"/>
+                    </view>
+                    <view class="wx-cart-content">
+                        <view class="wx-title">{{goods.goods_name}}</view>
+                        <view class="wx-spec">{{goods.spec_info}}</view>
+                        <view class="wx-price">￥{{goods.shop_price}}</view>
+                        <view class="wx-num"><i-input-number i-class="wx-input-num" value="{{goods.goods_num}}" min="1" max="100" data-index="{{index}}" bindchange="handleChangeNum" /></view>
+                    </view>
                 </view>
-                <view class="wx-cart-image">
-                    <image src="https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg"/>
-                </view>
-                <view class="wx-cart-content">
-                    <view class="wx-title">{{goods.goods_name}}</view>
-                    <view class="wx-spec">{{goods.spec_info}}</view>
-                    <view class="wx-price">￥{{goods.shop_price}}</view>
-                    <view><i-input-number i-class="wx-input-num" value="{{goods.goods_num}}" min="1" max="100" bindchange="handleChangeNum" /></view>
-                </view>
+
+                <view class="wx-cart-footer">小计:￥{{(goods.shop_price * 100 * goods.goods_num / 100)}}</view>
             </view>
         </view>
     </i-swipeout>
+    </checkbox-group>
 
     <view class="wx-cart-actions">
         <i-row>
             <i-col span="18" i-class="wx-cart-money">
                 <view>
-                    <radio value="aaa" /><span class="wx-price">￥120.00</span>
+                    <checkbox-group bindchange="handleChangeSelectAll">
+                        <checkbox value="{{selectAll}}" checked="{{ selectAll == 1}}" color="#ec3a3e"/><span class="wx-price">￥{{ cartAmount}}</span>
+                    </checkbox-group>
                 </view>
             </i-col>
             <i-col span="6" i-class="wx-buy-action">
@@ -52,7 +60,8 @@
             usingComponents: {
                 "i-row": "../../iview/row/index",
                 "i-col": "../../iview/col/index",
-                "i-swipeout": "../../iview/swipeout/index"
+                "i-swipeout": "../../iview/swipeout/index",
+                "i-input-number": "../../iview/input-number/index",
             }
         };
         components = {
@@ -62,7 +71,9 @@
 
         data = {
             goodsImgUrl: api.GOODS_IMG_URL,
+            selectAll: 0,
             cartList: [],
+            cartAmount: '0.00',
             actions : [
                 {name : '删除', color : '#fff', fontsize : '20', width : 100, icon : 'trash', background : '#ed3f14'}
             ],
@@ -77,9 +88,49 @@
                 this.syncCartInfo(goods);
                 this.$apply();
             },
-            handleChangeNum({ detail }){
+            handleChangeNum({ detail,currentTarget }){
+                let index = currentTarget.dataset.index;
+
+                this.cartList[index].goods_num = detail.value;
             },
+            handleChangeSelect({ detail }){
+                let selectArr = detail.value;
+
+                this.cartList.filter((item,index) => {
+                    item.checked = !!utils.isInArray(selectArr, String(index));
+                });
+
+                if(this.cartList.length && selectArr.length === this.cartList.length){
+                    this.selectAll = 1;
+                }else{
+                    this.selectAll = 0;
+                }
+                this.calcCartAmount();
+            },
+            handleChangeSelectAll({ detail }){
+                let selectArr = detail.value;
+                this.cartList.filter(item => {
+                    item.checked = !!selectArr.length;
+                    if(selectArr.length){
+                        this.selectAll = 1;
+                    }else{
+                        this.selectAll = 0;
+                    }
+                });
+                this.calcCartAmount();
+            }
         };
+
+        calcCartAmount(){
+            this.cartAmount = 0;
+
+            this.cartList.filter(item => {
+                if(item.checked){
+                    this.cartAmount += (item.shop_price * 100 * item.goods_num);
+                }
+            });
+            this.cartAmount = parseFloat(this.cartAmount / 100).toFixed(2);
+        }
 
         syncCartInfo(){
             wx.setStorageSync('goodsCart',this.cartList);

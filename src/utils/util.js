@@ -127,6 +127,14 @@ function sortNumber(a,b)
     return a - b;
 }
 
+function isInArray(arr,value){
+    for(let i = 0; i < arr.length; i++){
+        if(value === arr[i]){
+            return true;
+        }
+    }
+    return false;
+}
 module.exports = {
     isEmptyObject: isEmptyObject,
     getCurrentTime: getCurrentTime,
@@ -134,4 +142,5 @@ module.exports = {
     formatDateTime: formatDateTime,
     GoodsInCart: GoodsInCart,
     sortNumber: sortNumber,
+    isInArray: isInArray,
 };

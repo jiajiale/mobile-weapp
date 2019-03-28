@@ -1,62 +1,82 @@
+checkbox .wx-checkbox-input{
+  height: 35rpx;
+  width: 35rpx;
+  border-radius: 50%;
+}
+checkbox .wx-checkbox-input.wx-checkbox-input-checked{
+  background: red;
+}
+checkbox .wx-checkbox-input.wx-checkbox-input-checked::before{
+  border-radius: 50%;
+  width: 35rpx;
+  height: 35rpx;
+  line-height: 35rpx;
+  text-align: center;
+  font-size:30rpx;
+  color:#fff;
+  background: transparent;
+  transform:translate(-50%, -50%) scale(1);
+  -webkit-transform:translate(-50%, -50%) scale(1);
+}
 .wx-cart-info{
   overflow: hidden;
   background: #fff;
-  padding: 20rpx;
   border-bottom: 1px solid #e8e8e8;
-  checkbox .wx-checkbox-input{
-    height: 35rpx;
-    width: 35rpx;
-    border-radius: 50%;
-  }
-  checkbox .wx-checkbox-input.wx-checkbox-input-checked{
-    background: red;
-  }
-  checkbox .wx-checkbox-input.wx-checkbox-input-checked::before{
-    border-radius: 50%;
-    width: 35rpx;
-    height: 35rpx;
-    line-height: 35rpx;
-    text-align: center;
-    font-size:30rpx;
-    color:#fff;
-    background: transparent;
-    transform:translate(-50%, -50%) scale(1);
-    -webkit-transform:translate(-50%, -50%) scale(1);
-  }
   .wx-cart-checkbox{
     float: left;
     height: 120rpx;
     line-height: 120rpx;
     padding: 0rpx 10rpx 0rpx 0rpx;
   }
-  .wx-cart-image{
-    float: left;
-    width: 120rpx;
-    height: 120rpx;
-    margin-right: 20rpx;
-    image{
-      width: 100%;
-      height: 100%;
+  .wx-cart-main{
+    padding: 20rpx;
+    overflow:hidden;
+    .wx-cart-image{
+      float: left;
+      width: 140rpx;
+      height: 140rpx;
+      margin-right: 20rpx;
+      image{
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .wx-cart-content{
+      float: left;
+      width: calc(100% - 220rpx);
+      position: relative;
+      .wx-title{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        height:45rpx;
+        line-height:40rpx;
+      }
+      .wx-spec{
+        font-size: 24rpx;
+        height: 40rpx;
+        color: #999;
+      }
+      .wx-price{
+        color:#ec3a3e;
+        height: 50rpx;
+        line-height: 70rpx;
+      }
+      .wx-num{
+        position: absolute;
+        bottom: -20rpx;
+        right: 0rpx;
+      }
     }
   }
-  .wx-cart-content{
-    float: left;
-    width: calc(100% - 220rpx);
-    .wx-title{
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      height:45rpx;
-      line-height:40rpx;
-    }
-    .wx-spec{
-      font-size: 24rpx;
-      height: 40rpx;
-      color: #999;
-    }
-    .wx-price{
-      color:#ec3a3e;
-    }
+  .wx-cart-footer{
+    clear: both;
+    height:60rpx;
+    line-height:60rpx;
+    text-align:right;
+    padding-right:20rpx;
+    color:#ec3a3e;
+    border-top:1px solid #e8e8e8;
   }
 }
 .wx-cart-actions{
