@@ -225,7 +225,19 @@
                     return;
                 }
 
-
+                api.addGoodsOrder('POST',{
+                    goods_id: this.goods.id,
+                    goods_num: this.goods.goods_num,
+                    goods_spec: this.goods.select_spec
+                }).then(resp => {
+                    if(resp.code === 200){
+                        wepy.navigateTo({
+                            url: '/pages/check/order?from=goods'
+                        })
+                    }else{
+                        tip.error(resp.msg);
+                    }
+                });
             },
             handleChangeNum({ detail }){
                 this.goods.goods_num = detail.value;

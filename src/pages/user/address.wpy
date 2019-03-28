@@ -150,9 +150,7 @@
                 if(detail.index === 0){
                     this.visibleModal = false;
                 }else{
-                    //this.confirmBtn[1].loading = true;
                     api.saveAddress('POST',this.formData).then(resp => {
-                        //this.confirmBtn[1].loading = false;
                         if(resp.code === 200){
                             tip.success(resp.msg);
                             this.visibleModal = false;

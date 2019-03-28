@@ -7,9 +7,12 @@
 <template>
     <view class="wx-order-address">
         <i-cell-group>
-            <i-cell title="夏佳，15088704145" i-class="wx-spec-item" is-link>
-                <view slot="icon"><icon class="iconfont icon-gouwuche"/></view>
-                <view>浙江省，杭州市，余杭区文一西路1101</view>
+            <i-cell title="{{address.consignee}}，{{address.mobile}}" i-class="wx-spec-item" is-link url="/pages/user/address?source=check&from={{params.from}}" wx:if="{{address}}">
+                <view slot="icon"><icon class="iconfont icon-dizhi-01" style="font-size: 52rpx;"/></view>
+                <view>{{address.region}}{{address.address}}</view>
+            </i-cell>
+            <i-cell title="新建收货地址" i-class="wx-spec-item" is-link url="/pages/user/address?source=check{{params.from}}" wx:else>
+                <view slot="icon"><icon class="iconfont icon-dizhi-01" style="font-size: 52rpx;"/></view>
             </i-cell>
         </i-cell-group>
     </view>
@@ -61,7 +64,11 @@
 
 <script>
     import wepy from 'wepy';
-    import ContentSheet from '../../components/content-sheet';
+    import authorize from '../../mixins/authorize';
+    import api from '../../api';
+    import tip from '../../utils/tip';
+    import utils from '../../utils/util';
+    import MSG from '../../utils/msg';
 
     export default class CartIndex extends wepy.page {
         config = {
@@ -74,26 +81,44 @@
             }
         };
         components = {
-            GoodsSheet: ContentSheet,
-            CartSheet: ContentSheet,
         };
 
-        mixins = [];
+        mixins = [authorize];
 
         data = {
-
+            params: [],
+            address: null,
+            cartList: [],
+            totalPrice: {}
         };
-
-        computed = {};
 
         methods = {
 
         };
 
-        events = {};
+        async queryItem() {
+            tip.loading(MSG.LOADING);
+            await api.queryCartGoods('POST',this.params).then(resp => {
+                tip.loaded();
+                if(resp.data){
+                    this.address = resp.data.address;
+                    this.cartList = resp.data.cartList;
+                    this.totalPrice = resp.data.totalPrice;
+                    this.$apply();
+                }
+            });
+        };
 
-        onLoad() {
+        onShow() {
+            let _this = this;
+            this.checkAuthorize(function () {
+                _this.queryItem();
+            });
+        };
 
+        onLoad(params) {
+            params.from = 'goods';
+            this.params = params;
         }
     }
 </script>

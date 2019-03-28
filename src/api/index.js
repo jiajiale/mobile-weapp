@@ -1,8 +1,8 @@
 import wepy from 'wepy';
 import tip from '../utils/tip';
 
-// const APP_URL = 'http://test.mobile.com';
-const APP_URL = 'http://111.230.96.241:81';
+const APP_URL = 'http://www.mobile.com';
+// const APP_URL = 'http://111.230.96.241:81';
 const GOODS_IMG_URL = APP_URL + '/Public/Uploads/goods/source/';
 const CATEGORY_IMG_URL = APP_URL + '/Public/Uploads/category/source/';
 const PHOTO_IMG_URL = APP_URL + '/Public/Uploads/photo/';
@@ -41,7 +41,9 @@ export default{
     queryGoodsDetail: (method,params) => wxRequest(method,params, "/api/goods/detail"),
     queryCategoryList: (method,params) => wxRequest(method,params, "/api/goods/category"),
     addGoodsCart: (method,params) => wxRequest(method,params, "/api/cart/addGoodsCart"),
+    addGoodsOrder: (method,params) => wxRequest(method,params, "/api/cart/addGoodsOrder"),
     queryCartInfo: (method,params) => wxRequest(method,params, "/api/cart/getCartGoods"),
+    queryCartGoods: (method,params) => wxRequest(method,params, "/api/order/getCartGoods"),
     createServiceOrder: (method,params) => wxRequest(method,params, "/api/order/service"),
     payOrder: (method,params) => wxRequest(method,params, "/api/order/pay"),
     queryOrderList: (method,params) => wxRequest(method,params, "/api/user/getOrderList"),
