@@ -11,7 +11,7 @@
                 <view slot="icon"><icon class="iconfont icon-dizhi-01" style="font-size: 52rpx;"/></view>
                 <view>{{address.region}}{{address.address}}</view>
             </i-cell>
-            <i-cell title="新建收货地址" i-class="wx-spec-item" is-link url="/pages/user/address?source=check{{params.from}}" wx:else>
+            <i-cell title="新建收货地址" i-class="wx-spec-item" is-link url="/pages/user/address?source=check&from={{params.from}}" wx:else>
                 <view slot="icon"><icon class="iconfont icon-dizhi-01" style="font-size: 52rpx;"/></view>
             </i-cell>
         </i-cell-group>
