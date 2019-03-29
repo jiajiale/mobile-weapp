@@ -11,8 +11,8 @@
         config = {
             pages: [
                 'pages/check/order',
-                'pages/category/index',
                 'pages/goods/detail',
+                'pages/category/index',
                 'pages/user/address',
                 'pages/cart/index',
                 'pages/user/order',
