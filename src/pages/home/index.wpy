@@ -13,6 +13,34 @@
         </swiper>
     </view>
 
+    <view class="wx-cate-box marginB20">
+        <view class="wx-cate-item" wx:for="{{cateList}}" wx:key="{{index}}">
+            <view class="wx-icon"><image src="http://111.230.96.241:81/Public/Uploads/category/source/20180306/5a9e2b757e5ed.jpg" mode="scaleToFill"></image></view>
+            <view class="wx-txt">移动优惠</view>
+        </view>
+        <view class="wx-cate-item">
+            <view class="wx-icon"><image src="http://111.230.96.241:81/Public/Uploads/category/source/20180306/5a9e2b757e5ed.jpg" mode="scaleToFill"></image></view>
+            <view class="wx-txt">移动优惠</view>
+        </view>
+    </view>
+
+    <!--<view>-->
+        <!--<h3>特价专区</h3>-->
+    <!--</view>-->
+
+    <view class="marginB20">
+        <i-card i-class="wx-promote-box" title="移动优惠" full extra="更多">
+            <view slot="content">
+                <view class="wx-image"><image src="https://www.caryue.com/Public/Uploads/adv/source/20181109/5be51b0c9ecc8.jpg" mode="scaleToFill"></image></view>
+                <i-row>
+                    <i-col span="8">col-8</i-col>
+                    <i-col span="8">col-8</i-col>
+                </i-row>
+            </view>
+        </i-card>
+    </view>
+
+
     <view class="wx-adv-item">
         <image src="https://www.caryue.com/Public/Uploads/adv/source/20181109/5be51b0c9ecc8.jpg" mode="scaleToFill"></image>
     </view>
@@ -55,6 +83,7 @@
             usingComponents: {
                 "i-row": "../../iview/row/index",
                 "i-col": "../../iview/col/index",
+                "i-card": "../../iview/card/index"
             }
         };
         components = {
@@ -68,6 +97,7 @@
             autoplay: true,
             interval: 5000,
             duration: 1000,
+            cateList: [1,2,3,4,5,6,7,8,9],
             focusList: [
                 {id:1,url:'https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg'},
                 {id:2,url:'https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg'},

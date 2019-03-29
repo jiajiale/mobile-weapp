@@ -1,12 +1,13 @@
 import wepy from 'wepy';
 import tip from '../utils/tip';
 
-// const APP_URL = 'http://www.mobile.com';
+// const APP_URL = 'http://test.mobile.com';
 const APP_URL = 'http://111.230.96.241:81';
 const GOODS_IMG_URL = APP_URL + '/Public/Uploads/goods/source/';
 const CATEGORY_IMG_URL = APP_URL + '/Public/Uploads/category/source/';
 const PHOTO_IMG_URL = APP_URL + '/Public/Uploads/photo/';
 const UPLOAD_IMG_URL = APP_URL + '/Admin/Image/uploadPicture';
+const THUMBNAIL_IMG = APP_URL + '/Api/Public/thumbnail';
 
 const wxRequest = async(method = 'GET',params = {}, url) => {
     let data = params || {};
@@ -34,6 +35,7 @@ export default{
     CATEGORY_IMG_URL: CATEGORY_IMG_URL,
     PHOTO_IMG_URL: PHOTO_IMG_URL,
     UPLOAD_IMG_URL: UPLOAD_IMG_URL,
+    THUMBNAIL_IMG: THUMBNAIL_IMG,
     login: (method,params) => wxRequest(method,params, "/api/public/login"),
     register: (method,params) => wxRequest(method,params, "/api/public/register"),
     updateUserPhone: (method,params) => wxRequest(method,params, "/api/public/updateUserPhone"),

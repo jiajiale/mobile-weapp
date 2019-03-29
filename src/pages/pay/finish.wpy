@@ -1,0 +1,39 @@
+<style lang="less">
+    @import "../../assets/styles/pay";
+</style>
+<template>
+
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import authorize from '../../mixins/authorize';
+    import api from '../../api';
+    import tip from '../../utils/tip';
+    import utils from '../../utils/util';
+    import MSG from '../../utils/msg';
+
+    export default class PayFinish extends wepy.page {
+        config = {
+            navigationBarTitleText: '支付完成',
+            usingComponents: {
+            }
+        };
+        components = {
+        };
+
+        mixins = [authorize];
+
+        data = {
+
+        };
+
+        methods = {
+
+        };
+
+        onLoad() {
+
+        }
+    }
+</script>

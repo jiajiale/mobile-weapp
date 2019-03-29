@@ -21,7 +21,7 @@
         <view class="wx-goods-title">下单商品</view>
         <view class="wx-goods-info" wx:for="{{cartList}}" wx:key="{{item.id}}">
             <view class="wx-goods-image">
-                <image src="https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg"/>
+                <image src="{{goodsImgThumb}}"/>
             </view>
             <view class="wx-goods-content">
                 <view class="wx-title">{{item.goods_name}}</view>
@@ -84,6 +84,7 @@
         mixins = [authorize];
 
         data = {
+            goodsImgThumb: api.THUMBNAIL_IMG,
             params: [],
             address: null,
             cartList: [],
