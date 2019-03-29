@@ -24,24 +24,73 @@
         </view>
     </view>
 
-    <!--<view>-->
-        <!--<h3>特价专区</h3>-->
-    <!--</view>-->
-
-    <view class="marginB20">
-        <i-card i-class="wx-promote-box" title="移动优惠" full extra="更多">
-            <view slot="content">
-                <view class="wx-image"><image src="https://www.caryue.com/Public/Uploads/adv/source/20181109/5be51b0c9ecc8.jpg" mode="scaleToFill"></image></view>
-                <i-row>
-                    <i-col span="8">col-8</i-col>
-                    <i-col span="8">col-8</i-col>
-                </i-row>
+    <view class="wx-on-sale marginB20">
+        <view class="wx-title">特价专区</view>
+        <view class="wx-row">
+            <view class="wx-item" style="float: left;">
+                <view class="wx-left">
+                    <image src="http://111.230.96.241:81/Public/Uploads/category/source/20180306/5a9e2b757e5ed.jpg" mode="scaleToFill"></image>
+                </view>
+                <view class="wx-right">
+                    <view>iPhone Xs Mas</view>
+                    <view>
+                        <view>直降¥1000.00</view>
+                        <view>现价¥6000.00</view>
+                    </view>
+                </view>
             </view>
-        </i-card>
+            <view class="wx-item" style="float: right;">
+                <view class="wx-left">
+
+                </view>
+                <view class="wx-right">
+
+                </view>
+            </view>
+        </view>
     </view>
 
+    <view class="wx-promote-box marginB20">
+        <i-row i-class="wx-head">
+            <i-col span="12">移动优惠</i-col>
+            <i-col span="12" style="text-align: right;color: #999;">更多</i-col>
+        </i-row>
+        <i-row i-class="wx-body">
+            <view class="wx-image"><image src="https://www.caryue.com/Public/Uploads/adv/source/20181109/5be51b0c9ecc8.jpg" mode="scaleToFill"></image></view>
+            <i-row>
+                <i-col span="12" i-class="wx-item">
+                    <view class="wx-icon"><icon class="iconfont icon-zhongguoyidong"/></view>
+                    <view class="wx-txt">移动优惠服务</view>
+                </i-col>
+                <i-col span="12" i-class="wx-item">
+                    <view class="wx-icon"><icon class="iconfont icon-kuandai"/></view>
+                    <view class="wx-txt">宽带优惠</view>
+                </i-col>
+            </i-row>
+        </i-row>
+    </view>
 
-    <view class="wx-adv-item">
+    <view class="wx-promote-box marginB20">
+        <i-row i-class="wx-head">
+            <i-col span="12">智能手机</i-col>
+            <i-col span="12" style="text-align: right;color: #999;">更多</i-col>
+        </i-row>
+        <i-row i-class="wx-body">
+            <view class="wx-image"><image src="https://www.caryue.com/Public/Uploads/adv/source/20181109/5be51b0c9ecc8.jpg" mode="scaleToFill"></image></view>
+            <i-row>
+                <i-col span="12" i-class="wx-item">
+                    <view class="wx-icon"><icon class="iconfont icon-zhongguoyidong"/></view>
+                    <view class="wx-txt">移动优惠服务</view>
+                </i-col>
+                <i-col span="12" i-class="wx-item">
+                    <view class="wx-icon"><icon class="iconfont icon-kuandai"/></view>
+                    <view class="wx-txt">宽带优惠</view>
+                </i-col>
+            </i-row>
+        </i-row>
+    </view>
+
+    <view class="wx-adv-item" style="padding-top:10rpx;">
         <image src="https://www.caryue.com/Public/Uploads/adv/source/20181109/5be51b0c9ecc8.jpg" mode="scaleToFill"></image>
     </view>
 

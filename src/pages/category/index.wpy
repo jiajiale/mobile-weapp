@@ -81,6 +81,7 @@
         onShow() {
             let _this = this;
             this.checkAuthorize(function () {
+                _this.activeIndex = 0;
                 _this.queryItemList();
             });
         };
