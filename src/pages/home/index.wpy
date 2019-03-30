@@ -15,8 +15,8 @@
 
     <view class="wx-cate-box marginB20">
         <view class="wx-cate-item" wx:for="{{cateList}}" wx:key="{{index}}">
-            <view class="wx-icon"><image src="http://111.230.96.241:81/Public/Uploads/category/source/20180306/5a9e2b757e5ed.jpg" mode="scaleToFill"></image></view>
-            <view class="wx-txt">移动优惠</view>
+            <view class="wx-icon"><image src="{{categoryImgUrl + item.image}}" mode="scaleToFill"></image></view>
+            <view class="wx-txt">{{item.name}}</view>
         </view>
         <view class="wx-cate-item">
             <view class="wx-icon"><image src="http://111.230.96.241:81/Public/Uploads/category/source/20180306/5a9e2b757e5ed.jpg" mode="scaleToFill"></image></view>
@@ -56,7 +56,7 @@
             <i-col span="12" style="text-align: right;color: #999;">更多</i-col>
         </i-row>
         <i-row i-class="wx-body">
-            <view class="wx-image"><image src="https://www.caryue.com/Public/Uploads/adv/source/20181109/5be51b0c9ecc8.jpg" mode="scaleToFill"></image></view>
+            <view class="wx-image" wx:if="{{advList[3]}}"><image src="{{advImgUrl + advList[3].images}}" mode="scaleToFill"></image></view>
             <i-row>
                 <i-col span="12" i-class="wx-item">
                     <view class="wx-icon"><icon class="iconfont icon-zhongguoyidong"/></view>
@@ -76,7 +76,7 @@
             <i-col span="12" style="text-align: right;color: #999;">更多</i-col>
         </i-row>
         <i-row i-class="wx-body">
-            <view class="wx-image"><image src="https://www.caryue.com/Public/Uploads/adv/source/20181109/5be51b0c9ecc8.jpg" mode="scaleToFill"></image></view>
+            <view class="wx-image" wx:if="{{advList[4]}}"><image src="{{advImgUrl + advList[4].images}}" mode="scaleToFill"></image></view>
             <i-row>
                 <i-col span="12" i-class="wx-item">
                     <view class="wx-icon"><icon class="iconfont icon-zhongguoyidong"/></view>
@@ -90,35 +90,36 @@
         </i-row>
     </view>
 
-    <view class="wx-adv-item" style="padding-top:10rpx;">
-        <image src="https://www.caryue.com/Public/Uploads/adv/source/20181109/5be51b0c9ecc8.jpg" mode="scaleToFill"></image>
+    <view class="wx-adv-item" wx:if="{{advList[1]}}" style="padding-top:10rpx;">
+        <image src="{{advImgUrl + advList[1].images}}" mode="scaleToFill"></image>
     </view>
 
     <view class="wx-goods-new">
         <i-row>
-            <i-col span="8" i-class="wx-goods-col">
-                <GoodsItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
-                    <view slot="title">夏季流行中长款文化衫</view>
-                    <view slot="extra"><span class="wx-goods-price">￥120.00</span></view>
-                </GoodsItem>
-            </i-col>
-            <i-col span="8" i-class="wx-goods-col">
-                <GoodsItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
-                    <view slot="title">夏季流行中长款文化衫</view>
-                    <view slot="extra">￥120.00</view>
-                </GoodsItem>
-            </i-col>
-            <i-col span="8" i-class="wx-goods-col">
-                <GoodsItem thumb="https://i.loli.net/2017/08/21/599a521472424.jpg">
-                    <view slot="title">夏季流行中长款文化衫</view>
-                    <view slot="extra">￥120.00</view>
+            <i-col span="8" i-class="wx-goods-col" wx:for="{{newGoodsList}}" wx:key="{{item.id}}">
+                <GoodsItem>
+                    <view slot="thumb" style="height: 100%;"><image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image></view>
+                    <view slot="title">{{item.goods_name}}</view>
+                    <view slot="extra"><span class="wx-goods-price">￥{{item.shop_price}}</span></view>
                 </GoodsItem>
             </i-col>
         </i-row>
     </view>
 
-    <view class="wx-adv-item">
-        <image src="https://www.caryue.com/Public/Uploads/adv/source/20181109/5be51b0c9ecc8.jpg" mode="scaleToFill"></image>
+    <view class="wx-adv-item" wx:if="{{advList[2]}}">
+        <image src="{{advImgUrl + advList[2].images}}" mode="scaleToFill"></image>
+    </view>
+
+    <view class="wx-goods-new">
+        <i-row>
+            <i-col span="8" i-class="wx-goods-col" wx:for="{{recommendGoodsList}}" wx:key="{{item.id}}">
+                <GoodsItem>
+                    <view slot="thumb" style="height: 100%;"><image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image></view>
+                    <view slot="title">{{item.goods_name}}</view>
+                    <view slot="extra"><span class="wx-goods-price">￥{{item.shop_price}}</span></view>
+                </GoodsItem>
+            </i-col>
+        </i-row>
     </view>
 </template>
 
@@ -148,13 +149,18 @@
 
         data = {
             focusImgUrl: api.FOCUS_IMG_URL,
+            categoryImgUrl: api.CATEGORY_IMG_URL,
+            goodsImgUrl: api.GOODS_IMG_URL,
+            advImgUrl: api.ADV_IMG_URL,
             indicatorDots: true,
             autoplay: true,
             interval: 5000,
             duration: 1000,
-            cateList: [1,2,3,4,5,6,7,8,9],
-            focusList: [
-            ],
+            cateList: [],
+            focusList: [],
+            newGoodsList: [],
+            recommendGoodsList: [],
+            advList: [],
         };
 
         methods = {
@@ -167,6 +173,10 @@
                 tip.loaded();
                 if(resp.data){
                     this.focusList = resp.data.focusList;
+                    this.cateList = resp.data.categoryList;
+                    this.newGoodsList = resp.data.newGoods;
+                    this.recommendGoodsList = resp.data.recommendGoods;
+                    this.advList = resp.data.advList;
                     this.$apply();
                 }
             });

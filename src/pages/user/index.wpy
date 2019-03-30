@@ -92,13 +92,13 @@
                     </i-grid-icon>
                     <i-grid-label>我的反馈</i-grid-label>
                 </i-grid-item>
-                <i-grid-item i-class="wx-item" data-url="/pages/user/order" @tap="handleGo">
+                <i-grid-item i-class="wx-item" data-url="/pages/user/code" @tap="handleGo">
                     <i-grid-icon i-class="wx-icon">
                         <icon class="iconfont icon-erweima"/>
                     </i-grid-icon>
                     <i-grid-label>我的二维码</i-grid-label>
                 </i-grid-item>
-                <i-grid-item i-class="wx-item" data-url="/pages/user/order" @tap="handleGo">
+                <i-grid-item i-class="wx-item" data-url="/pages/user/contact" @tap="handleGo">
                     <i-grid-icon i-class="wx-icon">
                         <icon class="iconfont icon-lianxiwomen"/>
                     </i-grid-icon>

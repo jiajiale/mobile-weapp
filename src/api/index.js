@@ -6,6 +6,7 @@ const APP_URL = 'http://111.230.96.241:81';
 const GOODS_IMG_URL = APP_URL + '/Public/Uploads/goods/source/';
 const CATEGORY_IMG_URL = APP_URL + '/Public/Uploads/category/source/';
 const FOCUS_IMG_URL = APP_URL + '/Public/Uploads/focus/source/';
+const ADV_IMG_URL = APP_URL + '/Public/Uploads/adv/source/';
 const PHOTO_IMG_URL = APP_URL + '/Public/Uploads/photo/';
 const UPLOAD_IMG_URL = APP_URL + '/Admin/Image/uploadPicture';
 const THUMBNAIL_IMG = APP_URL + '/Api/Public/thumbnail';
@@ -35,6 +36,7 @@ export default{
     GOODS_IMG_URL: GOODS_IMG_URL,
     CATEGORY_IMG_URL: CATEGORY_IMG_URL,
     FOCUS_IMG_URL: FOCUS_IMG_URL,
+    ADV_IMG_URL: ADV_IMG_URL,
     PHOTO_IMG_URL: PHOTO_IMG_URL,
     UPLOAD_IMG_URL: UPLOAD_IMG_URL,
     THUMBNAIL_IMG: THUMBNAIL_IMG,
@@ -58,6 +60,7 @@ export default{
     receiveOrder: (method,params) => wxRequest(method,params, "/api/user/receiveOrder"),
     queryOrderList: (method,params) => wxRequest(method,params, "/api/user/getOrderList"),
     queryAddressList: (method,params) => wxRequest(method,params, "/api/user/getAddressList"),
+    makeUserCode: (method,params) => wxRequest(method,params, "/api/user/makeUserCode"),
     saveAddress: (method,params) => wxRequest(method,params, "/api/user/saveAddress"),
     delAddress: (method,params) => wxRequest(method,params, "/api/user/delAddress"),
     setDefaultAddress: (method,params) => wxRequest(method,params, "/api/user/setDefaultAddress"),
