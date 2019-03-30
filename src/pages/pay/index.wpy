@@ -55,6 +55,7 @@
         mixins = [authorize];
 
         data = {
+            params: [],
             payModeList: [
                 {name: 'wx',value: '微信支付',checked: true},
                 {name: 'offline',value: '线下支付'}
@@ -65,8 +66,8 @@
 
         };
 
-        onLoad() {
-
+        onLoad(params) {
+            this.params = params;
         }
     }
 </script>

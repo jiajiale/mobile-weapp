@@ -21,7 +21,7 @@
         <view class="wx-goods-title">下单商品</view>
         <view class="wx-goods-info" wx:for="{{cartList}}" wx:key="{{item.id}}">
             <view class="wx-goods-image">
-                <image src="{{goodsImgThumb}}"/>
+                <image src="{{goodsImgThumb + '?goods_id=' + item.goods_id }}"/>
             </view>
             <view class="wx-goods-content">
                 <view class="wx-title">{{item.goods_name}}</view>
@@ -36,7 +36,7 @@
         <i-cell-group>
             <i-cell title="配送方式" i-class="wx-spec-item" is-link value="顺丰快递（超过3kg需补交快递费）"></i-cell>
             <i-cell title="备注">
-                <input slot="footer" type="text" placeholder="请输入备注"/>
+                <input slot="footer" type="text" placeholder="请输入备注" data-key="user_note" bindchange="handleInput"/>
             </i-cell>
         </i-cell-group>
     </view>
@@ -53,8 +53,8 @@
             <i-col span="18" i-class="wx-order-money">
                 <view class="wx-price">￥{{totalPrice.total_fee + totalPrice.delivery_fee}}</view>
             </i-col>
-            <i-col span="6" i-class="wx-buy-action">
-                <view>提交订单</view>
+            <i-col span="6">
+                <view class="{{isSubmit ? 'wx-buy-action wx-disable' : 'wx-buy-action'}}" @tap="handleOrder">提交订单</view>
             </i-col>
         </i-row>
     </view>
@@ -88,12 +88,41 @@
             params: [],
             address: null,
             cartList: [],
-            totalPrice: {}
+            totalPrice: {},
+            isSubmit: false,
+            formData: {
+                'shipping_code': 'shunfeng',
+                'shipping_name': '顺丰快递',
+                'user_note': ''
+            }
         };
 
         methods = {
-
+            handleOrder(){
+                let _this = this;
+                this.formData['address_id'] = this.address.id;
+                this.formData['is_goods'] = 1;
+                this.formData['from'] = this.params.from ? this.params.from : '';
+                if(!this.isSubmit){
+                    this.isSubmit = true;
+                    tip.loading(MSG.COMMITTING);
+                    api.createGoodsOrder('POST',this.formData).then(resp => {
+                        tip.loaded();
+                        _this.isSubmit = false;
+                        if(resp && resp.code === 200){
+                            wepy.navigateTo({url: '/pages/pay/index?order_no=' + resp.data.order_sn});
+                        }else{
+                            tip.error(resp.msg);
+                        }
+                    });
+                }
+            }
         };
+
+        handleInput(e){
+            let key = e.currentTarget.dataset.key;
+            this.formData[key] = e.detail.value;
+        }
 
         async queryItem() {
             tip.loading(MSG.LOADING);

@@ -288,7 +288,7 @@
         };
 
         onLoad(params) {
-            params.id = 1880;
+            params.id = 120;
             this.params = params;
         }
     }
