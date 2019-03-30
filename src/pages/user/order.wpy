@@ -75,6 +75,7 @@
         mixins = [pagination,authorize];
 
         data = {
+            params: [],
             current: 'ALL',
             goodsImgUrl: api.GOODS_IMG_URL,
             orderList: [],
@@ -127,8 +128,12 @@
             });
         };
 
-        onLoad() {
+        onLoad(params) {
+            this.params = params;
 
+            if(this.params.type){
+                this.current = this.params.type.toUpperCase();
+            }
         }
     }
 </script>

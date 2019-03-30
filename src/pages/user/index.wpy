@@ -32,19 +32,19 @@
             <i-cell title="我的订单" is-link value="全部" data-url="/pages/user/order" @tap="handleGo"></i-cell>
         </i-panel>
         <i-row i-class="wx-user-order-box">
-            <i-col span="6" i-class="col-class" data-url="/pages/user/order" @tap="handleGo">
+            <i-col span="6" i-class="col-class" data-url="/pages/user/order?type=unpay" @tap="handleGo">
                 <view><icon class="iconfont icon-daifukuan"/></view>
                 <view>待付款</view>
             </i-col>
-            <i-col span="6" i-class="col-class" data-url="/pages/user/order" @tap="handleGo">
+            <i-col span="6" i-class="col-class" data-url="/pages/user/order?type=unsend" @tap="handleGo">
                 <view><icon class="iconfont icon-icon2"/></view>
                 <view>待发货</view>
             </i-col>
-            <i-col span="6" i-class="col-class" data-url="/pages/user/order" @tap="handleGo">
+            <i-col span="6" i-class="col-class" data-url="/pages/user/order?type=unreceive" @tap="handleGo">
                 <view><icon class="iconfont icon-icon3"/></view>
                 <view>待收货</view>
             </i-col>
-            <i-col span="6" i-class="col-class" data-url="/pages/user/order" @tap="handleGo">
+            <i-col span="6" i-class="col-class" data-url="/pages/user/order?type=finish" @tap="handleGo">
                 <view><icon class="iconfont icon-yiwancheng1"/></view>
                 <view>已完成</view>
             </i-col>
