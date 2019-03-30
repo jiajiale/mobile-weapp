@@ -110,6 +110,9 @@
                         tip.loaded();
                         _this.isSubmit = false;
                         if(resp && resp.code === 200){
+                            if(this.params.from === undefined || this.params.from !== 'goods'){
+                                wx.setStorageSync('goodsCart',null);
+                            }
                             wepy.navigateTo({url: '/pages/pay/index?order_id=' + resp.data.id});
                         }else{
                             tip.error(resp.msg);
@@ -145,7 +148,6 @@
         };
 
         onLoad(params) {
-            params.from = 'goods';
             this.params = params;
         }
     }

@@ -90,9 +90,13 @@
             delCartItem(e){
                 let index = e.currentTarget.dataset.index;
                 let goods = e.currentTarget.dataset.item;
-                this.cartList.splice(index,1);
-                this.syncCartInfo(goods);
-                this.$apply();
+                tip.loading(MSG.DELETE);
+                api.delGoodsCart('POST',{goods_id: goods.id}).then(resp => {
+                    tip.loaded();
+                    this.cartList.splice(index,1);
+                    this.syncCartInfo(goods);
+                    this.$apply();
+                });
             },
             handleChangeNum({ detail,currentTarget }){
                 let index = currentTarget.dataset.index;
@@ -131,7 +135,7 @@
             },
             handleCheck(){
                 if(this.hasSelect){
-
+                    this.addGoodsCart();
                 }else{
                     tip.toast(MSG.SELECT_GOODS);
                 }
@@ -152,6 +156,32 @@
         syncCartInfo(){
             wx.setStorageSync('goodsCart',this.cartList);
         }
+
+        async addGoodsCart() {
+            let cartInfo = [];
+            for(let i in this.cartList){
+                cartInfo.push({
+                    goods_id: this.cartList[i].id,
+                    goods_num: 1,
+                    goods_spec: this.cartList[i].select_spec
+                })
+            }
+            tip.loading(MSG.COMMITTING);
+            await api.addGoodsCart('POST',{
+                cartList: cartInfo,
+            }).then(resp => {
+                tip.loaded();
+                console.log(resp);
+                if(resp.status === 'success'){
+                    this.cartList = [];
+                    wx.navigateTo({
+                        url: '/pages/check/order'
+                    })
+                }else{
+                    tip.toast(resp.msg);
+                }
+            });
+        };
 
         onShow() {
             let _this = this;
