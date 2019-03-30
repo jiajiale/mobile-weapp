@@ -51,7 +51,7 @@
         </i-row>
     </view>
 
-    <view class="wx-user-module">
+    <view class="wx-user-module marginB20">
         <i-grid>
             <i-row>
                 <i-grid-item i-class="wx-item" data-url="/pages/user/service" @tap="handleGo">
@@ -106,6 +106,10 @@
                 </i-grid-item>
             </i-row>
         </i-grid>
+    </view>
+
+    <view class="wx-user-adv marginB20">
+        <image src="https://www.caryue.com/Public/Uploads/adv/source/20181109/5be51b0c9ecc8.jpg" mode="scaleToFill"></image>
     </view>
 </template>
 

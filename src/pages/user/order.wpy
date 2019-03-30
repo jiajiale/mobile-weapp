@@ -93,7 +93,7 @@
 
         queryReload(){
             this.page = 1;
-            this.goodsList = [];
+            this.orderList = [];
             this.hasPage = true;
             this.queryItemList();
         };
@@ -103,7 +103,7 @@
             await api.queryOrderList('POST',{
                 page: this.page,
                 type: this.current,
-                //is_goods: 1
+                is_goods: 1
             }).then(resp => {
                 tip.loaded();
                 if(resp.data){

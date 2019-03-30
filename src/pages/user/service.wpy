@@ -1,44 +1,127 @@
 <style lang="less">
-    @import "../../assets/styles/service_index";
+    @import "../../assets/styles/user";
 </style>
 <template>
     <view>
-        <i-tabs current="{{ current }}">
-            <i-tab key="tab1" title="全部"></i-tab>
-            <i-tab key="tab1" title="待付款"></i-tab>
-            <i-tab key="tab2" title="待办理"></i-tab>
-            <i-tab key="tab3" title="已办理"></i-tab>
+        <i-tabs current="{{ current }}" color="#ec3a3e">
+            <i-tab key="ALL" title="全部"></i-tab>
+            <i-tab key="UNPAY" title="待付款"></i-tab>
+            <i-tab key="UNDO" title="待办理"></i-tab>
+            <i-tab key="FINISH" title="已办理"></i-tab>
         </i-tabs>
+    </view>
+
+    <view class="marginT20">
+        <view class="marginB20" wx:for="{{orderList}}" wx:key="{{item.id}}" wx:if="{{orderList.length}}">
+            <i-card title="{{item.gmt_create}}" full extra="{{item.status_desc}}">
+                <view slot="content">
+                    <repeat for="{{item.goods_list}}" key="{{goodsItem.id}}" item="goodsItem">
+                        <OrderItem>
+                            <view slot="thumb" style="height: 100%;"><image src="{{goodsImgUrl + goodsItem.original_img}}" mode="scaleToFill"></image></view>
+                            <view slot="title">{{goodsItem.goods_name}}</view>
+                            <view slot="tags">
+                                <view class="marginT10">
+                                    <i-tag type="border">{{goodsItem.spec_key_name}}</i-tag>
+                                </view>
+                            </view>
+                            <view slot="extra">
+                                <view style="color: #ec3a3e;">￥{{goodsItem.goods_price}}</view>
+                                <view style="color: #999;">X{{goodsItem.goods_num}}</view>
+                            </view>
+                            <view slot="footer">
+                                sdf
+                            </view>
+                        </OrderItem>
+                    </repeat>
+                </view>
+                <view slot="footer">
+                    fsdf
+                </view>
+            </i-card>
+        </view>
+        <view wx:if="{{!orderList.length}}">
+            <NoInfo emptyText="暂无订单信息" marginTop="200"></NoInfo>
+        </view>
     </view>
 </template>
 
 <script>
     import wepy from 'wepy';
+    import OrderItem from '../../components/order-item';
+    import LoadMore from '../../components/load-more';
+    import NoInfo from '../../components/no-info';
+    import authorize from '../../mixins/authorize';
+    import pagination from '../../mixins/pagination';
+    import api from '../../api';
+    import tip from '../../utils/tip';
+    import utils from '../../utils/util';
+    import MSG from '../../utils/msg';
 
     export default class UserService extends wepy.page {
         config = {
             navigationBarTitleText: '业务',
             usingComponents: {
                 "i-tabs": "../../iview/tabs/index",
-                "i-tab": "../../iview/tab/index"
+                "i-tab": "../../iview/tab/index",
+                "i-card": "../../iview/card/index",
+                "i-tag": "../../iview/tag/index",
             }
         };
         components = {
+            OrderItem: OrderItem,
+            NoInfo: NoInfo,
         };
 
-        mixins = [];
+        mixins = [pagination,authorize];
 
         data = {
-            current: 'tab1'
+            current: 'ALL',
+            goodsImgUrl: api.GOODS_IMG_URL,
+            orderList: [],
+            page: 1,
+            hasPage: true,
         };
-
-        computed = {};
 
         methods = {
 
         };
 
-        events = {};
+        queryReload(){
+            this.page = 1;
+            this.orderList = [];
+            this.hasPage = true;
+            this.queryItemList();
+        };
+
+        async queryItemList() {
+            tip.loading(MSG.LOADING);
+            await api.queryOrderList('POST',{
+                page: this.page,
+                type: this.current,
+                is_goods: 0
+            }).then(resp => {
+                tip.loaded();
+                if(resp.data){
+                    resp.data.items.filter(item => {
+                        item.gmt_create = utils.formatDateTime(item.gmt_create,'yyyy-MM-dd');
+                    });
+                    this.orderList = this.orderList.concat(resp.data.items);
+                    if(resp.data.pager.index >= resp.data.pager.count){
+                        this.hasPage = false;
+                    }
+                }else{
+                    this.orderList = [];
+                }
+                this.$apply();
+            });
+        };
+
+        onShow() {
+            let _this = this;
+            this.checkAuthorize(function () {
+                _this.queryReload();
+            });
+        };
 
         onLoad() {
 
