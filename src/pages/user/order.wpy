@@ -3,7 +3,7 @@
 </style>
 <template>
     <view>
-        <i-tabs current="{{ current }}" bindchange="handleChangeStatus">
+        <i-tabs current="{{ current }}" color="#ec3a3e" bindchange="handleChangeStatus">
             <i-tab key="ALL" title="全部"></i-tab>
             <i-tab key="UNPAY" title="待付款"></i-tab>
             <i-tab key="UNSEND" title="待发货"></i-tab>
@@ -39,7 +39,7 @@
                 </view>
             </i-card>
         </view>
-        <view>
+        <view wx:if="{{!orderList.length}}">
             <NoInfo emptyText="暂无订单信息" marginTop="200"></NoInfo>
         </view>
     </view>

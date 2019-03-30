@@ -125,6 +125,11 @@
 <script>
     import wepy from 'wepy';
     import GoodsItem from '../../components/goods-item';
+    import authorize from '../../mixins/authorize';
+    import api from '../../api';
+    import tip from '../../utils/tip';
+    import utils from '../../utils/util';
+    import MSG from '../../utils/msg';
 
     export default class HomeIndex extends wepy.page {
         config = {
@@ -139,7 +144,7 @@
             GoodsItem: GoodsItem,
         };
 
-        mixins = [];
+        mixins = [authorize];
 
         data = {
             indicatorDots: true,
@@ -154,16 +159,17 @@
             ],
         };
 
-        computed = {};
-
         methods = {
 
         };
 
-        events = {};
+        onShow() {
+            let _this = this;
+            this.checkAuthorize(function () {
+            });
+        };
 
         onLoad() {
-
         }
     }
 </script>

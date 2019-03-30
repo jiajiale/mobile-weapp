@@ -5,7 +5,7 @@
     }
 </style>
 <template>
-    <checkbox-group bindchange="handleChangeSelect">
+    <checkbox-group bindchange="handleChangeSelect" wx:if="{{cartList.length}}">
     <i-swipeout  i-class="wx-sheet-cart-item marginB20" actions="{{actions}}" wx:for="{{cartList}}" wx:for-item="goods" wx:key="{{goods.id}}" data-item="{{goods}}" data-index="{{index}}" bindchange="delCartItem">
         <view slot="content">
             <view class="wx-cart-info">
@@ -29,8 +29,11 @@
         </view>
     </i-swipeout>
     </checkbox-group>
+    <view wx:if="{{!cartList.length}}">
+        <NoInfo emptyText="购物车空空如也~" marginTop="200"></NoInfo>
+    </view>
 
-    <view class="wx-cart-actions">
+    <view class="wx-cart-actions" wx:if="{{cartList.length}}">
         <i-row>
             <i-col span="18" i-class="wx-cart-money">
                 <view>
@@ -48,6 +51,7 @@
 
 <script>
     import wepy from 'wepy';
+    import NoInfo from '../../components/no-info';
     import authorize from '../../mixins/authorize';
     import api from '../../api';
     import tip from '../../utils/tip';
@@ -65,6 +69,7 @@
             }
         };
         components = {
+            NoInfo: NoInfo
         };
 
         mixins = [authorize];

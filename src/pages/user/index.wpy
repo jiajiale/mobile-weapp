@@ -29,23 +29,23 @@
 
     <view class="wx-user-order marginB20">
         <i-panel class="cell-panel-demo">
-            <i-cell title="我的订单" is-link value="全部" data-key="order" @tap="handleGo"></i-cell>
+            <i-cell title="我的订单" is-link value="全部" data-url="/pages/user/order" @tap="handleGo"></i-cell>
         </i-panel>
         <i-row i-class="wx-user-order-box">
-            <i-col span="6" i-class="col-class" data-key="order" @tap="handleGo">
-                <view><icon class="iconfont icon-gouwuche"/></view>
+            <i-col span="6" i-class="col-class" data-url="/pages/user/order" @tap="handleGo">
+                <view><icon class="iconfont icon-daifukuan"/></view>
                 <view>待付款</view>
             </i-col>
-            <i-col span="6" i-class="col-class" data-key="order" @tap="handleGo">
-                <view><icon class="iconfont icon-gouwuche"/></view>
+            <i-col span="6" i-class="col-class" data-url="/pages/user/order" @tap="handleGo">
+                <view><icon class="iconfont icon-icon2"/></view>
                 <view>待发货</view>
             </i-col>
-            <i-col span="6" i-class="col-class" data-key="order" @tap="handleGo">
-                <view><icon class="iconfont icon-gouwuche"/></view>
+            <i-col span="6" i-class="col-class" data-url="/pages/user/order" @tap="handleGo">
+                <view><icon class="iconfont icon-icon3"/></view>
                 <view>待收货</view>
             </i-col>
-            <i-col span="6" i-class="col-class" data-key="order" @tap="handleGo">
-                <view><icon class="iconfont icon-gouwuche"/></view>
+            <i-col span="6" i-class="col-class" data-url="/pages/user/order" @tap="handleGo">
+                <view><icon class="iconfont icon-yiwancheng1"/></view>
                 <view>已完成</view>
             </i-col>
         </i-row>
@@ -54,43 +54,55 @@
     <view class="wx-user-module">
         <i-grid>
             <i-row>
-                <i-grid-item data-key="order" @tap="handleGo">
-                    <i-grid-icon>
-                        <icon class="iconfont icon-gouwuche"/>
+                <i-grid-item i-class="wx-item" data-url="/pages/user/service" @tap="handleGo">
+                    <i-grid-icon i-class="wx-icon">
+                        <icon class="iconfont icon-chaxunyewu"/>
                     </i-grid-icon>
                     <i-grid-label>我的业务</i-grid-label>
                 </i-grid-item>
-                <i-grid-item data-key="order" @tap="handleGo">
-                    <i-grid-icon>
-                        <icon class="iconfont icon-gouwuche"/>
+                <i-grid-item i-class="wx-item" data-url="/pages/user/order" @tap="handleGo">
+                    <i-grid-icon i-class="wx-icon">
+                        <icon class="iconfont icon-tuihuodan"/>
                     </i-grid-icon>
-                    <i-grid-label>我的积分</i-grid-label>
+                    <i-grid-label>我的售后</i-grid-label>
                 </i-grid-item>
-                <i-grid-item data-key="order" @tap="handleGo">
-                    <i-grid-icon>
-                        <icon class="iconfont icon-gouwuche"/>
+                <i-grid-item i-class="wx-item" data-url="/pages/user/order" @tap="handleGo">
+                    <i-grid-icon i-class="wx-icon">
+                        <icon class="iconfont icon-integral"/>
                     </i-grid-icon>
-                    <i-grid-label>我的信息</i-grid-label>
+                    <i-grid-label>我的和币</i-grid-label>
+                </i-grid-item>
+                <i-grid-item i-class="wx-item" data-url="/pages/user/order" @tap="handleGo">
+                    <i-grid-icon i-class="wx-icon">
+                        <icon class="iconfont icon-ziyuan" style="font-size: 30rpx;"/>
+                    </i-grid-icon>
+                    <i-grid-label>我的客户</i-grid-label>
                 </i-grid-item>
             </i-row>
             <i-row>
-                <i-grid-item data-key="order" @tap="handleGo">
-                    <i-grid-icon>
-                        <icon class="iconfont icon-gouwuche"/>
+                <i-grid-item i-class="wx-item" data-url="/pages/user/address" @tap="handleGo">
+                    <i-grid-icon i-class="wx-icon">
+                        <icon class="iconfont icon-dizhi-01" style="font-size: 36rpx;font-weight: bold;"/>
                     </i-grid-icon>
                     <i-grid-label>我的地址</i-grid-label>
                 </i-grid-item>
-                <i-grid-item data-key="order" @tap="handleGo">
-                    <i-grid-icon>
-                        <icon class="iconfont icon-gouwuche"/>
+                <i-grid-item i-class="wx-item" data-url="/pages/user/order" @tap="handleGo">
+                    <i-grid-icon i-class="wx-icon">
+                        <icon class="iconfont icon-yijianfankui"/>
                     </i-grid-icon>
                     <i-grid-label>我的反馈</i-grid-label>
                 </i-grid-item>
-                <i-grid-item data-key="order" @tap="handleGo">
-                    <i-grid-icon>
-                        <icon class="iconfont icon-gouwuche"/>
+                <i-grid-item i-class="wx-item" data-url="/pages/user/order" @tap="handleGo">
+                    <i-grid-icon i-class="wx-icon">
+                        <icon class="iconfont icon-erweima"/>
                     </i-grid-icon>
-                    <i-grid-label>帮助中心</i-grid-label>
+                    <i-grid-label>我的二维码</i-grid-label>
+                </i-grid-item>
+                <i-grid-item i-class="wx-item" data-url="/pages/user/order" @tap="handleGo">
+                    <i-grid-icon i-class="wx-icon">
+                        <icon class="iconfont icon-lianxiwomen"/>
+                    </i-grid-icon>
+                    <i-grid-label>联系我们</i-grid-label>
                 </i-grid-item>
             </i-row>
         </i-grid>
@@ -126,8 +138,9 @@
         computed = {};
 
         methods = {
-            handleGo(){
-                console.log('aaa');
+            handleGo(e){
+                let url = e.currentTarget.dataset.url;
+                wepy.navigateTo({url: url});
             }
         };
 
