@@ -35,9 +35,9 @@
             <view class="wx-order-append">
                 <view class="wx-count">共{{item.goods_list.length}}件商品，实付<span style="color: #ec3a3e;">￥{{item.order_amount}}</span></view>
                 <view class="wx-actions" wx:if="{{item.pay_btn === 1 || item.cancel_btn === 1 || item.receive_btn === 1}}">
-                    <view class="cancel-btn" wx:if="{{item.cancel_btn === 1}}">关闭订单</view>
-                    <view class="pay-btn" wx:if="{{item.pay_btn === 1}}">去付款</view>
-                    <view class="receive-btn" wx:if="{{item.receive_btn === 1}}">确认收货</view>
+                    <view class="cancel-btn" wx:if="{{item.cancel_btn === 1}}" data-action="cancel" data-item="{{item}}" @tap="cancelOrder">关闭订单</view>
+                    <view class="pay-btn" wx:if="{{item.pay_btn === 1}}" data-action="pay" data-item="{{item}}" @tap="payOrder">去付款</view>
+                    <view class="receive-btn" wx:if="{{item.receive_btn === 1}}" data-action="receive" data-item="{{item}}" @tap="receiveOrder">确认收货</view>
                 </view>
             </view>
         </view>
@@ -45,6 +45,10 @@
             <NoInfo emptyText="暂无订单信息" marginTop="200"></NoInfo>
         </view>
     </view>
+
+    <i-modal title="{{confirmTxt}}确认" visible="{{ confirmModal }}" actions="{{ confirmBtn }}" bind:click="handleConfirm">
+        <view style="margin-bottom: 20rpx;">确定要{{confirmTxt}}吗？</view>
+    </i-modal>
 </template>
 
 <script>
@@ -67,6 +71,7 @@
                 "i-tab": "../../iview/tab/index",
                 "i-card": "../../iview/card/index",
                 "i-tag": "../../iview/tag/index",
+                "i-modal": "../../iview/modal/index",
             }
         };
         components = {
@@ -81,8 +86,21 @@
             current: 'ALL',
             goodsImgThumb: api.THUMBNAIL_IMG,
             orderList: [],
+            order: {},
+            action: '',
             page: 1,
             hasPage: true,
+            confirmModal: false,
+            confirmTxt: '删除',
+            confirmBtn: [
+                {
+                    name: '取消'
+                },
+                {
+                    name: '删除',
+                    loading: false
+                }
+            ],
         };
 
 
@@ -90,7 +108,60 @@
             handleChangeStatus({ detail }){
                 this.current = detail.key;
                 this.queryReload();
-            }
+            },
+            cancelOrder(e){
+                this.order = e.currentTarget.dataset.item;
+                this.action = e.currentTarget.dataset.action;
+                this.confirmModal = true;
+                this.confirmTxt = '关闭';
+                this.confirmBtn[1].name = '关闭';
+            },
+            payOrder(e){
+                console.log('aaa');
+            },
+            receiveOrder(e){
+                this.order = e.currentTarget.dataset.item;
+                this.action = e.currentTarget.dataset.action;
+                this.confirmModal = true;
+                this.confirmTxt = '收货';
+                this.confirmBtn[1].name = '收货';
+            },
+            handleConfirm({ detail }){
+                if(detail.index === 0){
+                    this.confirmModal = false;
+                }else{
+                    this.confirmBtn[1].loading = true;
+                    let _this = this;
+
+                    if(this.action === 'cancel'){
+                        api.cancelOrder('POST',{order_id: this.order.id}).then(resp => {
+                            this.confirmBtn[1].loading = false;
+                            if(resp.code === 200){
+                                this.confirmModal = false;
+                                tip.success(resp.msg);
+                                setTimeout(function () {
+                                    _this.queryReload();
+                                },500)
+                            }else{
+                                tip.error(resp.msg)
+                            }
+                        });
+                    }else if(this.action === 'receive'){
+                        api.receiveOrder('POST',{order_id: this.order.id}).then(resp => {
+                            this.confirmBtn[1].loading = false;
+                            if(resp.code === 200){
+                                this.confirmModal = false;
+                                tip.success(resp.msg);
+                                setTimeout(function () {
+                                    _this.queryReload();
+                                },500)
+                            }else{
+                                tip.error(resp.msg)
+                            }
+                        });
+                    }
+                }
+            },
         };
 
         queryReload(){
