@@ -11,13 +11,13 @@
         </i-tabs>
     </view>
 
-    <view class="marginT20">
+    <view class="wx-order-list marginT20">
         <view class="marginB20" wx:for="{{orderList}}" wx:key="{{item.id}}" wx:if="{{orderList.length}}">
-            <i-card title="{{item.gmt_create}}" full extra="{{item.status_desc}}">
+            <i-card title="{{item.gmt_create}}" full extra="{{item.status_desc}}" i-class="wx-order-card">
                 <view slot="content">
                     <repeat for="{{item.goods_list}}" key="{{goodsItem.id}}" item="goodsItem">
                         <OrderItem>
-                            <view slot="thumb" style="height: 100%;"><image src="{{goodsImgUrl + goodsItem.original_img}}" mode="scaleToFill"></image></view>
+                            <view slot="thumb" style="height: 100%;"><image src="{{goodsImgThumb + '?goods_id=' + goodsItem.goods_id}}" mode="scaleToFill"></image></view>
                             <view slot="title">{{goodsItem.goods_name}}</view>
                             <view slot="tags">
                                 <view class="marginT10">
@@ -25,19 +25,16 @@
                                 </view>
                             </view>
                             <view slot="extra">
-                                <view style="color: #ec3a3e;">￥{{goodsItem.goods_price}}</view>
+                                <view style="color: #999;">￥{{goodsItem.goods_price}}</view>
                                 <view style="color: #999;">X{{goodsItem.goods_num}}</view>
-                            </view>
-                            <view slot="footer">
-                                sdf
                             </view>
                         </OrderItem>
                     </repeat>
                 </view>
-                <view slot="footer">
-                    fsdf
-                </view>
             </i-card>
+            <view class="wx-order-append">
+                <view class="wx-count">共{{item.goods_list.length}}件商品，实付<span style="color: #ec3a3e;">￥{{item.order_amount}}</span></view>
+            </view>
         </view>
         <view wx:if="{{!orderList.length}}">
             <NoInfo emptyText="暂无订单信息" marginTop="200"></NoInfo>
@@ -75,6 +72,7 @@
         mixins = [pagination,authorize];
 
         data = {
+            goodsImgThumb: api.THUMBNAIL_IMG,
             current: 'ALL',
             goodsImgUrl: api.GOODS_IMG_URL,
             orderList: [],

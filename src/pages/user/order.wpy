@@ -17,7 +17,7 @@
                 <view slot="content">
                     <repeat for="{{item.goods_list}}" key="{{goodsItem.id}}" item="goodsItem">
                         <OrderItem>
-                            <view slot="thumb" style="height: 100%;"><image src="{{goodsImgUrl + goodsItem.original_img}}" mode="scaleToFill"></image></view>
+                            <view slot="thumb" style="height: 100%;"><image src="{{goodsImgThumb + '?goods_id=' + goodsItem.goods_id}}" mode="scaleToFill"></image></view>
                             <view slot="title">{{goodsItem.goods_name}}</view>
                             <view slot="tags">
                                 <view class="marginT10">
@@ -25,7 +25,7 @@
                                 </view>
                             </view>
                             <view slot="extra">
-                                <view style="color: #ec3a3e;">￥{{goodsItem.goods_price}}</view>
+                                <view style="color: #999;">￥{{goodsItem.goods_price}}</view>
                                 <view style="color: #999;">X{{goodsItem.goods_num}}</view>
                             </view>
                             <view slot="footer">
@@ -77,7 +77,7 @@
         data = {
             params: [],
             current: 'ALL',
-            goodsImgUrl: api.GOODS_IMG_URL,
+            goodsImgThumb: api.THUMBNAIL_IMG,
             orderList: [],
             page: 1,
             hasPage: true,
