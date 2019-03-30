@@ -110,7 +110,7 @@
                         tip.loaded();
                         _this.isSubmit = false;
                         if(resp && resp.code === 200){
-                            wepy.navigateTo({url: '/pages/pay/index?order_no=' + resp.data.order_sn});
+                            wepy.navigateTo({url: '/pages/pay/index?order_id=' + resp.data.id});
                         }else{
                             tip.error(resp.msg);
                         }

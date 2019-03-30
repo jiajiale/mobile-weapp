@@ -48,6 +48,7 @@ export default{
     queryCartGoods: (method,params) => wxRequest(method,params, "/api/order/getCartGoods"),
     createGoodsOrder: (method,params) => wxRequest(method,params, "/api/order/goods"),
     createServiceOrder: (method,params) => wxRequest(method,params, "/api/order/service"),
+    queryPayOrder: (method,params) => wxRequest(method,params, "/api/order/queryPayOrder"),
     payOrder: (method,params) => wxRequest(method,params, "/api/order/pay"),
     queryOrderList: (method,params) => wxRequest(method,params, "/api/user/getOrderList"),
     queryAddressList: (method,params) => wxRequest(method,params, "/api/user/getAddressList"),

@@ -66,7 +66,28 @@
 
         };
 
+        async queryItem() {
+            tip.loading(MSG.LOADING);
+            await api.queryPayOrder('POST',{
+                order_id: this.params.order_id,
+            }).then(resp => {
+                tip.loaded();
+                if(resp.data){
+
+                    this.$apply();
+                }
+            });
+        };
+
+        onShow() {
+            let _this = this;
+            this.checkAuthorize(function () {
+                _this.queryItem();
+            });
+        };
+
         onLoad(params) {
+            params.order_id = 4207;
             this.params = params;
         }
     }

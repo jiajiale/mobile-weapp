@@ -10,12 +10,12 @@
 
         config = {
             pages: [
+                'pages/pay/index',
                 'pages/user/index',
                 'pages/goods/detail',
                 'pages/check/order',
                 'pages/user/service',
                 'pages/home/index',
-                'pages/pay/index',
                 'pages/pay/finish',
                 'pages/category/index',
                 'pages/user/address',
