@@ -117,7 +117,9 @@
                 this.confirmBtn[1].name = '关闭';
             },
             payOrder(e){
-                console.log('aaa');
+                this.order = e.currentTarget.dataset.item;
+                this.action = e.currentTarget.dataset.action;
+                wx.navigateTo({url: '/pages/pay/index?order_id=' + this.order.id})
             },
             receiveOrder(e){
                 this.order = e.currentTarget.dataset.item;

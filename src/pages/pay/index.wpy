@@ -8,6 +8,7 @@
             <view class="wx-subtitle">请及时付款，超时订单将自动关闭</view>
         </view>
         <i-cell-group>
+            <i-cell title="订单编号" i-class="wx-spec-item" value="￥{{goodsOrder.order_sn}}"></i-cell>
             <i-cell title="商品金额" i-class="wx-spec-item" value="￥{{goodsOrder.goods_price}}"></i-cell>
             <i-cell title="运费" i-class="wx-spec-item" value="￥{{goodsOrder.shipping_price}}"></i-cell>
             <i-cell title="需付款" i-class="wx-spec-item" value="￥{{goodsOrder.total_amount}}"></i-cell>
@@ -141,7 +142,6 @@
         };
 
         onLoad(params) {
-            params.order_id = 4207;
             this.params = params;
         }
     }
