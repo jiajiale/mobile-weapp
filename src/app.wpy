@@ -16,7 +16,6 @@
                 'pages/check/order',
                 'pages/user/service',
                 'pages/home/index',
-                'pages/pay/finish',
                 'pages/category/index',
                 'pages/user/address',
                 'pages/cart/index',

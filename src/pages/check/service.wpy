@@ -182,7 +182,7 @@
                             },'success')
                         },
                         'fail':function(res){
-                            tip.toast('支付失败');
+                            tip.error('支付失败');
                         }
                     })
                 }

@@ -2,22 +2,24 @@
     @import "../../assets/styles/pay";
 </style>
 <template>
-    <view>
-        <view>
-
+    <view class="wx-pay-box">
+        <view class="wx-head">
+            <view class="wx-title">订单需付款</view>
+            <view class="wx-subtitle">请及时付款，超时订单将自动关闭</view>
         </view>
         <i-cell-group>
-            <i-cell title="商品金额" i-class="wx-spec-item" value="￥120.00"></i-cell>
-            <i-cell title="运费" i-class="wx-spec-item" value="￥12.00"></i-cell>
+            <i-cell title="商品金额" i-class="wx-spec-item" value="￥{{goodsOrder.goods_price}}"></i-cell>
+            <i-cell title="运费" i-class="wx-spec-item" value="￥{{goodsOrder.shipping_price}}"></i-cell>
+            <i-cell title="需付款" i-class="wx-spec-item" value="￥{{goodsOrder.total_amount}}"></i-cell>
         </i-cell-group>
     </view>
 
     <i-panel title="选择支付方式" i-class="wx-pay-mode">
-        <radio-group class="wx-radio-group" bindchange="radioChange">
-            <view wx:for="{{payModeList}}">
+        <radio-group class="wx-radio-group" bindchange="changePayMode">
+            <view wx:for="{{payModeList}}" wx:key="{{index}}">
                 <label class="radio">
-                    <radio value="{{item.name}}" checked="{{item.checked}}" color="#ec3a3e"/>
-                    {{item.value}}
+                    <radio value="{{item.pay_code}}" checked="{{item.checked}}" color="#ec3a3e"/>
+                    {{item.pay_name}}
                 </label>
             </view>
         </radio-group>
@@ -26,7 +28,7 @@
     <view class="wx-pay-actions">
         <i-row>
             <i-col span="6" i-class="wx-pay-btn">
-                <view>提交订单</view>
+                <view class="{{isSubmit ? 'wx-disable' : ''}}" @tap="handlePay">确定</view>
             </i-col>
         </i-row>
     </view>
@@ -49,21 +51,73 @@
                 "i-cell": "../../iview/cell/index",
             }
         };
-        components = {
-        };
 
         mixins = [authorize];
 
         data = {
             params: [],
+            isSubmit: false,
+            goodsOrder: {},
             payModeList: [
-                {name: 'wx',value: '微信支付',checked: true},
-                {name: 'offline',value: '线下支付'}
-            ]
+                {pay_code: 'wx',pay_name: '微信支付',checked: true},
+                {pay_code: 'offline',pay_name: '线下支付'}
+            ],
+            payCode: 'wx',
+            payName: '微信支付'
         };
 
         methods = {
+            handlePay(){
+                this.payOrder();
+            },
+            changePayMode({ detail }){
+                let payMode = detail.value;
 
+                this.payModeList.filter(item => {
+                    if(item.pay_code === payMode){
+                        this.payCode = item.pay_code;
+                        this.payName = item.pay_name;
+                    }
+                });
+            }
+        };
+
+        async payOrder() {
+            if(!this.isSubmit){
+                this.isSubmit = true;
+                tip.loading(MSG.COMMITTING);
+
+                api.payOrder('POST',{
+                    order_no: this.goodsOrder.order_sn,
+                    pay_code: this.payCode,
+                    pay_name: this.payName
+                }).then(result => {
+                    tip.loaded();
+                    this.isSubmit = false;
+                    this.$apply();
+
+                    if(result.data === true){
+                        // 线下支付
+                        wx.navigateTo({url: '/pages/user/order'})
+                    }else{
+                        wx.requestPayment({
+                            'timeStamp': result.data.timeStamp,
+                            'nonceStr': result.data.nonceStr,
+                            'package': result.data.package,
+                            'signType': result.data.signType,
+                            'paySign': result.data.paySign,
+                            'success':function(res){
+                                tip.toast('支付成功',5000,function () {
+                                    wx.navigateTo({url: '/pages/user/order'})
+                                },'success')
+                            },
+                            'fail':function(res){
+                                tip.error('支付失败');
+                            }
+                        })
+                    }
+                });
+            }
         };
 
         async queryItem() {
@@ -73,7 +127,7 @@
             }).then(resp => {
                 tip.loaded();
                 if(resp.data){
-
+                    this.goodsOrder = resp.data;
                     this.$apply();
                 }
             });
