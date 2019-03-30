@@ -7,7 +7,7 @@
                 autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
             <block wx:for="{{focusList}}" wx:key="{{item.id}}">
                 <swiper-item>
-                    <image src="{{item.url}}" data-item="{{item}}"/>
+                    <image src="{{focusImgUrl +  item.image}}" data-item="{{item}}"/>
                 </swiper-item>
             </block>
         </swiper>
@@ -147,15 +147,13 @@
         mixins = [authorize];
 
         data = {
+            focusImgUrl: api.FOCUS_IMG_URL,
             indicatorDots: true,
             autoplay: true,
             interval: 5000,
             duration: 1000,
             cateList: [1,2,3,4,5,6,7,8,9],
             focusList: [
-                {id:1,url:'https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg'},
-                {id:2,url:'https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg'},
-                {id:3,url:'https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg'},
             ],
         };
 
@@ -163,9 +161,21 @@
 
         };
 
+        async queryItem() {
+            tip.loading(MSG.LOADING);
+            await api.queryIndex('POST',null).then(resp => {
+                tip.loaded();
+                if(resp.data){
+                    this.focusList = resp.data.focusList;
+                    this.$apply();
+                }
+            });
+        };
+
         onShow() {
             let _this = this;
             this.checkAuthorize(function () {
+                _this.queryItem();
             });
         };
 
