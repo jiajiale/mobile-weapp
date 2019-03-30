@@ -34,6 +34,11 @@
             </i-card>
             <view class="wx-order-append">
                 <view class="wx-count">共{{item.goods_list.length}}件商品，实付<span style="color: #ec3a3e;">￥{{item.order_amount}}</span></view>
+                <view class="wx-actions" wx:if="{{item.pay_btn === 1 || item.cancel_btn === 1 || item.receive_btn === 1}}">
+                    <view class="cancel-btn" wx:if="{{item.cancel_btn === 1}}">关闭订单</view>
+                    <view class="pay-btn" wx:if="{{item.pay_btn === 1}}">去付款</view>
+                    <view class="receive-btn" wx:if="{{item.receive_btn === 1}}">确认收货</view>
+                </view>
             </view>
         </view>
         <view wx:if="{{!orderList.length}}">
