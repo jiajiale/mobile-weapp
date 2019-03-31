@@ -1,10 +1,11 @@
 <style lang="less">
-    @import "../../assets/styles/service_index";
+    @import "../../assets/styles/service";
 </style>
 <template>
     <view class="wx-search">
         <input placeholder="请输入名称" value="{{keywords}}" data-key="name" bindinput="handleInput"/>
-        <button plain="true" @tap="queryReload">搜索</button>
+        <view class="wx-search-icon"><i-icon type="search" size="20" color="#999999"/></view>
+        <view class="wx-search-btn" @tap="queryReload">搜索</view>
     </view>
 
     <scroll-view scroll-y bindscrolltolower="onReachBottom" wx:if="{{goodsList.length > 0}}">
@@ -343,12 +344,12 @@
             }).then(resp => {
                 tip.loaded();
                 if(resp.data){
-                    resp.data.items.filter(item => {
+                    resp.data.goodsList.items.filter(item => {
                         this.goodsIds.push(item.id);
                         item.selected = utils.GoodsInCart(this.cartList,item) !== false;
                     });
-                    this.goodsList = this.goodsList.concat(resp.data.items);
-                    if(resp.data.pager.index >= resp.data.pager.count){
+                    this.goodsList = this.goodsList.concat(resp.data.goodsList.items);
+                    if(resp.data.goodsList.pager.index >= resp.data.goodsList.pager.count){
                         this.hasPage = false;
                     }
                     this.$apply();

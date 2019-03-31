@@ -14,46 +14,42 @@
     </view>
 
     <view class="wx-cate-box marginB20">
-        <view class="wx-cate-item" wx:for="{{cateList}}" wx:key="{{index}}">
+        <view class="wx-cate-item" wx:for="{{cateList}}" wx:key="{{index}}" date-item="{{item}}" @tap="handleNavigation">
             <view class="wx-icon"><image src="{{categoryImgUrl + item.image}}" mode="scaleToFill"></image></view>
             <view class="wx-txt">{{item.name}}</view>
         </view>
-        <view class="wx-cate-item">
-            <view class="wx-icon"><image src="http://111.230.96.241:81/Public/Uploads/category/source/20180306/5a9e2b757e5ed.jpg" mode="scaleToFill"></image></view>
-            <view class="wx-txt">移动优惠</view>
+        <view class="wx-cate-item" date-item="ALL" @tap="handleNavigation">
+            <view class="wx-icon"><icon class="iconfont icon-fenlei" style="font-size: 65rpx;"/></image></view>
+            <view class="wx-txt">全部分类</view>
         </view>
     </view>
 
     <view class="wx-on-sale marginB20">
         <view class="wx-title">特价专区</view>
         <view class="wx-row">
-            <view class="wx-item" style="float: left;">
-                <view class="wx-left">
-                    <image src="http://111.230.96.241:81/Public/Uploads/category/source/20180306/5a9e2b757e5ed.jpg" mode="scaleToFill"></image>
-                </view>
-                <view class="wx-right">
-                    <view>iPhone Xs Mas</view>
-                    <view>
-                        <view>直降¥1000.00</view>
-                        <view>现价¥6000.00</view>
-                    </view>
-                </view>
-            </view>
-            <view class="wx-item" style="float: right;">
-                <view class="wx-left">
-
-                </view>
-                <view class="wx-right">
-
-                </view>
-            </view>
+            <i-grid>
+                <i-grid-item i-class="wx-item" wx:for="{{saleGoodsList}}" wx:key="{{item.id}}">
+                    <i-row>
+                        <i-col span="12" i-class="wx-left">
+                            <image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image>
+                        </i-col>
+                        <i-col span="12" i-class="wx-right">
+                            <view style="height: 60rpx;line-height: 30rpx;overflow: hidden;text-overflow: ellipsis;">{{item.goods_name}}sdfsdsdfsdf</view>
+                            <view style="position: absolute;bottom: 20rpx;">
+                                <view>直降¥{{item.market_price - item.shop_price}}</view>
+                                <view>现价¥{{item.shop_price}}</view>
+                            </view>
+                        </i-col>
+                    </i-row>
+                </i-grid-item>
+            </i-grid>
         </view>
     </view>
 
     <view class="wx-promote-box marginB20">
         <i-row i-class="wx-head">
             <i-col span="12">移动优惠</i-col>
-            <i-col span="12" style="text-align: right;color: #999;">更多</i-col>
+            <i-col span="12" style="text-align: right;color: #999;"><view data-key="service" @tap="handleGoMore">更多</view></i-col>
         </i-row>
         <i-row i-class="wx-body">
             <view class="wx-image" wx:if="{{advList[3]}}"><image src="{{advImgUrl + advList[3].images}}" mode="scaleToFill"></image></view>
@@ -73,7 +69,7 @@
     <view class="wx-promote-box marginB20">
         <i-row i-class="wx-head">
             <i-col span="12">智能手机</i-col>
-            <i-col span="12" style="text-align: right;color: #999;">更多</i-col>
+            <i-col span="12" style="text-align: right;color: #999;"><view data-key="goods" @tap="handleGoMore">更多</view></i-col>
         </i-row>
         <i-row i-class="wx-body">
             <view class="wx-image" wx:if="{{advList[4]}}"><image src="{{advImgUrl + advList[4].images}}" mode="scaleToFill"></image></view>
@@ -97,11 +93,13 @@
     <view class="wx-goods-new">
         <i-row>
             <i-col span="8" i-class="wx-goods-col" wx:for="{{newGoodsList}}" wx:key="{{item.id}}">
-                <GoodsItem>
-                    <view slot="thumb" style="height: 100%;"><image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image></view>
-                    <view slot="title">{{item.goods_name}}</view>
-                    <view slot="extra"><span class="wx-goods-price">￥{{item.shop_price}}</span></view>
-                </GoodsItem>
+                <navigator open-type="navigate" hover-class="none" url="/pages/goods/detail?id={{item.id}}">
+                    <GoodsItem>
+                        <view slot="thumb" style="height: 100%;"><image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image></view>
+                        <view slot="title">{{item.goods_name}}</view>
+                        <view slot="extra"><span class="wx-goods-price">￥{{item.shop_price}}</span></view>
+                    </GoodsItem>
+                </navigator>
             </i-col>
         </i-row>
     </view>
@@ -113,11 +111,13 @@
     <view class="wx-goods-new">
         <i-row>
             <i-col span="8" i-class="wx-goods-col" wx:for="{{recommendGoodsList}}" wx:key="{{item.id}}">
-                <GoodsItem>
-                    <view slot="thumb" style="height: 100%;"><image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image></view>
-                    <view slot="title">{{item.goods_name}}</view>
-                    <view slot="extra"><span class="wx-goods-price">￥{{item.shop_price}}</span></view>
-                </GoodsItem>
+                <navigator open-type="navigate" hover-class="none" url="/pages/goods/detail?id={{item.id}}">
+                    <GoodsItem>
+                        <view slot="thumb" style="height: 100%;"><image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image></view>
+                        <view slot="title">{{item.goods_name}}</view>
+                        <view slot="extra"><span class="wx-goods-price">￥{{item.shop_price}}</span></view>
+                    </GoodsItem>
+                </navigator>
             </i-col>
         </i-row>
     </view>
@@ -138,7 +138,9 @@
             usingComponents: {
                 "i-row": "../../iview/row/index",
                 "i-col": "../../iview/col/index",
-                "i-card": "../../iview/card/index"
+                "i-card": "../../iview/card/index",
+                "i-grid": "../../iview/grid/index",
+                "i-grid-item": "../../iview/grid-item/index",
             }
         };
         components = {
@@ -160,11 +162,27 @@
             focusList: [],
             newGoodsList: [],
             recommendGoodsList: [],
+            saleGoodsList: [],
             advList: [],
         };
 
         methods = {
-
+            handleNavigation(e){
+                let index = e.currentTarget.dataset.index;
+                let cate = this.categoryList[this.activeIndex];
+                let category = this.categoryList[this.activeIndex].subCategory[index];
+                wepy.navigateTo({
+                    url: "/pages/goods/index?cate=" + cate.id + "&category_id=" + category.id
+                })
+            },
+            handleGoMore(e){
+                let key = e.currentTarget.dataset.key;
+                if(key === 'service'){
+                    wepy.navigateTo({url: '/pages/service/index'});
+                }else if(key === 'goods'){
+                    wepy.navigateTo({url: '/pages/goods/index'});
+                }
+            }
         };
 
         async queryItem() {
@@ -176,6 +194,7 @@
                     this.cateList = resp.data.categoryList;
                     this.newGoodsList = resp.data.newGoods;
                     this.recommendGoodsList = resp.data.recommendGoods;
+                    this.saleGoodsList = resp.data.saleGoods;
                     this.advList = resp.data.advList;
                     this.$apply();
                 }

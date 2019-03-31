@@ -10,9 +10,9 @@
 
         config = {
             pages: [
+                'pages/home/index',
                 'pages/user/index',
                 'pages/user/code',
-                'pages/home/index',
                 'pages/check/order',
                 'pages/user/order',
                 'pages/pay/index',
