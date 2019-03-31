@@ -34,8 +34,8 @@
 
     <view class="marginT20 wx-goods-detail">
         <view class="wx-detail-title">商品描述</view>
-        <view>
-            <image src="https://img.alicdn.com/simba/img/TB1K1MRrcfpK1RjSZFOSuu6nFXa.jpg"/>
+        <view class="wx-content">
+            <wxparser rich-text="{{goods.goods_content}}" />
         </view>
     </view>
 
@@ -109,6 +109,7 @@
         config = {
             navigationBarTitleText: '商品详情',
             usingComponents: {
+                "wxparser": "plugin://wxparserPlugin/wxparser",
                 "i-row": "../../iview/row/index",
                 "i-col": "../../iview/col/index",
                 "i-grid": "../../iview/grid/index",

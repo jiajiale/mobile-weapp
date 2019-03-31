@@ -3,7 +3,7 @@
 </style>
 <template>
     <view class="wx-cate-search">
-        <input placeholder="商品搜索"/>
+        <input placeholder="商品搜索" bindfocus="handleSearchFocus"/>
         <view class="wx-search-icon"><i-icon type="search" size="20" color="#999999"/></view>
     </view>
 
@@ -63,6 +63,11 @@
                 let category = this.categoryList[this.activeIndex].subCategory[index];
                 wepy.navigateTo({
                     url: "/pages/goods/index?cate=" + cate.id + "&category_id=" + category.id
+                })
+            },
+            handleSearchFocus(){
+                wepy.navigateTo({
+                    url: "/pages/goods/index"
                 })
             }
         };
