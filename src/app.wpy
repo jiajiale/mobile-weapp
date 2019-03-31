@@ -10,10 +10,11 @@
 
         config = {
             pages: [
+                'pages/home/index',
+                'pages/user/sales',
+                'pages/user/index',
                 'pages/user/salesheet',
                 'pages/user/order',
-                'pages/user/index',
-                'pages/home/index',
                 'pages/user/code',
                 'pages/check/order',
                 'pages/pay/index',
@@ -30,7 +31,6 @@
                 'pages/user/contact',
                 'pages/user/point',
                 'pages/user/customer',
-                'pages/user/sales',
                 'pages/user/help',
             ],
             window: {

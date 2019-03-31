@@ -163,8 +163,6 @@
         };
 
         onLoad(params) {
-            params.goods_id = 1887;
-            params.order_id = 4208;
             this.params = params;
         }
     }

@@ -2,38 +2,101 @@
     @import "../../assets/styles/user";
 </style>
 <template>
-
+    <view class="wx-return-list">
+        <view class="marginB20" wx:for="{{returnList}}" wx:key="{{item.id}}" wx:if="{{returnList.length}}">
+            <i-card title="{{item.gmt_create}}" full extra="{{item.status_desc}}" i-class="wx-order-card">
+                <view slot="content">
+                    <repeat for="{{item.goods_list}}" key="{{goodsItem.id}}" item="goodsItem">
+                        <OrderItem>
+                            <view slot="thumb" style="height: 100%;"><image src="{{goodsImgThumb + '?goods_id=' + goodsItem.goods_id}}" mode="scaleToFill"></image></view>
+                            <view slot="title">{{goodsItem.goods_name}}</view>
+                            <view slot="tags">
+                                <view class="marginT10">
+                                    <view class="wx-spec">{{goodsItem.spec_key_name}}</view>
+                                </view>
+                            </view>
+                            <view slot="extra">
+                                <view style="color: #999;">￥{{goodsItem.goods_price}}</view>
+                                <view style="color: #999;">X{{goodsItem.goods_num}}</view>
+                            </view>
+                        </OrderItem>
+                    </repeat>
+                </view>
+            </i-card>
+        </view>
+        <view wx:if="{{!returnList.length}}">
+            <NoInfo emptyText="暂无售后单信息" marginTop="200"></NoInfo>
+        </view>
+    </view>
 </template>
 
 <script>
     import wepy from 'wepy';
-    import ContentSheet from '../../components/content-sheet';
+    import OrderItem from '../../components/order-item';
+    import LoadMore from '../../components/load-more';
+    import NoInfo from '../../components/no-info';
+    import authorize from '../../mixins/authorize';
+    import pagination from '../../mixins/pagination';
+    import api from '../../api';
+    import tip from '../../utils/tip';
+    import utils from '../../utils/util';
+    import MSG from '../../utils/msg';
 
     export default class UserSales extends wepy.page {
         config = {
             navigationBarTitleText: '我的售后',
             usingComponents: {
+                "i-card": "../../iview/card/index",
             }
         };
         components = {
-            GoodsSheet: ContentSheet,
-            CartSheet: ContentSheet,
+            OrderItem: OrderItem,
+            NoInfo: NoInfo,
         };
 
-        mixins = [];
+        mixins = [pagination,authorize];
 
         data = {
-
+            goodsImgThumb: api.THUMBNAIL_IMG,
+            page: 1,
+            hasPage: true,
+            returnList: []
         };
-
-        computed = {};
 
         methods = {
 
         };
 
-        events = {};
+        queryReload(){
+            this.page = 1;
+            this.returnList = [];
+            this.hasPage = true;
+            this.queryItemList();
+        };
 
+        async queryItemList() {
+            tip.loading(MSG.LOADING);
+            await api.queryReturnList('POST',{page: this.page,}).then(resp => {
+                tip.loaded();
+                if(resp.data){
+                    resp.data.items.filter(item => {
+                        item.gmt_create = utils.formatDateTime(item.gmt_create,'yyyy-MM-dd');
+                    });
+                    this.returnList = this.returnList.concat(resp.data.items);
+                    if(resp.data.pager.index >= resp.data.pager.count){
+                        this.hasPage = false;
+                    }
+                    this.$apply();
+                }
+            });
+        };
+
+        onShow() {
+            let _this = this;
+            this.checkAuthorize(function () {
+                _this.queryReload();
+            });
+        };
         onLoad() {
 
         }
