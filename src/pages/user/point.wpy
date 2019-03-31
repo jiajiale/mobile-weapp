@@ -2,12 +2,22 @@
     @import "../../assets/styles/user";
 </style>
 <template>
-
+    <i-cell-group wx:if="{{pointList.length}}">
+        <i-cell title="{{item.desc}}" wx:for="{{pointList}}" wx:key="{{item.id}}">
+            <view slot="footer"></view>
+        </i-cell>
+    </i-cell-group>
+    <view wx:if="{{!pointList.length}}">
+        <NoInfo emptyText="暂无和币信息" marginTop="200"></NoInfo>
+    </view>
 </template>
 
 <script>
     import wepy from 'wepy';
+    import LoadMore from '../../components/load-more';
+    import NoInfo from '../../components/no-info';
     import authorize from '../../mixins/authorize';
+    import pagination from '../../mixins/pagination';
     import api from '../../api';
     import tip from '../../utils/tip';
     import utils from '../../utils/util';
@@ -17,29 +27,54 @@
         config = {
             navigationBarTitleText: '我的和币',
             usingComponents: {
+                "i-cell-group": "../../iview/cell-group/index",
+                "i-cell": "../../iview/cell/index"
             }
         };
         components = {
+            NoInfo: NoInfo,
         };
 
-        mixins = [authorize];
+        mixins = [authorize,pagination];
 
         data = {
-
+            page: 1,
+            hasPage: true,
+            pointList: []
         };
 
         methods = {
 
         };
 
-        async queryItem() {
-//            tip.loading(MSG.LOADING);
+        queryReload(){
+            this.page = 1;
+            this.pointList = [];
+            this.hasPage = true;
+            this.queryItemList();
+        };
+
+        async queryItemList() {
+            tip.loading(MSG.LOADING);
+            await api.queryPointList('POST',{page: this.page}).then(resp => {
+                tip.loaded();
+                if(resp.data){
+                    resp.data.items.filter(item => {
+                        item.gmt_create = utils.formatDateTime(item.gmt_create,'yyyy-MM-dd');
+                    });
+                    this.pointList = this.pointList.concat(resp.data.items);
+                    if(resp.data.pager.index >= resp.data.pager.count){
+                        this.hasPage = false;
+                    }
+                    this.$apply();
+                }
+            });
         };
 
         onShow() {
             let _this = this;
             this.checkAuthorize(function () {
-                _this.queryItem();
+                _this.queryReload();
             });
         };
 

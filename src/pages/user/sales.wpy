@@ -76,7 +76,7 @@
 
         async queryItemList() {
             tip.loading(MSG.LOADING);
-            await api.queryReturnList('POST',{page: this.page,}).then(resp => {
+            await api.queryReturnList('POST',{page: this.page}).then(resp => {
                 tip.loaded();
                 if(resp.data){
                     resp.data.items.filter(item => {

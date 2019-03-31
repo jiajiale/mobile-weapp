@@ -125,7 +125,7 @@
                 if(resp.data.categoryList){
                     this.categoryList = resp.data.categoryList;
 
-                    if(!this.params.category_id && !this.activeCategory){
+                    if(this.params.cate && !this.params.category_id && !this.activeCategory){
                         this.activeCategory = this.categoryList[0].id;
                     }
                 }
