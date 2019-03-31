@@ -26,12 +26,16 @@
         </view>
         <LoadMore :hasPage.sync="hasPage" :itemList.sync="goodsList" emptyText="暂无商品信息"></LoadMore>
     </scroll-view>
+    <view wx:if="{{!goodsList.length}}">
+        <NoInfo emptyText="暂无商品信息" marginTop="200"></NoInfo>
+    </view>
 </template>
 
 <script>
     import wepy from 'wepy';
     import GoodsItem from '../../components/goods-item';
     import LoadMore from '../../components/load-more';
+    import NoInfo from '../../components/no-info';
     import authorize from '../../mixins/authorize';
     import pagination from '../../mixins/pagination';
     import api from '../../api';
@@ -53,6 +57,7 @@
         components = {
             GoodsItem: GoodsItem,
             LoadMore: LoadMore,
+            NoInfo: NoInfo,
         };
 
         mixins = [pagination,authorize];
@@ -119,6 +124,10 @@
                 }
                 if(resp.data.categoryList){
                     this.categoryList = resp.data.categoryList;
+
+                    if(!this.params.category_id && !this.activeCategory){
+                        this.activeCategory = this.categoryList[0].id;
+                    }
                 }
                 this.$apply();
             });

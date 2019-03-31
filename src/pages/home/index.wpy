@@ -14,11 +14,11 @@
     </view>
 
     <view class="wx-cate-box marginB20">
-        <view class="wx-cate-item" wx:for="{{cateList}}" wx:key="{{index}}" date-item="{{item}}" @tap="handleNavigation">
+        <view class="wx-cate-item" wx:for="{{cateList}}" wx:key="{{index}}" data-item="{{item}}" @tap="handleNavigation">
             <view class="wx-icon"><image src="{{categoryImgUrl + item.image}}" mode="scaleToFill"></image></view>
             <view class="wx-txt">{{item.name}}</view>
         </view>
-        <view class="wx-cate-item" date-item="ALL" @tap="handleNavigation">
+        <view class="wx-cate-item" data-item="ALL" @tap="handleNavigation">
             <view class="wx-icon"><icon class="iconfont icon-fenlei" style="font-size: 65rpx;"/></image></view>
             <view class="wx-txt">全部分类</view>
         </view>
@@ -168,12 +168,22 @@
 
         methods = {
             handleNavigation(e){
-                let index = e.currentTarget.dataset.index;
-                let cate = this.categoryList[this.activeIndex];
-                let category = this.categoryList[this.activeIndex].subCategory[index];
-                wepy.navigateTo({
-                    url: "/pages/goods/index?cate=" + cate.id + "&category_id=" + category.id
-                })
+                let item = e.currentTarget.dataset.item;
+                if(item === 'ALL'){
+                    wepy.navigateTo({
+                        url: "/pages/goods/index"
+                    })
+                }else{
+                    if(item.level === '1'){
+                        wepy.navigateTo({
+                            url: "/pages/goods/index?cate=" + item.id
+                        })
+                    }else if(item.level === '2'){
+                        wepy.navigateTo({
+                            url: "/pages/goods/index?cate=" + item.parent_id + "&category_id=" + item.id
+                        })
+                    }
+                }
             },
             handleGoMore(e){
                 let key = e.currentTarget.dataset.key;
