@@ -66,13 +66,13 @@
                     </i-grid-icon>
                     <i-grid-label>我的售后</i-grid-label>
                 </i-grid-item>
-                <i-grid-item i-class="wx-item" data-url="/pages/user/order" @tap="handleGo">
+                <i-grid-item i-class="wx-item" data-url="/pages/user/point" @tap="handleGo">
                     <i-grid-icon i-class="wx-icon">
                         <icon class="iconfont icon-integral"/>
                     </i-grid-icon>
                     <i-grid-label>我的和币</i-grid-label>
                 </i-grid-item>
-                <i-grid-item i-class="wx-item" data-url="/pages/user/order" @tap="handleGo">
+                <i-grid-item i-class="wx-item" data-url="/pages/user/custom" @tap="handleGo">
                     <i-grid-icon i-class="wx-icon">
                         <icon class="iconfont icon-ziyuan" style="font-size: 30rpx;"/>
                     </i-grid-icon>
@@ -86,7 +86,7 @@
                     </i-grid-icon>
                     <i-grid-label>我的地址</i-grid-label>
                 </i-grid-item>
-                <i-grid-item i-class="wx-item" data-url="/pages/user/order" @tap="handleGo">
+                <i-grid-item i-class="wx-item" data-url="/pages/user/question" @tap="handleGo">
                     <i-grid-icon i-class="wx-icon">
                         <icon class="iconfont icon-yijianfankui"/>
                     </i-grid-icon>

@@ -13,9 +13,9 @@
     import utils from '../../utils/util';
     import MSG from '../../utils/msg';
 
-    export default class UserQuestion extends wepy.page {
+    export default class UserPoint extends wepy.page {
         config = {
-            navigationBarTitleText: '反馈',
+            navigationBarTitleText: '我的和币',
             usingComponents: {
             }
         };

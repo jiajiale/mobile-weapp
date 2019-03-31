@@ -10,8 +10,8 @@
 
         config = {
             pages: [
-                'pages/home/index',
                 'pages/user/index',
+                'pages/home/index',
                 'pages/user/code',
                 'pages/check/order',
                 'pages/user/order',
@@ -27,6 +27,8 @@
                 'pages/check/service',
                 'pages/user/question',
                 'pages/user/contact',
+                'pages/user/point',
+                'pages/user/custom',
                 'pages/user/help',
             ],
             window: {
