@@ -1,0 +1,171 @@
+<style lang="less">
+    @import "../../assets/styles/user";
+</style>
+<template>
+    <view class="wx-return-info" wx:if="{{goods.goods_id}}">
+        <OrderItem>
+            <view slot="thumb" style="height: 100%;"><image src="{{goodsImgThumb + '?goods_id=' + goods.goods_id}}" mode="scaleToFill"></image></view>
+            <view slot="title">{{goods.goods_name}}</view>
+            <view slot="tags">
+                <view class="marginT10">
+                    <view class="wx-spec">{{goods.spec_key_name}}</view>
+                </view>
+            </view>
+            <view slot="extra">
+                <view style="color: #999;">￥{{goods.goods_price}}</view>
+                <view style="color: #999;">X{{goods.goods_num}}</view>
+            </view>
+        </OrderItem>
+    </view>
+
+    <i-panel title="填写信息">
+        <i-input bindchange="handleInput" data-key="reason" right title="问题描述" placeholder="请输入问题描述" />
+        <i-input bindchange="handleInput" data-key="shipping_name" right title="快递名称" placeholder="请输入快递名称" />
+        <i-input bindchange="handleInput" data-key="shipping_code" right title="快递单号" placeholder="请输入快递单号"/>
+    </i-panel>
+
+    <i-panel title="上传照片">
+        <view class="wx-return-image">
+            <i-row>
+                <i-col span="6" i-class="wx-upload-box" wx:for="{{formData.return_img}}" wx:key="{{index}}">
+                    <view class="wx-image-upload">
+                        <image src="{{photoImgUrl + item}}" mode="scaleToFill" style="width: 100%;height: 100%;"></image>
+                    </view>
+                    <view class="wx-upload-info" bindtap="deleteImage" data-index="{{index}}">删除</view>
+                </i-col>
+                <i-col span="6" i-class="wx-upload-box">
+                    <view class="wx-image-upload" bindtap="uploadImage"><i-icon type="camera_fill" /></view>
+                    <view class="wx-upload-info">上传</view>
+                </i-col>
+            </i-row>
+        </view>
+    </i-panel>
+
+    <view class="wx-return-actions">
+        <i-row>
+            <i-col span="24" i-class="wx-return-btn">
+                <view class="{{isSubmit ? 'wx-disable' : ''}}" @tap="handleReturn">确定</view>
+            </i-col>
+        </i-row>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import OrderItem from '../../components/order-item';
+    import authorize from '../../mixins/authorize';
+    import api from '../../api';
+    import tip from '../../utils/tip';
+    import utils from '../../utils/util';
+    import MSG from '../../utils/msg';
+
+    export default class UserSaleSheet extends wepy.page {
+        config = {
+            navigationBarTitleText: '我的售后',
+            usingComponents: {
+                "i-row": "../../iview/row/index",
+                "i-col": "../../iview/col/index",
+                "i-panel": "../../iview/panel/index",
+                "i-icon": "../../iview/icon/index",
+                "i-input": "../../iview/input/index"
+            }
+        };
+        components = {
+            OrderItem: OrderItem
+        };
+
+        mixins = [authorize];
+
+        data = {
+            params: [],
+            goodsImgThumb: api.THUMBNAIL_IMG,
+            photoImgUrl: api.PHOTO_IMG_URL,
+            goods: {},
+            isSubmit: false,
+            formData: {}
+        };
+
+        methods = {
+            uploadImage(){
+                let _this = this;
+                wx.chooseImage({
+                    count: 1,
+                    sizeType: ['original', 'compressed'],
+                    sourceType: ['album', 'camera'],
+                    success(res) {
+                        const tempFilePaths = res.tempFilePaths;
+                        wx.uploadFile({
+                            url: api.UPLOAD_IMG_URL + '?type=photo',
+                            filePath: tempFilePaths[0],
+                            name: 'file',
+                            success(res) {
+                                let result = JSON.parse(res.data);
+                                if(result.state === 'success'){
+                                    if(_this.formData.return_img === undefined){
+                                        _this.formData.return_img = [];
+                                    }
+                                    _this.formData.return_img.push(result.data)
+                                    _this.$apply();
+                                }else{
+                                    tip.toast(result.msg);
+                                }
+                            }
+                        })
+                    }
+                })
+            },
+            deleteImage(e){
+                let index = e.currentTarget.dataset.index;
+                this.formData.return_img.splice(index,1);
+            },
+            handleInput(e){
+                let key = e.currentTarget.dataset.key;
+                this.formData[key] = e.detail.detail.value;
+            },
+            handleReturn(){
+                if(!this.isSubmit) {
+                    this.isSubmit = true;
+                    tip.loading(MSG.COMMITTING);
+
+                    this.formData.goods_id = this.params.goods_id;
+                    this.formData.order_id = this.params.order_id;
+                    api.returnOrder('POST', this.formData).then(resp => {
+                        tip.loaded();
+                        this.isSubmit = false;
+
+                        if(resp.code === 200){
+                            wx.navigateTo({url: '/pages/user/sales'})
+                        }else{
+                            tip.error(resp.msg);
+                        }
+                        this.$apply();
+                    });
+                }
+            }
+        };
+
+        async queryItem() {
+            tip.loading(MSG.LOADING);
+            await api.queryReturnGoods('POST',this.params).then(resp => {
+                tip.loaded();
+                if(resp.data){
+                    this.goods = resp.data;
+                    this.$apply();
+                }
+            });
+        };
+
+        onShow() {
+            let _this = this;
+            this.checkAuthorize(function () {
+                _this.queryItem();
+            });
+        };
+
+        onLoad(params) {
+            params.goods_id = 1887;
+            params.order_id = 4208;
+            this.params = params;
+        }
+    }
+</script>

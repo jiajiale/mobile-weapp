@@ -21,7 +21,10 @@
                             <view slot="title">{{goodsItem.goods_name}}</view>
                             <view slot="tags">
                                 <view class="marginT10">
-                                    <i-tag type="border">{{goodsItem.spec_key_name}}</i-tag>
+                                    <view class="wx-spec">{{goodsItem.spec_key_name}}</view>
+                                </view>
+                                <view>
+                                    <view class="return-btn" wx:if="{{item.return_btn === 1 && goodsItem.is_send == 1}}" data-action="return" data-item="{{item}}" data-goods="{{goodsItem}}" @tap="returnOrder">申请售后</view>
                                 </view>
                             </view>
                             <view slot="extra">
@@ -70,7 +73,6 @@
                 "i-tabs": "../../iview/tabs/index",
                 "i-tab": "../../iview/tab/index",
                 "i-card": "../../iview/card/index",
-                "i-tag": "../../iview/tag/index",
                 "i-modal": "../../iview/modal/index",
             }
         };
@@ -120,6 +122,12 @@
                 this.order = e.currentTarget.dataset.item;
                 this.action = e.currentTarget.dataset.action;
                 wx.navigateTo({url: '/pages/pay/index?order_id=' + this.order.id})
+            },
+            returnOrder(e){
+                this.order = e.currentTarget.dataset.item;
+                this.action = e.currentTarget.dataset.action;
+                this.goods = e.currentTarget.dataset.goods;
+                wx.navigateTo({url: '/pages/user/salesheet?order_id=' + this.order.id + '&goods_id=' + this.goods.goods_id})
             },
             receiveOrder(e){
                 this.order = e.currentTarget.dataset.item;

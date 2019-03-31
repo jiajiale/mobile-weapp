@@ -21,7 +21,7 @@
                             <view slot="title">{{goodsItem.goods_name}}</view>
                             <view slot="tags">
                                 <view class="marginT10">
-                                    <i-tag type="border">{{goodsItem.spec_key_name}}</i-tag>
+                                    <view class="wx-spec">{{goodsItem.spec_key_name}}</view>
                                 </view>
                             </view>
                             <view slot="extra">
@@ -61,7 +61,6 @@
                 "i-tabs": "../../iview/tabs/index",
                 "i-tab": "../../iview/tab/index",
                 "i-card": "../../iview/card/index",
-                "i-tag": "../../iview/tag/index",
             }
         };
         components = {

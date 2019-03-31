@@ -13,7 +13,7 @@
     import utils from '../../utils/util';
     import MSG from '../../utils/msg';
 
-    export default class UserCustom extends wepy.page {
+    export default class UserCustomer extends wepy.page {
         config = {
             navigationBarTitleText: '我的客户',
             usingComponents: {

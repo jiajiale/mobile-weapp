@@ -10,11 +10,12 @@
 
         config = {
             pages: [
+                'pages/user/salesheet',
+                'pages/user/order',
                 'pages/user/index',
                 'pages/home/index',
                 'pages/user/code',
                 'pages/check/order',
-                'pages/user/order',
                 'pages/pay/index',
                 'pages/goods/detail',
                 'pages/user/service',
@@ -28,7 +29,8 @@
                 'pages/user/question',
                 'pages/user/contact',
                 'pages/user/point',
-                'pages/user/custom',
+                'pages/user/customer',
+                'pages/user/sales',
                 'pages/user/help',
             ],
             window: {
