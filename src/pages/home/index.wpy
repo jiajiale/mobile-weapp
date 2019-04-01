@@ -152,6 +152,7 @@
         mixins = [authorize];
 
         data = {
+            params: [],
             focusImgUrl: api.FOCUS_IMG_URL,
             categoryImgUrl: api.CATEGORY_IMG_URL,
             goodsImgUrl: api.GOODS_IMG_URL,
@@ -226,7 +227,8 @@
             });
         };
 
-        onLoad() {
+        onLoad(params) {
+            this.params = params;
         }
     }
 </script>
