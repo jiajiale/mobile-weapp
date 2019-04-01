@@ -192,9 +192,7 @@
 
         async queryCartInfo() {
             tip.loading(MSG.LOADING);
-            await api.queryCartInfo('POST',{
-                sid: this.params.sid !== undefined ? this.params.sid : '',
-            }).then(resp => {
+            await api.queryCartInfo('POST',{}).then(resp => {
                 tip.loaded();
                 if(resp.status === 'success'){
                     this.cartList = resp.data.cartList;
@@ -219,7 +217,6 @@
         };
 
         onLoad(params) {
-            //params.sid = '3d9ablvj55lddicl3526fum3lr';
             this.params = params;
         }
     }

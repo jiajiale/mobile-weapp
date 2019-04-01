@@ -282,12 +282,16 @@
             delCartItem(e){
                 let index = e.currentTarget.dataset.index;
                 let item = e.currentTarget.dataset.item;
-                this.cartList.splice(index,1);
-                this.syncCartInfo(item);
-                if(!this.cartList.length){
-                    this.cartVisible = false;
-                }
-                this.$apply();
+                tip.loading(MSG.DELETE);
+                api.delGoodsCart('POST',{goods_id: item.id}).then(resp => {
+                    tip.loaded();
+                    this.cartList.splice(index,1);
+                    this.syncCartInfo(item);
+                    if(!this.cartList.length){
+                        this.cartVisible = false;
+                    }
+                    this.$apply();
+                });
             }
         };
 
@@ -365,19 +369,17 @@
                 tip.loaded();
                 console.log(resp);
                 if(resp.status === 'success'){
-                    if(resp.data.code !== undefined){
-                        this.cartQR = 'data:image/jpeg;base64,' + resp.data.code;
-                        this.QRVisible = !this.QRVisible;
-                        this.cartList = [];
-                        wx.setStorageSync('cartList',this.cartList);
-                        this.$apply();
-                    }else{
-                        this.cartList = [];
-                        wx.setStorageSync('cartList',this.cartList);
+                    //if(resp.data.code !== undefined){
+                    //    this.cartQR = 'data:image/jpeg;base64,' + resp.data.code;
+                    //    this.QRVisible = !this.QRVisible;
+                    //    this.cartList = [];
+                    //    wx.setStorageSync('cartList',this.cartList);
+                    //    this.$apply();
+                    //}else{
                         wx.navigateTo({
-                            url: '/pages/check/service?sid=' + resp.data.sid
+                            url: '/pages/check/service'
                         })
-                    }
+                    //}
                 }else{
                     tip.toast(resp.msg);
                 }
