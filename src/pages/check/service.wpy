@@ -96,7 +96,9 @@
             fieldList: [],
             totalPrice: '0.00',
             formData: {},
-            orderNo: ''
+            orderNo: '',
+            payCode: 'wx',
+            payName: '微信支付'
         };
 
         computed = {};
@@ -160,7 +162,9 @@
 
         async payOrder() {
             api.payOrder('POST',{
-                order_no: this.orderNo
+                order_no: this.orderNo,
+                pay_code: this.payCode,
+                pay_name: this.payName
             }).then(result => {
                 if(result.data === true){
                     tip.toast('下单成功',5000,function () {
@@ -193,7 +197,7 @@
 
         async queryCartInfo() {
             tip.loading(MSG.LOADING);
-            await api.queryCartInfo('POST',{}).then(resp => {
+            await api.queryCartInfo('POST',{is_goods: 0}).then(resp => {
                 tip.loaded();
                 if(resp.status === 'success'){
                     this.cartList = resp.data.cartList;

@@ -129,7 +129,7 @@
 
     export default class ServiceIndex extends wepy.page {
         config = {
-            navigationBarTitleText: '首页',
+            navigationBarTitleText: '业务',
             usingComponents: {
                 "i-row": "../../iview/row/index",
                 "i-col": "../../iview/col/index",
@@ -397,7 +397,7 @@
 
         onLoad(params) {
             this.params = params;
-            this.cartList = wx.getStorageSync('cartList');
+            this.cartList = wx.getStorageSync('cartList') ? wx.getStorageSync('cartList') : [];
         }
     }
 </script>

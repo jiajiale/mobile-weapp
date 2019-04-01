@@ -130,6 +130,7 @@
 
         async queryItem() {
             tip.loading(MSG.LOADING);
+            this.params.is_goods = 1;
             await api.queryCartGoods('POST',this.params).then(resp => {
                 tip.loaded();
                 if(resp.data){

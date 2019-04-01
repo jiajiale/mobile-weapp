@@ -15,11 +15,11 @@
                         <view>优惠券</view>
                     </i-col>
                     <i-col span="8" i-class="wx-border-right">
-                        <view>1000</view>
+                        <view>0</view>
                         <view>和币</view>
                     </i-col>
                     <i-col span="8" i-class="">
-                        <view>2</view>
+                        <view>0</view>
                         <view>收藏</view>
                     </i-col>
                 </i-row>

@@ -74,7 +74,7 @@ function getCurrentTime() {
 }
 
 function formatDateTime(date,fmt) {
-    let newDate = new Date(date);
+    let newDate = new Date(date.replace(/-/g, "/"));
     let o = {
         "M+" : newDate.getMonth()+1, //月份
         "d+" : newDate.getDate(), //日

@@ -190,7 +190,7 @@
             let _this = this;
             this.checkAuthorize(function () {
                 _this.selectAll = 0;
-                _this.cartList = wx.getStorageSync('goodsCart');
+                _this.cartList = wx.getStorageSync('goodsCart') ? wx.getStorageSync('goodsCart') : [];
             });
         };
 
