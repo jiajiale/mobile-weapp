@@ -152,6 +152,7 @@
         mixins = [pagination,authorize];
 
         data = {
+            params: [],
             userInfo: {},
             goodsImgUrl: api.GOODS_IMG_URL,
             goodsIds: [],
@@ -337,11 +338,16 @@
 
         async queryItemList() {
             tip.loading(MSG.LOADING);
-            await api.queryGoodsList('POST',{
+            let condition = {
                 page: this.page,
                 keywords: this.keywords,
                 is_goods: 0
-            }).then(resp => {
+            };
+
+            if(this.params.category_id){
+                condition.category_id = this.params.category_id;
+            }
+            await api.queryGoodsList('POST',condition).then(resp => {
                 tip.loaded();
                 if(resp.data){
                     resp.data.goodsList.items.filter(item => {
@@ -403,7 +409,8 @@
             });
         };
 
-        onLoad() {
+        onLoad(params) {
+            this.params = params;
             this.cartList = wx.getStorageSync('cartList');
         }
     }
