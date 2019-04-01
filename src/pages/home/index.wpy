@@ -54,13 +54,13 @@
         <i-row i-class="wx-body">
             <view class="wx-image" wx:if="{{advList[3]}}"><image src="{{advImgUrl + advList[3].images}}" mode="scaleToFill"></image></view>
             <i-row>
-                <i-col span="12" i-class="wx-item">
+                <i-col span="12" i-class="wx-item" @tap="handleGo" data-url="{{appInfo[0].app_url}}">
                     <view class="wx-icon"><icon class="iconfont icon-zhongguoyidong"/></view>
-                    <view class="wx-txt">移动优惠服务</view>
+                    <view class="wx-txt">{{appInfo[0].app_name}}</view>
                 </i-col>
-                <i-col span="12" i-class="wx-item">
+                <i-col span="12" i-class="wx-item" @tap="handleGo" data-url="{{appInfo[1].app_url}}">
                     <view class="wx-icon"><icon class="iconfont icon-kuandai"/></view>
-                    <view class="wx-txt">宽带优惠</view>
+                    <view class="wx-txt">{{appInfo[1].app_name}}</view>
                 </i-col>
             </i-row>
         </i-row>
@@ -74,13 +74,13 @@
         <i-row i-class="wx-body">
             <view class="wx-image" wx:if="{{advList[4]}}"><image src="{{advImgUrl + advList[4].images}}" mode="scaleToFill"></image></view>
             <i-row>
-                <i-col span="12" i-class="wx-item">
+                <i-col span="12" i-class="wx-item" @tap="handleGo" data-url="{{appInfo[2].app_url}}">
                     <view class="wx-icon"><icon class="iconfont icon-zhongguoyidong"/></view>
-                    <view class="wx-txt">移动优惠服务</view>
+                    <view class="wx-txt">{{appInfo[2].app_name}}</view>
                 </i-col>
-                <i-col span="12" i-class="wx-item">
+                <i-col span="12" i-class="wx-item" @tap="handleGo" data-url="{{appInfo[3].app_url}}">
                     <view class="wx-icon"><icon class="iconfont icon-kuandai"/></view>
-                    <view class="wx-txt">宽带优惠</view>
+                    <view class="wx-txt">{{appInfo[3].app_name}}</view>
                 </i-col>
             </i-row>
         </i-row>
@@ -158,6 +158,7 @@
             autoplay: true,
             interval: 5000,
             duration: 1000,
+            appInfo: [],
             cateList: [],
             focusList: [],
             newGoodsList: [],
@@ -192,6 +193,10 @@
                 }else if(key === 'goods'){
                     wepy.navigateTo({url: '/pages/goods/index'});
                 }
+            },
+            handleGo(e){
+                let url = e.currentTarget.dataset.url;
+                wepy.navigateTo({url: url});
             }
         };
 
@@ -202,6 +207,7 @@
                 if(resp.data){
                     this.focusList = resp.data.focusList;
                     this.cateList = resp.data.categoryList;
+                    this.appInfo = resp.data.appInfo;
                     this.newGoodsList = resp.data.newGoods;
                     this.recommendGoodsList = resp.data.recommendGoods;
                     this.saleGoodsList = resp.data.saleGoods;
