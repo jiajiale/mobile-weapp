@@ -51,7 +51,7 @@
     <view class="wx-order-actions">
         <i-row>
             <i-col span="18" i-class="wx-order-money">
-                <view class="wx-price">￥{{totalPrice.total_fee + totalPrice.delivery_fee}}</view>
+                <view class="wx-price">￥{{ totalAmount }}</view>
             </i-col>
             <i-col span="6">
                 <view class="{{isSubmit ? 'wx-buy-action wx-disable' : 'wx-buy-action'}}" @tap="handleOrder">提交订单</view>
@@ -89,6 +89,7 @@
             address: null,
             cartList: [],
             totalPrice: {},
+            totalAmount: '0.00',
             isSubmit: false,
             formData: {
                 'shipping_code': 'shunfeng',
@@ -135,6 +136,7 @@
                     this.address = resp.data.address;
                     this.cartList = resp.data.cartList;
                     this.totalPrice = resp.data.totalPrice;
+                    this.totalAmount = (parseFloat(this.totalPrice.total_fee) + parseFloat(this.totalPrice.delivery_fee)).toFixed(2);
                     this.$apply();
                 }
             });

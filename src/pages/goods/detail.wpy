@@ -221,16 +221,17 @@
                 tip.success(MSG.ADD_CART_SUCCESS);
             },
             handleCheckOrder(){
+                let _this = this;
                 this.checkLogin(function () {
-                    if(!utils.isEmptyObject(this.goodsSpecList) && this.goods.goods_spec === undefined){
+                    if(!utils.isEmptyObject(_this.goodsSpecList) && _this.goods.goods_spec === undefined){
                         tip.toast(MSG.SELECT_SPEC);
                         return;
                     }
 
                     api.addGoodsOrder('POST',{
-                        goods_id: this.goods.id,
-                        goods_num: this.goods.goods_num,
-                        goods_spec: this.goods.select_spec
+                        goods_id: _this.goods.id,
+                        goods_num: _this.goods.goods_num,
+                        goods_spec: _this.goods.select_spec
                     }).then(resp => {
                         if(resp.code === 200){
                             wepy.navigateTo({

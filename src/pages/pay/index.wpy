@@ -58,13 +58,11 @@
         data = {
             params: [],
             isSubmit: false,
+            isOffline: false,
             goodsOrder: {},
-            payModeList: [
-                {pay_code: 'wx',pay_name: '微信支付',checked: true},
-                {pay_code: 'offline',pay_name: '线下支付'}
-            ],
-            payCode: 'wx',
-            payName: '微信支付'
+            payModeList: [],
+            payCode: '',
+            payName: ''
         };
 
         methods = {
@@ -128,8 +126,11 @@
             }).then(resp => {
                 tip.loaded();
                 if(resp.data){
-                    this.goodsOrder = resp.data;
+                    this.payModeList = resp.data.payModeList;
+                    this.goodsOrder = resp.data.goodsOrder;
                     this.$apply();
+                }else{
+                    wx.navigateBack({delta: 1});
                 }
             });
         };
