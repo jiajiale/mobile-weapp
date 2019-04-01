@@ -1,0 +1,62 @@
+<style lang="less">
+    @import "../../assets/styles/authorize";
+</style>
+<template>
+    <view class="wx-dialog-container {{showDialog ? 'show' : 'close'}}">
+        <view class="wx-mask"></view>
+        <view class="wx-dialog">
+            <view class="wx-dialog-header">
+                <view class="wx-dialog-title">微信登陆</view>
+            </view>
+            <view class="wx-dialog-content">
+                <view>同意当前小程序使用手机号登陆</view>
+            </view>
+            <view class="wx-dialog-footer">
+                <button class="wx-dialog-btn" open-type="getPhoneNumber" bindgetphonenumber="bindGetUserPhone">允许</button>
+            </view>
+        </view>
+    </view>
+</template>
+<script>
+    import wepy from 'wepy';
+    import api from '../../api';
+    import tip from '../../utils/tip';
+
+    export default class AuthorizeLogin extends wepy.page {
+        config = {
+            navigationBarTitleText: '登陆'
+        };
+        data = {
+            showDialog: false,
+            token: ''
+        };
+
+        events = {};
+
+        methods = {};
+
+        bindGetUserPhone(e) {
+            console.log(e);
+            if(e.detail.errMsg === 'getPhoneNumber:ok'){
+                api.updateUserPhone('POST',{
+                    'iv': e.detail.iv,
+                    'encryptedData': e.detail.encryptedData
+                }).then(resp => {
+                    if(resp){
+                        wx.setStorageSync('userInfo', resp.data);
+                        wx.navigateBack();
+                    }
+                });
+            }
+        };
+
+        onShow() {
+            this.showDialog = true;
+            this.$apply();
+        };
+
+        onLoad(options) {
+
+        }
+    }
+</script>

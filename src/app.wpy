@@ -25,6 +25,7 @@
                 'pages/cart/index',
                 'pages/goods/index',
                 'pages/authorize/index',
+                'pages/authorize/login',
                 'pages/service/index',
                 'pages/check/service',
                 'pages/user/question',

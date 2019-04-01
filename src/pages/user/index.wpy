@@ -115,6 +115,7 @@
 
 <script>
     import wepy from 'wepy';
+    import authorize from '../../mixins/authorize';
 
     export default class UserIndex extends wepy.page {
         config = {
@@ -133,7 +134,7 @@
         components = {
         };
 
-        mixins = [];
+        mixins = [authorize];
 
         data = {
 
@@ -143,9 +144,16 @@
 
         methods = {
             handleGo(e){
-                let url = e.currentTarget.dataset.url;
-                wepy.navigateTo({url: url});
+                this.checkLogin(function () {
+                    let url = e.currentTarget.dataset.url;
+                    wepy.navigateTo({url: url});
+                });
             }
+        };
+
+        onShow() {
+            this.checkAuthorize(function () {
+            });
         };
 
         onLoad() {

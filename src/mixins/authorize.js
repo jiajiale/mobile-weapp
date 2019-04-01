@@ -35,4 +35,16 @@ export default class authorize extends wepy.mixin {
              // }
          }
     };
+
+    checkLogin(callback){
+        let userInfo = wx.getStorageSync('userInfo');
+
+        if(userInfo.mobile){
+            callback();
+        }else{
+            wx.navigateTo({
+                url: '/pages/authorize/login'
+            })
+        }
+    }
 }
