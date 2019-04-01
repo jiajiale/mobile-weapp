@@ -135,7 +135,10 @@
             },
             handleCheck(){
                 if(this.hasSelect){
-                    this.addGoodsCart();
+                    let _this = this;
+                    this.checkLogin(function () {
+                        _this.addGoodsCart();
+                    });
                 }else{
                     tip.toast(MSG.SELECT_GOODS);
                 }

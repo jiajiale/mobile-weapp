@@ -94,9 +94,7 @@
                 <view class="wx-cart-info" wx:else>未选择任何业务</view>
             </i-col>
             <i-col span="8" i-class="col-class" wx:if="{{cartList.length}}">
-                <i-button wx:if="{{userInfo.mobile}}" type="success" size="small" bindtap="checkCart">结算</i-button>
-                <i-button wx:else type="success" size="small" open-type="getPhoneNumber"
-                          bindgetphonenumber="checkCart">结算</i-button>
+                <i-button type="success" size="small" bindtap="checkCart">结算</i-button>
             </i-col>
             <i-col span="8" i-class="col-class" wx:else>
                 <i-button type="success" size="small" bindtap="checkCart">结算</i-button>
@@ -153,7 +151,6 @@
 
         data = {
             params: [],
-            userInfo: {},
             goodsImgUrl: api.GOODS_IMG_URL,
             goodsIds: [],
             goodsList: [],
@@ -272,23 +269,12 @@
                     this.syncCartInfo(item);
                 }
             },
-            checkCart(e){
+            checkCart(){
                 let _this = this;
                 if(this.cartList.length){
-                    if(e.detail.errMsg === 'getPhoneNumber:ok'){
-                        api.updateUserPhone('POST',{
-                            'iv': e.detail.iv,
-                            'encryptedData': e.detail.encryptedData
-                        }).then(resp => {
-                            if(resp){
-                                wx.setStorageSync('userInfo', resp.data);
-                                _this.userInfo = resp.data;
-                                _this.addGoodsCart();
-                            }
-                        });
-                    }else if(_this.userInfo.mobile){
+                    this.checkLogin(function () {
                         _this.addGoodsCart();
-                    }
+                    });
                 }else{
                     tip.toast(MSG.SELECT_SERVICE);
                 }
@@ -372,7 +358,7 @@
                     goods_spec: this.cartList[i].select_spec
                 })
             }
-            tip.loading(this.userInfo.store_account_id ? MSG.MAKING_QR : MSG.COMMITTING);
+            tip.loading(MSG.COMMITTING);
             await api.addGoodsCart('POST',{
                 cartList: cartInfo,
             }).then(resp => {
@@ -404,7 +390,6 @@
             _this.cartVisible = false;
             _this.QRVisible = false;
             this.checkAuthorize(function () {
-                _this.userInfo = wx.getStorageSync('userInfo');
                 _this.queryReload();
             });
         };

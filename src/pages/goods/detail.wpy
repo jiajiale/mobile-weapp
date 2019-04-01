@@ -221,23 +221,25 @@
                 tip.success(MSG.ADD_CART_SUCCESS);
             },
             handleCheckOrder(){
-                if(!utils.isEmptyObject(this.goodsSpecList) && this.goods.goods_spec === undefined){
-                    tip.toast(MSG.SELECT_SPEC);
-                    return;
-                }
-
-                api.addGoodsOrder('POST',{
-                    goods_id: this.goods.id,
-                    goods_num: this.goods.goods_num,
-                    goods_spec: this.goods.select_spec
-                }).then(resp => {
-                    if(resp.code === 200){
-                        wepy.navigateTo({
-                            url: '/pages/check/order?from=goods'
-                        })
-                    }else{
-                        tip.error(resp.msg);
+                this.checkLogin(function () {
+                    if(!utils.isEmptyObject(this.goodsSpecList) && this.goods.goods_spec === undefined){
+                        tip.toast(MSG.SELECT_SPEC);
+                        return;
                     }
+
+                    api.addGoodsOrder('POST',{
+                        goods_id: this.goods.id,
+                        goods_num: this.goods.goods_num,
+                        goods_spec: this.goods.select_spec
+                    }).then(resp => {
+                        if(resp.code === 200){
+                            wepy.navigateTo({
+                                url: '/pages/check/order?from=goods'
+                            })
+                        }else{
+                            tip.error(resp.msg);
+                        }
+                    });
                 });
             },
             handleChangeNum({ detail }){

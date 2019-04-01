@@ -29,6 +29,7 @@
         <view class="wx-row">
             <i-grid>
                 <i-grid-item i-class="wx-item" wx:for="{{saleGoodsList}}" wx:key="{{item.id}}">
+                    <navigator open-type="navigate" hover-class="none" url="/pages/goods/detail?id={{item.id}}">
                     <i-row>
                         <i-col span="12" i-class="wx-left">
                             <image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image>
@@ -41,6 +42,7 @@
                             </view>
                         </i-col>
                     </i-row>
+                    </navigator>
                 </i-grid-item>
             </i-grid>
         </view>
