@@ -367,7 +367,6 @@
                 cartList: cartInfo,
             }).then(resp => {
                 tip.loaded();
-                console.log(resp);
                 if(resp.status === 'success'){
                     //if(resp.data.code !== undefined){
                     //    this.cartQR = 'data:image/jpeg;base64,' + resp.data.code;

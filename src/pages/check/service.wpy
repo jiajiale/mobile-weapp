@@ -146,6 +146,7 @@
                 this.formData['session_id'] = this.params.sid;
                 this.formData['cartList'] = this.cartList;
                 api.createServiceOrder('POST',this.formData).then(resp => {
+                    wx.setStorageSync('cartList',null);
                     if(resp && resp.status === 'success'){
                         _this.orderNo = resp.data.order_no;
                         _this.payOrder();
