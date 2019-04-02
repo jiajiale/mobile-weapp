@@ -2,126 +2,128 @@
     @import "../../assets/styles/home";
 </style>
 <template>
-    <view class="wx-focus">
-        <swiper indicator-dots="{{indicatorDots}}" style="height: 400rpx;"
-                autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
-            <block wx:for="{{focusList}}" wx:key="{{item.id}}">
-                <swiper-item>
-                    <image src="{{focusImgUrl +  item.image}}" data-item="{{item}}"/>
-                </swiper-item>
-            </block>
-        </swiper>
-    </view>
-
-    <view class="wx-cate-box marginB20">
-        <view class="wx-cate-item" wx:for="{{cateList}}" wx:key="{{index}}" data-item="{{item}}" @tap="handleNavigation">
-            <view class="wx-icon"><image src="{{categoryImgUrl + item.image}}" mode="scaleToFill"></image></view>
-            <view class="wx-txt">{{item.name}}</view>
+    <view wx:if="{{isRequested}}">
+        <view class="wx-focus">
+            <swiper indicator-dots="{{indicatorDots}}" style="height: 400rpx;"
+                    autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+                <block wx:for="{{focusList}}" wx:key="{{item.id}}">
+                    <swiper-item>
+                        <image src="{{focusImgUrl +  item.image}}" data-item="{{item}}"/>
+                    </swiper-item>
+                </block>
+            </swiper>
         </view>
-        <view class="wx-cate-item" data-item="ALL" @tap="handleNavigation">
-            <view class="wx-icon"><icon class="iconfont icon-fenlei" style="font-size: 65rpx;"/></image></view>
-            <view class="wx-txt">全部分类</view>
-        </view>
-    </view>
 
-    <view class="wx-on-sale marginB20">
-        <view class="wx-title">特价专区</view>
-        <view class="wx-row">
-            <i-grid>
-                <i-grid-item i-class="wx-item" wx:for="{{saleGoodsList}}" wx:key="{{item.id}}">
-                    <navigator open-type="navigate" hover-class="none" url="/pages/goods/detail?id={{item.id}}">
-                    <i-row>
-                        <i-col span="12" i-class="wx-left">
-                            <image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image>
-                        </i-col>
-                        <i-col span="12" i-class="wx-right">
-                            <view style="height: 60rpx;line-height: 30rpx;overflow: hidden;text-overflow: ellipsis;">{{item.goods_name}}sdfsdsdfsdf</view>
-                            <view style="position: absolute;bottom: 20rpx;">
-                                <view>直降¥{{item.market_price - item.shop_price}}</view>
-                                <view>现价¥{{item.shop_price}}</view>
-                            </view>
-                        </i-col>
-                    </i-row>
-                    </navigator>
-                </i-grid-item>
-            </i-grid>
+        <view class="wx-cate-box marginB20">
+            <view class="wx-cate-item" wx:for="{{cateList}}" wx:key="{{index}}" data-item="{{item}}" @tap="handleNavigation">
+                <view class="wx-icon"><image src="{{categoryImgUrl + item.image}}" mode="scaleToFill"></image></view>
+                <view class="wx-txt">{{item.name}}</view>
+            </view>
+            <view class="wx-cate-item" data-item="ALL" @tap="handleNavigation">
+                <view class="wx-icon"><icon class="iconfont icon-fenlei" style="font-size: 65rpx;"/></image></view>
+                <view class="wx-txt">全部分类</view>
+            </view>
         </view>
-    </view>
 
-    <view class="wx-promote-box marginB20">
-        <i-row i-class="wx-head">
-            <i-col span="12">移动优惠</i-col>
-            <i-col span="12" style="text-align: right;color: #999;"><view data-key="service" @tap="handleGoMore">更多</view></i-col>
-        </i-row>
-        <i-row i-class="wx-body">
-            <view class="wx-image" wx:if="{{advList[3]}}"><image src="{{advImgUrl + advList[3].images}}" mode="scaleToFill"></image></view>
+        <view class="wx-on-sale marginB20">
+            <view class="wx-title">特价专区</view>
+            <view class="wx-row">
+                <i-grid>
+                    <i-grid-item i-class="wx-item" wx:for="{{saleGoodsList}}" wx:key="{{item.id}}">
+                        <navigator open-type="navigate" hover-class="none" url="/pages/goods/detail?id={{item.id}}">
+                            <i-row>
+                                <i-col span="12" i-class="wx-left">
+                                    <image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image>
+                                </i-col>
+                                <i-col span="12" i-class="wx-right">
+                                    <view style="height: 60rpx;line-height: 30rpx;overflow: hidden;text-overflow: ellipsis;">{{item.goods_name}}sdfsdsdfsdf</view>
+                                    <view style="position: absolute;bottom: 20rpx;">
+                                        <view>直降¥{{item.market_price - item.shop_price}}</view>
+                                        <view>现价¥{{item.shop_price}}</view>
+                                    </view>
+                                </i-col>
+                            </i-row>
+                        </navigator>
+                    </i-grid-item>
+                </i-grid>
+            </view>
+        </view>
+
+        <view class="wx-promote-box marginB20">
+            <i-row i-class="wx-head">
+                <i-col span="12">移动优惠</i-col>
+                <i-col span="12" style="text-align: right;color: #999;"><view data-key="service" @tap="handleGoMore">更多</view></i-col>
+            </i-row>
+            <i-row i-class="wx-body">
+                <view class="wx-image" wx:if="{{advList[3]}}"><image src="{{advImgUrl + advList[3].images}}" mode="scaleToFill"></image></view>
+                <i-row>
+                    <i-col span="12" i-class="wx-item" @tap="handleGo" data-url="{{appInfo[0].app_url}}">
+                        <view class="wx-icon"><icon class="iconfont icon-zhongguoyidong"/></view>
+                        <view class="wx-txt">{{appInfo[0].app_name}}</view>
+                    </i-col>
+                    <i-col span="12" i-class="wx-item" @tap="handleGo" data-url="{{appInfo[1].app_url}}">
+                        <view class="wx-icon"><icon class="iconfont icon-kuandai"/></view>
+                        <view class="wx-txt">{{appInfo[1].app_name}}</view>
+                    </i-col>
+                </i-row>
+            </i-row>
+        </view>
+
+        <view class="wx-promote-box marginB20">
+            <i-row i-class="wx-head">
+                <i-col span="12">智能手机</i-col>
+                <i-col span="12" style="text-align: right;color: #999;"><view data-key="goods" @tap="handleGoMore">更多</view></i-col>
+            </i-row>
+            <i-row i-class="wx-body">
+                <view class="wx-image" wx:if="{{advList[4]}}"><image src="{{advImgUrl + advList[4].images}}" mode="scaleToFill"></image></view>
+                <i-row i-class="wx-mobile">
+                    <i-col span="12" i-class="wx-item" @tap="handleGo" data-url="{{appInfo[2].app_url}}">
+                        <!--<view class="wx-icon"><icon class="iconfont icon-zhongguoyidong"/></view>-->
+                        <view class="wx-txt">{{appInfo[2].app_name}}</view>
+                    </i-col>
+                    <i-col span="12" i-class="wx-item" @tap="handleGo" data-url="{{appInfo[3].app_url}}">
+                        <!--<view class="wx-icon"><icon class="iconfont icon-kuandai"/></view>-->
+                        <view class="wx-txt">{{appInfo[3].app_name}}</view>
+                    </i-col>
+                </i-row>
+            </i-row>
+        </view>
+
+        <view class="wx-adv-item" wx:if="{{advList[1]}}" style="padding-top:10rpx;">
+            <image src="{{advImgUrl + advList[1].images}}" mode="scaleToFill"></image>
+        </view>
+
+        <view class="wx-goods-new">
             <i-row>
-                <i-col span="12" i-class="wx-item" @tap="handleGo" data-url="{{appInfo[0].app_url}}">
-                    <view class="wx-icon"><icon class="iconfont icon-zhongguoyidong"/></view>
-                    <view class="wx-txt">{{appInfo[0].app_name}}</view>
-                </i-col>
-                <i-col span="12" i-class="wx-item" @tap="handleGo" data-url="{{appInfo[1].app_url}}">
-                    <view class="wx-icon"><icon class="iconfont icon-kuandai"/></view>
-                    <view class="wx-txt">{{appInfo[1].app_name}}</view>
-                </i-col>
-            </i-row>
-        </i-row>
-    </view>
-
-    <view class="wx-promote-box marginB20">
-        <i-row i-class="wx-head">
-            <i-col span="12">智能手机</i-col>
-            <i-col span="12" style="text-align: right;color: #999;"><view data-key="goods" @tap="handleGoMore">更多</view></i-col>
-        </i-row>
-        <i-row i-class="wx-body">
-            <view class="wx-image" wx:if="{{advList[4]}}"><image src="{{advImgUrl + advList[4].images}}" mode="scaleToFill"></image></view>
-            <i-row i-class="wx-mobile">
-                <i-col span="12" i-class="wx-item" @tap="handleGo" data-url="{{appInfo[2].app_url}}">
-                    <!--<view class="wx-icon"><icon class="iconfont icon-zhongguoyidong"/></view>-->
-                    <view class="wx-txt">{{appInfo[2].app_name}}</view>
-                </i-col>
-                <i-col span="12" i-class="wx-item" @tap="handleGo" data-url="{{appInfo[3].app_url}}">
-                    <!--<view class="wx-icon"><icon class="iconfont icon-kuandai"/></view>-->
-                    <view class="wx-txt">{{appInfo[3].app_name}}</view>
+                <i-col span="8" i-class="wx-goods-col" wx:for="{{newGoodsList}}" wx:key="{{item.id}}">
+                    <navigator open-type="navigate" hover-class="none" url="/pages/goods/detail?id={{item.id}}">
+                        <GoodsItem>
+                            <view slot="thumb" style="height: 100%;"><image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image></view>
+                            <view slot="title">{{item.goods_name}}</view>
+                            <view slot="extra"><span class="wx-goods-price">￥{{item.shop_price}}</span></view>
+                        </GoodsItem>
+                    </navigator>
                 </i-col>
             </i-row>
-        </i-row>
-    </view>
+        </view>
 
-    <view class="wx-adv-item" wx:if="{{advList[1]}}" style="padding-top:10rpx;">
-        <image src="{{advImgUrl + advList[1].images}}" mode="scaleToFill"></image>
-    </view>
+        <view class="wx-adv-item" wx:if="{{advList[2]}}">
+            <image src="{{advImgUrl + advList[2].images}}" mode="scaleToFill"></image>
+        </view>
 
-    <view class="wx-goods-new">
-        <i-row>
-            <i-col span="8" i-class="wx-goods-col" wx:for="{{newGoodsList}}" wx:key="{{item.id}}">
-                <navigator open-type="navigate" hover-class="none" url="/pages/goods/detail?id={{item.id}}">
-                    <GoodsItem>
-                        <view slot="thumb" style="height: 100%;"><image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image></view>
-                        <view slot="title">{{item.goods_name}}</view>
-                        <view slot="extra"><span class="wx-goods-price">￥{{item.shop_price}}</span></view>
-                    </GoodsItem>
-                </navigator>
-            </i-col>
-        </i-row>
-    </view>
-
-    <view class="wx-adv-item" wx:if="{{advList[2]}}">
-        <image src="{{advImgUrl + advList[2].images}}" mode="scaleToFill"></image>
-    </view>
-
-    <view class="wx-goods-new">
-        <i-row>
-            <i-col span="8" i-class="wx-goods-col" wx:for="{{recommendGoodsList}}" wx:key="{{item.id}}">
-                <navigator open-type="navigate" hover-class="none" url="/pages/goods/detail?id={{item.id}}">
-                    <GoodsItem>
-                        <view slot="thumb" style="height: 100%;"><image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image></view>
-                        <view slot="title">{{item.goods_name}}</view>
-                        <view slot="extra"><span class="wx-goods-price">￥{{item.shop_price}}</span></view>
-                    </GoodsItem>
-                </navigator>
-            </i-col>
-        </i-row>
+        <view class="wx-goods-new">
+            <i-row>
+                <i-col span="8" i-class="wx-goods-col" wx:for="{{recommendGoodsList}}" wx:key="{{item.id}}">
+                    <navigator open-type="navigate" hover-class="none" url="/pages/goods/detail?id={{item.id}}">
+                        <GoodsItem>
+                            <view slot="thumb" style="height: 100%;"><image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image></view>
+                            <view slot="title">{{item.goods_name}}</view>
+                            <view slot="extra"><span class="wx-goods-price">￥{{item.shop_price}}</span></view>
+                        </GoodsItem>
+                    </navigator>
+                </i-col>
+            </i-row>
+        </view>
     </view>
 </template>
 
@@ -168,6 +170,7 @@
             recommendGoodsList: [],
             saleGoodsList: [],
             advList: [],
+            isRequested: false
         };
 
         methods = {
@@ -205,7 +208,9 @@
 
         async queryItem() {
             tip.loading(MSG.LOADING);
+            this.isRequested = false;
             await api.queryIndex('POST',null).then(resp => {
+                this.isRequested = true;
                 tip.loaded();
                 if(resp.data){
                     this.focusList = resp.data.focusList;
@@ -215,8 +220,8 @@
                     this.recommendGoodsList = resp.data.recommendGoods;
                     this.saleGoodsList = resp.data.saleGoods;
                     this.advList = resp.data.advList;
-                    this.$apply();
                 }
+                this.$apply();
             });
         };
 
