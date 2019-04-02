@@ -70,16 +70,18 @@
                 :bottomStyle.sync="goodsBottomStyle"
                 :zIndexStyle.sync="goodsZIndexStyle">
         <view slot="content" wx:if="{{goods.id}}">
-            <view class="wx-goods-head-img">
-                <image src="{{goodsImgUrl + (goods.app_img ? goods.app_img : goods.original_img)}}"
-                       mode="scaleToFill"></image>
-            </view>
-            <view class="wx-goods-head-main">
-                <icon class="iconfont icon-guanbi wx-sheet-close-icon" bindtap="switchGoodsSheet"/>
-                <view class="wx-goods-title">{{goods.goods_name}}</view>
-                <view class="wx-goods-price">
-                    <span class="new-price">￥{{goods.shop_price}}</span>
-                    <span class="old-price">￥{{goods.market_price}}</span>
+            <view style="border-bottom: 1rpx solid #e8e8e8">
+                <view class="wx-goods-head-img">
+                    <image src="{{goodsImgUrl + (goods.app_img ? goods.app_img : goods.original_img)}}"
+                           mode="scaleToFill"></image>
+                </view>
+                <view class="wx-goods-head-main">
+                    <icon class="iconfont icon-guanbi wx-sheet-close-icon" bindtap="switchGoodsSheet"/>
+                    <view class="wx-goods-title">{{goods.goods_name}}</view>
+                    <view class="wx-goods-price">
+                        <span class="new-price">￥{{goods.shop_price}}</span>
+                        <span class="old-price">￥{{goods.market_price}}</span>
+                    </view>
                 </view>
             </view>
             <view class="wx-goods-specs">
@@ -89,7 +91,7 @@
                     </view>
                 </i-panel>
             </view>
-            <view>
+            <view style="position: fixed;bottom: 0rpx;width: 100%">
                 <i-button type="success" size="small" bindtap="selectGoodsOk">选好了</i-button>
             </view>
         </view>
@@ -138,7 +140,7 @@
             goodsSpecList: [],
             specInfo: [],
             goodsSpecPrice: [],
-            goodsMaxHeight: 800,
+            goodsMaxHeight: 900,
             goodsBottomStyle: 0,
             goodsZIndexStyle: 101,
             goodsVisible: false,
