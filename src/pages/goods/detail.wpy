@@ -6,7 +6,7 @@
 </style>
 <template>
     <view class="wx-goods-album">
-        <swiper indicator-dots="{{indicatorDots}}" style="height: 400rpx;"
+        <swiper indicator-dots="{{indicatorDots}}" style="height: 760rpx;"
                 autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
             <block wx:for="{{goodsImages}}" wx:key="{{item.id}}">
                 <swiper-item>
