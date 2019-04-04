@@ -3,6 +3,9 @@
 </style>
 <template>
     <view class="wx-user-head">
+        <view class="wx-user-head-bg">
+            <image src="https://www.caryue.com/Public/Uploads/adv/source/20181109/5be51b0c9ecc8.jpg" mode="scaleToFill"></image>
+        </view>
         <view class="wx-user-info">
             <view style="position: relative;top:-60rpx;">
                 <view class="user-thumb"><open-data type="userAvatarUrl"></open-data></view>

@@ -9,7 +9,7 @@
     </view>
 
     <i-tabs wx:else current="{{ activeCategory }}" color="#ec3a3e" scroll bindchange="handleChangeCategory">
-        <i-tab key="{{item.id}}" title="{{item.name}}" wx:for="{{categoryList}}" wx:key="{{item.id}}"></i-tab>
+        <i-tab i-class="wx-category-tab" key="{{item.id}}" title="{{item.name}}" wx:for="{{categoryList}}" wx:key="{{item.id}}"></i-tab>
     </i-tabs>
 
     <scroll-view scroll-y bindscrolltolower="onReachBottom" wx:if="{{goodsList.length > 0}}">
