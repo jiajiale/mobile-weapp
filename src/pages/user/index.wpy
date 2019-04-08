@@ -4,7 +4,7 @@
 <template>
     <view class="wx-user-head">
         <view class="wx-user-head-bg">
-            <image src="https://www.caryue.com/Public/Uploads/adv/source/20181109/5be51b0c9ecc8.jpg" mode="scaleToFill"></image>
+            <image src="{{advImgUrl + 'user_bg.jpg'}}" mode="scaleToFill" wx:if="{{advImgUrl}}"></image>
         </view>
         <view class="wx-user-info">
             <view style="position: relative;top:-60rpx;">
@@ -119,6 +119,7 @@
 <script>
     import wepy from 'wepy';
     import authorize from '../../mixins/authorize';
+    import api from '../../api';
 
     export default class UserIndex extends wepy.page {
         config = {
@@ -140,7 +141,7 @@
         mixins = [authorize];
 
         data = {
-
+            advImgUrl: api.ADV_IMG_URL,
         };
 
         computed = {};
