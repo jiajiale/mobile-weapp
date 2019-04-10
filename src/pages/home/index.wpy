@@ -147,6 +147,7 @@
     export default class HomeIndex extends wepy.page {
         config = {
             navigationBarTitleText: '首页',
+            navigationStyle: "custom",
             usingComponents: {
                 "i-row": "../../iview/row/index",
                 "i-col": "../../iview/col/index",

@@ -95,6 +95,7 @@
                     tip.loaded();
                     this.cartList.splice(index,1);
                     this.syncCartInfo(goods);
+                    this.calcCartAmount();
                     this.$apply();
                 });
             },
