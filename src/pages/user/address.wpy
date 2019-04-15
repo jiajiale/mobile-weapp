@@ -140,11 +140,16 @@
                     this.cityIdxArr[0] = utils.findArrIndex(this.cityList,'id',item.province);
                     this.cityIdxArr[1] = utils.findArrIndex(this.cityList[this.cityIdxArr[0]].childrens,'id',item.city);
                     this.cityIdxArr[2] = utils.findArrIndex(this.cityList[this.cityIdxArr[0]].childrens[this.cityIdxArr[1]].childrens,'id',item.district);
+                    this.cityArr[0] = this.cityList;
+                    this.cityArr[1] = this.cityList[this.cityIdxArr[0]].childrens;
+                    this.cityArr[2] = this.cityList[this.cityIdxArr[0]].childrens[this.cityIdxArr[1]].childrens;
+
                 }else{
                     this.modalTitle = '新增地址';
                     this.cityIdxArr = [0,0,0];
                     this.cityStr = '';
                     this.formData = {};
+                    this.cityArr = [this.cityList,this.cityList[0].childrens,this.cityList[0].childrens[0].childrens];
                 }
                 this.confirmBtn[1].name = '提交';
                 this.visibleModal = true;
@@ -230,7 +235,6 @@
                 if(resp.data){
                     this.addressList = resp.data.addressList;
                     this.cityList = resp.data.cityList;
-                    this.cityArr = [this.cityList,this.cityList[0].childrens,this.cityList[0].childrens[0].childrens];
                     this.$apply();
                 }
             });
