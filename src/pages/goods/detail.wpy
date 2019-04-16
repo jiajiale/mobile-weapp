@@ -32,12 +32,12 @@
         </i-cell-group>
     </view>
 
-    <view class="marginT20 wx-goods-detail">
+    <scroll-view class="marginT20 wx-goods-detail">
         <view class="wx-detail-title">商品描述</view>
         <view class="wx-content">
             <wxparser rich-text="{{goods.goods_content}}" />
         </view>
-    </view>
+    </scroll-view>
 
     <view class="wx-goods-actions">
         <i-row>
@@ -284,6 +284,10 @@
                 }
             });
         };
+
+        onShareAppMessage() {
+
+        }
 
         onShow() {
             let _this = this;

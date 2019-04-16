@@ -7,7 +7,7 @@
             <swiper indicator-dots="{{indicatorDots}}" style="height: 400rpx;"
                     autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
                 <block wx:for="{{focusList}}" wx:key="{{item.id}}">
-                    <swiper-item>
+                    <swiper-item @tap="handleGo" data-url="{{item.target}}">
                         <image src="{{focusImgUrl +  item.image}}" data-item="{{item}}"/>
                     </swiper-item>
                 </block>
@@ -55,7 +55,7 @@
                 <i-col span="12" style="text-align: right;color: #999;"><view data-key="service" @tap="handleGoMore">更多</view></i-col>
             </i-row>
             <i-row i-class="wx-body">
-                <view class="wx-image" wx:if="{{advList[3]}}"><image src="{{advImgUrl + advList[3].images}}" mode="scaleToFill"></image></view>
+                <view class="wx-image" wx:if="{{advList[3]}}" @tap="handleGo" data-url="{{advList[3].target}}"><image src="{{advImgUrl + advList[3].images}}" mode="scaleToFill"></image></view>
                 <i-row i-class="wx-item-block">
                     <i-col span="12" i-class="wx-item" @tap="handleGo" data-url="{{appInfo[0].app_url}}">
                         <view class="wx-item-box">
@@ -79,7 +79,7 @@
                 <i-col span="12" style="text-align: right;color: #999;"><view data-key="goods" @tap="handleGoMore">更多</view></i-col>
             </i-row>
             <i-row i-class="wx-body">
-                <view class="wx-image" wx:if="{{advList[4]}}"><image src="{{advImgUrl + advList[4].images}}" mode="scaleToFill"></image></view>
+                <view class="wx-image" wx:if="{{advList[4]}}" @tap="handleGo" data-url="{{advList[4].target}}"><image src="{{advImgUrl + advList[4].images}}" mode="scaleToFill"></image></view>
                 <i-row i-class="wx-mobile">
                     <i-col span="12" i-class="wx-item" @tap="handleGo" data-url="{{appInfo[2].app_url}}">
                         <view class="wx-item-box">
@@ -97,7 +97,7 @@
             </i-row>
         </view>
 
-        <view class="wx-adv-item" wx:if="{{advList[1]}}" style="padding-top:10rpx;">
+        <view class="wx-adv-item" wx:if="{{advList[1]}}" @tap="handleGo" data-url="{{advList[1].target}}" style="padding-top:10rpx;">
             <image src="{{advImgUrl + advList[1].images}}" mode="scaleToFill"></image>
         </view>
 
@@ -115,7 +115,7 @@
             </i-row>
         </view>
 
-        <view class="wx-adv-item" wx:if="{{advList[2]}}">
+        <view class="wx-adv-item" wx:if="{{advList[2]}}" @tap="handleGo" data-url="{{advList[2].target}}">
             <image src="{{advImgUrl + advList[2].images}}" mode="scaleToFill"></image>
         </view>
 
@@ -211,7 +211,9 @@
             },
             handleGo(e){
                 let url = e.currentTarget.dataset.url;
-                wepy.navigateTo({url: url});
+                if(url){
+                    wepy.navigateTo({url: url});
+                }
             }
         };
 
@@ -233,6 +235,10 @@
                 this.$apply();
             });
         };
+
+        onShareAppMessage() {
+
+        }
 
         onShow() {
             let _this = this;
