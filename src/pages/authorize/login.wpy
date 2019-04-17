@@ -2,17 +2,18 @@
     @import "../../assets/styles/authorize";
 </style>
 <template>
-    <view class="wx-dialog-container {{showDialog ? 'show' : 'close'}}">
-        <view class="wx-mask"></view>
-        <view class="wx-dialog">
-            <view class="wx-dialog-header">
-                <view class="wx-dialog-title">微信登陆</view>
+    <view>
+        <view class="wx-login-head">
+            <view class="wx-head-bg"><image src="{{advImgUrl + 'user_bg.jpg'}}" mode="scaleToFill" wx:if="{{advImgUrl}}"></image></view>
+            <view style="position: relative;top:-160rpx;">
+                <view class="user-thumb"><open-data type="userAvatarUrl"></open-data></view>
             </view>
-            <view class="wx-dialog-content">
-                <view>同意当前小程序使用手机号登陆</view>
-            </view>
-            <view class="wx-dialog-footer">
-                <button class="wx-dialog-btn" open-type="getPhoneNumber" bindgetphonenumber="bindGetUserPhone">允许</button>
+        </view>
+        <view class="wx-login-body">
+            <view class="wx-title">请确认以下授权信息</view>
+            <view class="wx-content">绑定您的手机号等信息</view>
+            <view class="wx-btn">
+                <i-button type="success" size="small" open-type="getPhoneNumber" bindgetphonenumber="bindGetUserPhone">手机号绑定</i-button>
             </view>
         </view>
     </view>
@@ -24,9 +25,13 @@
 
     export default class AuthorizeLogin extends wepy.page {
         config = {
-            navigationBarTitleText: '登陆'
+            navigationBarTitleText: '登陆',
+            usingComponents: {
+                "i-button": "../../iview/button/index"
+            }
         };
         data = {
+            advImgUrl: api.ADV_IMG_URL,
             showDialog: false,
             token: ''
         };
