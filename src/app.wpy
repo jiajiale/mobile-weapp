@@ -125,10 +125,10 @@
                             api.login('POST', {
                                 'code': res.code
                             }).then(resp => {
+                                tip.loaded();
                                 if (resp.data) {
                                     that.setLoginInfo(resp.data);
                                 } else {
-                                    tip.loaded();
                                     tip.toast('登陆失败');
                                 }
                             });
@@ -158,7 +158,6 @@
 
         onLaunch() {
             let token = wx.getStorageSync('token');
-
             if(token){
                 this.login();
             }
