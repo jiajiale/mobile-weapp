@@ -2,18 +2,33 @@
     @import "../../assets/styles/authorize";
 </style>
 <template>
-    <view class="wx-dialog-container {{showDialog ? 'show' : 'close'}}">
-        <view class="wx-mask"></view>
-        <view class="wx-dialog">
-            <view class="wx-dialog-header">
-                <view class="wx-dialog-title">微信授权</view>
+    <!--<view class="wx-dialog-container {{showDialog ? 'show' : 'close'}}">-->
+        <!--<view class="wx-mask"></view>-->
+        <!--<view class="wx-dialog">-->
+            <!--<view class="wx-dialog-header">-->
+                <!--<view class="wx-dialog-title">微信授权</view>-->
+            <!--</view>-->
+            <!--<view class="wx-dialog-content">-->
+                <!--<view>同意当前小程序获取我的微信头像</view>-->
+                <!--<view>同意当前小程序获取我的微信昵称</view>-->
+            <!--</view>-->
+            <!--<view class="wx-dialog-footer">-->
+                <!--<button class="wx-dialog-btn" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">允许</button>-->
+            <!--</view>-->
+        <!--</view>-->
+    <!--</view>-->
+    <view>
+        <view class="wx-login-head">
+            <view class="wx-head-bg"><image src="{{advImgUrl + 'user_bg.jpg'}}" mode="scaleToFill" wx:if="{{advImgUrl}}"></image></view>
+            <view style="position: relative;top:-160rpx;">
+                <view class="user-thumb"><open-data type="userAvatarUrl"></open-data></view>
             </view>
-            <view class="wx-dialog-content">
-                <view>同意当前小程序获取我的微信头像</view>
-                <view>同意当前小程序获取我的微信昵称</view>
-            </view>
-            <view class="wx-dialog-footer">
-                <button class="wx-dialog-btn" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">允许</button>
+        </view>
+        <view class="wx-login-body">
+            <view class="wx-title">请确认以下授权信息</view>
+            <view class="wx-content">获取您的信息(头像、昵称)等</view>
+            <view class="wx-btn">
+                <i-button type="success" size="small" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登陆</i-button>
             </view>
         </view>
     </view>
@@ -25,9 +40,13 @@
 
     export default class AuthorizeIndex extends wepy.page {
         config = {
-            navigationBarTitleText: '授权'
+            navigationBarTitleText: '授权',
+            usingComponents: {
+                "i-button": "../../iview/button/index"
+            }
         };
         data = {
+            advImgUrl: api.ADV_IMG_URL,
             showDialog: false,
             token: ''
         };

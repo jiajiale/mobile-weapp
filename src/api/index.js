@@ -7,6 +7,7 @@ const GOODS_IMG_URL = APP_URL + '/Public/Uploads/goods/source/';
 const CATEGORY_IMG_URL = APP_URL + '/Public/Uploads/category/source/';
 const FOCUS_IMG_URL = APP_URL + '/Public/Uploads/focus/source/';
 const ADV_IMG_URL = APP_URL + '/Public/Uploads/adv/source/';
+const APP_IMG_URL = APP_URL + '/Public/Uploads/app/';
 const PHOTO_IMG_URL = APP_URL + '/Public/Uploads/photo/';
 const UPLOAD_IMG_URL = APP_URL + '/Admin/Image/uploadPicture';
 const THUMBNAIL_IMG = APP_URL + '/Api/Public/thumbnail';
@@ -37,6 +38,7 @@ export default{
     CATEGORY_IMG_URL: CATEGORY_IMG_URL,
     FOCUS_IMG_URL: FOCUS_IMG_URL,
     ADV_IMG_URL: ADV_IMG_URL,
+    APP_IMG_URL: APP_IMG_URL,
     PHOTO_IMG_URL: PHOTO_IMG_URL,
     UPLOAD_IMG_URL: UPLOAD_IMG_URL,
     THUMBNAIL_IMG: THUMBNAIL_IMG,

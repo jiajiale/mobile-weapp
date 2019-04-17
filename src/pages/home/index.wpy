@@ -59,14 +59,16 @@
                 <i-row i-class="wx-item-block">
                     <i-col span="12" i-class="wx-item" @tap="handleGo" data-url="{{appInfo[0].app_url}}">
                         <view class="wx-item-box">
-                            <view class="wx-icon"><icon class="iconfont icon-zhongguoyidong"/></view>
-                            <view class="wx-txt">{{appInfo[0].app_name}}</view>
+                            <!--<view class="wx-icon"><icon class="iconfont icon-zhongguoyidong"/></view>-->
+                            <!--<view class="wx-txt">{{appInfo[0].app_name}}</view>-->
+                            <image src="{{appImgUrl + appInfo[0].app_image}}" mode="scaleToFill"></image>
                         </view>
                     </i-col>
                     <i-col span="12" i-class="wx-item" @tap="handleGo" data-url="{{appInfo[1].app_url}}">
                         <view class="wx-item-box">
-                            <view class="wx-icon"><icon class="iconfont icon-kuandai"/></view>
-                            <view class="wx-txt">{{appInfo[1].app_name}}</view>
+                            <!--<view class="wx-icon"><icon class="iconfont icon-kuandai"/></view>-->
+                            <!--<view class="wx-txt">{{appInfo[1].app_name}}</view>-->
+                            <image src="{{appImgUrl + appInfo[1].app_image}}" mode="scaleToFill"></image>
                         </view>
                     </i-col>
                 </i-row>
@@ -84,13 +86,15 @@
                     <i-col span="12" i-class="wx-item" @tap="handleGo" data-url="{{appInfo[2].app_url}}">
                         <view class="wx-item-box">
                             <!--<view class="wx-icon"><icon class="iconfont icon-zhongguoyidong"/></view>-->
-                            <view class="wx-txt">{{appInfo[2].app_name}}</view>
+                            <!--<view class="wx-txt">{{appInfo[2].app_name}}</view>-->
+                            <image src="{{appImgUrl + appInfo[2].app_image}}" mode="scaleToFill"></image>
                         </view>
                     </i-col>
                     <i-col span="12" i-class="wx-item" @tap="handleGo" data-url="{{appInfo[3].app_url}}">
                         <view class="wx-item-box">
                             <!--<view class="wx-icon"><icon class="iconfont icon-kuandai"/></view>-->
-                            <view class="wx-txt">{{appInfo[3].app_name}}</view>
+                            <!--<view class="wx-txt">{{appInfo[3].app_name}}</view>-->
+                            <image src="{{appImgUrl + appInfo[3].app_image}}" mode="scaleToFill"></image>
                         </view>
                     </i-col>
                 </i-row>
@@ -168,6 +172,7 @@
             categoryImgUrl: api.CATEGORY_IMG_URL,
             goodsImgUrl: api.GOODS_IMG_URL,
             advImgUrl: api.ADV_IMG_URL,
+            appImgUrl: api.APP_IMG_URL,
             indicatorDots: true,
             autoplay: true,
             interval: 5000,
