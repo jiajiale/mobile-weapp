@@ -32,8 +32,6 @@
         };
         data = {
             advImgUrl: api.ADV_IMG_URL,
-            showDialog: false,
-            token: ''
         };
 
         events = {};
@@ -41,11 +39,9 @@
         methods = {};
 
         bindGetUserInfo(e) {
-            if (e.detail.userInfo) {
-                this.login();
-                this.showDialog = false;
-            } else {
-                this.showDialog = true;
+            if(e.detail.userInfo) {
+                this.$parent.login();
+            }else{
                 return;
             }
         };
@@ -55,75 +51,6 @@
 
         onLoad(options) {
 
-        }
-
-        setLoginInfo(token) {
-            let current_time = Date.parse(new Date());
-
-            wx.setStorageSync('token', token);
-            //wx.setStorageSync('token_expire', current_time + 10000);
-        }
-
-        login() {
-            let token = wx.setStorageSync('token'), that = this;
-            if (!token) {
-                wx.login({
-                    success: function (res) {
-                        if (res.code) {
-                            tip.loading('登录中，请稍后');
-                            console.log(res);
-                            api.login('POST', {
-                                'code': res.code
-                            }).then(resp => {
-                                if (resp.data) {
-                                    that.token = resp.data.token;
-                                    that.setLoginInfo(resp.data.token);
-                                    wx.setStorageSync('userInfo', resp.data.userInfo);
-                                    wx.getSetting({
-                                        success(res) {
-                                            console.log(res);
-                                            if (res.authSetting['scope.userInfo']) {
-                                                wx.getUserInfo({
-                                                    success: function (res) {
-                                                        that.register(res.encryptedData, res.iv);
-                                                    }
-                                                });
-                                            } else {
-                                                that.setData({
-                                                    showDialog: true
-                                                });
-                                                tip.loaded();
-                                            }
-                                        },
-                                        complete(res){
-                                            console.log(res);
-                                        }
-                                    });
-                                } else {
-                                    tip.loaded();
-                                    tip.toast('登陆失败');
-                                }
-                            });
-                        } else {
-                            tip.toast('登陆失败');
-                        }
-                    }
-                });
-            } else {
-                wx.navigateBack();
-            }
-        };
-
-        register(encryptedData, iv) {
-            api.register('POST', {
-                'iv': iv,
-                'encryptedData': encryptedData
-            }).then(resp => {
-                if (resp.data) {
-                    wx.setStorageSync('userInfo', resp.data);
-                }
-                wx.navigateBack();
-            });
         }
     }
 </script>

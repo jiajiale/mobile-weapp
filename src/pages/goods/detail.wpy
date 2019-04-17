@@ -286,7 +286,11 @@
         };
 
         onShareAppMessage() {
-
+            return {
+                title: this.goods.goods_name,
+                path: "/pages/goods/detail?id=" + this.goods.id,
+                imageUrl: this.goodsImgUrl + this.goods.original_img,
+            }
         }
 
         onShow() {

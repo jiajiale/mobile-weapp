@@ -242,7 +242,9 @@
         };
 
         onShareAppMessage() {
-
+            return {
+                path: "/pages/home/index",
+            }
         }
 
         onShow() {
