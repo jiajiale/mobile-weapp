@@ -158,9 +158,9 @@
 
         onLaunch() {
             let token = wx.getStorageSync('token');
-            if(token){
-                this.login();
-            }
+//            if(token){
+//                this.login();
+//            }
         }
     }
 </script>

@@ -27,11 +27,13 @@
     </i-panel>
 
     <view class="wx-pay-actions">
+        <form bindsubmit="handlePay" report-submit="true">
         <i-row>
             <i-col span="6" i-class="wx-pay-btn">
-                <view class="{{isSubmit ? 'wx-disable' : ''}}" @tap="handlePay">确定</view>
+                <button class="{{isSubmit ? 'wx-disable' : ''}}" form-type="submit" plain="true">确定</button>
             </i-col>
         </i-row>
+        </form>
     </view>
 </template>
 
@@ -66,8 +68,9 @@
         };
 
         methods = {
-            handlePay(){
-                this.payOrder();
+            handlePay(e){
+                let formId = e.detail.formId;
+                this.payOrder(formId);
             },
             changePayMode({ detail }){
                 let payMode = detail.value;
@@ -81,7 +84,7 @@
             }
         };
 
-        async payOrder() {
+        async payOrder(formId) {
             if(!this.isSubmit){
                 this.isSubmit = true;
                 tip.loading(MSG.COMMITTING);
@@ -89,7 +92,8 @@
                 api.payOrder('POST',{
                     order_no: this.goodsOrder.order_sn,
                     pay_code: this.payCode,
-                    pay_name: this.payName
+                    pay_name: this.payName,
+                    form_id : formId
                 }).then(result => {
                     tip.loaded();
                     this.isSubmit = false;
@@ -127,6 +131,12 @@
                 tip.loaded();
                 if(resp.data){
                     this.payModeList = resp.data.payModeList;
+                    this.payModeList.forEach(item => {
+                        if(item.checked){
+                            this.payCode = item.pay_code;
+                            this.payName = item.pay_name;
+                        }
+                    })
                     this.goodsOrder = resp.data.goodsOrder;
                     this.$apply();
                 }else{
