@@ -28,6 +28,9 @@
                             <span class="old-price">￥{{item.market_price}}</span>
                         </view>
                         <view class="wx-goods-title">{{item.goods_name}}</view>
+                        <view class="wx-goods-share">
+                            <button open-type="share" plain style="border:none;" data-item="{{item}}"><icon class="iconfont icon-fenxiang"/></button>
+                        </view>
                     </i-col>
                 </i-row>
             </view>
@@ -387,6 +390,17 @@
                 }
             });
         };
+
+        onShareAppMessage(res) {
+            if(res.from === 'button'){
+                let item = res.target.dataset.item;
+                return {
+                    title: item.goods_name,
+                    path: "/pages/service/index",
+                    imageUrl: this.goodsImgUrl + (item.app_img ? item.app_img : item.original_img),
+                }
+            }
+        }
 
         onShow() {
             let _this = this;
