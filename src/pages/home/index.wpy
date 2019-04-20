@@ -32,24 +32,21 @@
         <view class="wx-on-sale marginB20">
             <view class="wx-title">特价专区</view>
             <view class="wx-row">
-                <i-grid>
-                    <i-grid-item i-class="wx-item" wx:for="{{saleGoodsList}}" wx:key="{{item.id}}">
+                <i-row>
+                    <i-col span="12" i-class="wx-item"  wx:for="{{saleGoodsList}}" wx:key="{{item.id}}">
                         <navigator open-type="navigate" hover-class="none" url="/pages/goods/detail?id={{item.id}}">
-                            <i-row>
-                                <i-col span="12" i-class="wx-left">
-                                    <image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image>
-                                </i-col>
-                                <i-col span="12" i-class="wx-right">
-                                    <view style="height: 60rpx;line-height: 30rpx;overflow: hidden;text-overflow: ellipsis;">{{item.goods_name}}sdfsdsdfsdf</view>
-                                    <view style="position: absolute;bottom: 20rpx;">
-                                        <view>直降¥{{item.market_price - item.shop_price}}</view>
-                                        <view>现价¥{{item.shop_price}}</view>
-                                    </view>
-                                </i-col>
-                            </i-row>
+                        <i-row>
+                            <i-col span="14" i-class="wx-left">
+                                <view class="wx-goods-title">{{item.goods_name}}</view>
+                                <i-tag class="wx-tag" type="border" color="red">直降¥{{item.market_price - item.shop_price}}</i-tag>
+                            </i-col>
+                            <i-col span="10" i-class="wx-right">
+                                <image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image>
+                            </i-col>
+                        </i-row>
                         </navigator>
-                    </i-grid-item>
-                </i-grid>
+                    </i-col>
+                </i-row>
             </view>
         </view>
 
@@ -162,7 +159,8 @@
                 "i-card": "../../iview/card/index",
                 "i-grid": "../../iview/grid/index",
                 "i-grid-item": "../../iview/grid-item/index",
-                "i-icon": "../../iview/icon/index"
+                "i-icon": "../../iview/icon/index",
+                "i-tag": "../../iview/tag/index"
             }
         };
         components = {

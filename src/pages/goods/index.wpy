@@ -27,8 +27,7 @@
         <LoadMore :hasPage.sync="hasPage" :itemList.sync="goodsList" emptyText="暂无商品信息"></LoadMore>
     </scroll-view>
     <view wx:if="{{!goodsList.length}}">
-        <NoInfo emptyText="请输入关键字搜索" marginTop="200" wx:if="{{params.from}}"></NoInfo>
-        <NoInfo emptyText="暂无商品信息" marginTop="200" wx:else></NoInfo>
+        <NoInfo :emptyText="emptyText" marginTop="200"></NoInfo>
     </view>
 </template>
 
@@ -72,6 +71,7 @@
             page: 1,
             hasPage: true,
             activeCategory: null,
+            emptyText: '暂无商品信息'
         };
 
         computed = {};
