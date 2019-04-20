@@ -3,7 +3,7 @@
 </style>
 <template>
     <view class="wx-goods-search" wx:if="{{!params.cate}}">
-        <input placeholder="商品搜索" value="{{keywords}}" data-key="name" bindinput="handleSearchInput"/>
+        <input placeholder="商品搜索" value="{{keywords}}" data-key="name" bindinput="handleSearchInput" auto-focus/>
         <view class="wx-search-icon"><i-icon type="search" size="20" color="#999999"/></view>
         <view class="wx-search-btn" @tap="queryReload">搜索</view>
     </view>
@@ -27,7 +27,8 @@
         <LoadMore :hasPage.sync="hasPage" :itemList.sync="goodsList" emptyText="暂无商品信息"></LoadMore>
     </scroll-view>
     <view wx:if="{{!goodsList.length}}">
-        <NoInfo emptyText="暂无商品信息" marginTop="200"></NoInfo>
+        <NoInfo emptyText="请输入关键字搜索" marginTop="200" wx:if="{{params.from}}"></NoInfo>
+        <NoInfo emptyText="暂无商品信息" marginTop="200" wx:else></NoInfo>
     </view>
 </template>
 
@@ -136,7 +137,9 @@
         onShow() {
             let _this = this;
             this.checkAuthorize(function () {
-                _this.queryReload();
+                if(!_this.params.from){
+                    _this.queryReload();
+                }
             });
         };
 

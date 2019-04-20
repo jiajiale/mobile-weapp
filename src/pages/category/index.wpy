@@ -67,7 +67,7 @@
             },
             handleSearchFocus(){
                 wepy.navigateTo({
-                    url: "/pages/goods/index"
+                    url: "/pages/goods/index?from=category"
                 })
             }
         };

@@ -4,7 +4,7 @@
 <template>
     <view wx:if="{{isRequested}}">
         <view class="wx-goods-search" style="background: {{searchBg}}">
-            <input placeholder="商品搜索"/>
+            <input placeholder="商品搜索" bindfocus="handleSearchFocus"/>
             <view class="wx-search-icon"><i-icon type="search" size="20" color="#eee"/></view>
         </view>
         <view class="wx-focus">
@@ -225,6 +225,11 @@
                 if(url){
                     wepy.navigateTo({url: url});
                 }
+            },
+            handleSearchFocus(){
+                wepy.navigateTo({
+                    url: "/pages/goods/index?from=home"
+                })
             }
         };
 
