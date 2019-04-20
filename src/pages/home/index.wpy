@@ -3,6 +3,10 @@
 </style>
 <template>
     <view wx:if="{{isRequested}}">
+        <view class="wx-goods-search" style="background: {{searchBg}}">
+            <input placeholder="商品搜索"/>
+            <view class="wx-search-icon"><i-icon type="search" size="20" color="#eee"/></view>
+        </view>
         <view class="wx-focus">
             <swiper indicator-dots="{{indicatorDots}}" style="height: 400rpx;"
                     autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
@@ -158,6 +162,7 @@
                 "i-card": "../../iview/card/index",
                 "i-grid": "../../iview/grid/index",
                 "i-grid-item": "../../iview/grid-item/index",
+                "i-icon": "../../iview/icon/index"
             }
         };
         components = {
@@ -184,7 +189,8 @@
             recommendGoodsList: [],
             saleGoodsList: [],
             advList: [],
-            isRequested: false
+            isRequested: false,
+            searchBg: 'rgba(236,58,62,0)'
         };
 
         methods = {
@@ -245,6 +251,13 @@
             return {
                 path: "/pages/home/index",
             }
+        }
+
+        onPageScroll(res) {
+            let opacity = res.scrollTop <= 200 ?  res.scrollTop / 200 : 1;
+            this.setData({
+                searchBg: 'rgba(236,58,62,'+ opacity +')'
+            });
         }
 
         onShow() {

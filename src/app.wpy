@@ -12,8 +12,8 @@
 
         config = {
             pages: [
-                'pages/service/index',
                 'pages/home/index',
+                'pages/service/index',
                 'pages/user/index',
                 'pages/user/sales',
                 'pages/user/salesheet',
