@@ -34,12 +34,24 @@
             </i-card>
             <view class="wx-order-append">
                 <view class="wx-count">共{{item.goods_list.length}}件商品，实付<span style="color: #ec3a3e;">￥{{item.order_amount}}</span></view>
+                <view class="wx-actions" wx:if="{{item.pay_btn === 1 || item.cancel_btn === 1 || item.receive_btn === 1}}">
+                    <view class="cancel-btn" wx:if="{{item.cancel_btn === 1}}" data-action="cancel" data-item="{{item}}" @tap="cancelOrder">关闭订单</view>
+                    <view class="pay-btn" wx:if="{{item.pay_btn === 1}}" data-action="pay">
+                        <form bindsubmit="handlePay" report-submit="true">
+                            <button form-type="submit" plain data-item="{{item}}" style="border:none;padding:0rpx;font-size:24rpx;display:inline-block;color:#fff;height:34rpx;line-height:34rpx;">付款</button>
+                        </form>
+                    </view>
+                </view>
             </view>
         </view>
         <view wx:if="{{!orderList.length}}">
             <NoInfo emptyText="暂无订单信息" marginTop="200"></NoInfo>
         </view>
     </view>
+
+    <i-modal title="{{confirmTxt}}确认" visible="{{ confirmModal }}" actions="{{ confirmBtn }}" bind:click="handleConfirm">
+        <view style="margin-bottom: 20rpx;">确定要{{confirmTxt}}吗？</view>
+    </i-modal>
 </template>
 
 <script>
@@ -61,6 +73,7 @@
                 "i-tabs": "../../iview/tabs/index",
                 "i-tab": "../../iview/tab/index",
                 "i-card": "../../iview/card/index",
+                "i-modal": "../../iview/modal/index",
             }
         };
         components = {
@@ -75,15 +88,100 @@
             current: 'ALL',
             goodsImgUrl: api.GOODS_IMG_URL,
             orderList: [],
+            goodsOrder: {},
             page: 1,
             hasPage: true,
+            confirmModal: false,
+            confirmTxt: '删除',
+            confirmBtn: [
+                {
+                    name: '取消'
+                },
+                {
+                    name: '删除',
+                    loading: false
+                }
+            ],
+            payCode: 'wx',
+            payName: '微信支付'
         };
 
         methods = {
             handleChangeStatus({ detail }){
                 this.current = detail.key;
                 this.queryReload();
-            }
+            },
+            cancelOrder(e){
+                this.order = e.currentTarget.dataset.item;
+                this.action = e.currentTarget.dataset.action;
+                this.confirmModal = true;
+                this.confirmTxt = '关闭';
+                this.confirmBtn[1].name = '关闭';
+            },
+            handlePay(e){
+                let formId = e.detail.formId;
+                this.goodsOrder = e.detail.target.dataset.item;
+                this.payOrder(formId);
+            },
+            handleConfirm({ detail }){
+                if(detail.index === 0){
+                    this.confirmModal = false;
+                }else{
+                    this.confirmBtn[1].loading = true;
+                    let _this = this;
+
+                    if(this.action === 'cancel'){
+                        api.cancelOrder('POST',{order_id: this.order.id}).then(resp => {
+                            this.confirmBtn[1].loading = false;
+                            if(resp.code === 200){
+                                this.confirmModal = false;
+                                tip.success(resp.msg);
+                                setTimeout(function () {
+                                    _this.queryReload();
+                                },500)
+                            }else{
+                                tip.error(resp.msg)
+                            }
+                        });
+                    }
+                }
+            },
+        };
+
+        async payOrder(formId) {
+            api.payOrder('POST',{
+                order_no: this.goodsOrder.order_sn,
+                pay_code: this.payCode,
+                pay_name: this.payName,
+                form_id : formId
+            }).then(result => {
+                if(result.data === true){
+                    tip.toast('下单成功',5000,function () {
+                        wx.navigateTo({
+                            url: '/pages/service/index'
+                        })
+                    },'success')
+                }else{
+                    wx.requestPayment({
+                        'timeStamp': result.data.timeStamp,
+                        'nonceStr': result.data.nonceStr,
+                        'package': result.data.package,
+                        'signType': result.data.signType,
+                        'paySign': result.data.paySign,
+                        'success':function(res){
+                            tip.toast('支付成功',5000,function () {
+                                wx.navigateTo({
+                                    url: '/pages/service/index'
+                                })
+                            },'success')
+                        },
+                        'fail':function(res){
+                            tip.error('支付失败');
+                        }
+                    })
+                }
+
+            });
         };
 
         queryReload(){

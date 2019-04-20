@@ -136,7 +136,7 @@
                             this.payCode = item.pay_code;
                             this.payName = item.pay_name;
                         }
-                    })
+                    });
                     this.goodsOrder = resp.data.goodsOrder;
                     this.$apply();
                 }else{
@@ -154,6 +154,14 @@
 
         onLoad(params) {
             this.params = params;
+        }
+
+        onUnload(){
+            if(this.params.from){
+                wx.navigateBack({
+                    delta: 1
+                })
+            }
         }
     }
 </script>
