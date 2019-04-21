@@ -83,6 +83,7 @@
 
         globalData = {
             userInfo: null,
+            isIPX: false,
         };
 
         constructor() {
@@ -156,7 +157,20 @@
             });
         }
 
+        checkIsIPhoneX(){
+            const self = this
+            wx.getSystemInfo({
+                success: function (res) {
+                    // 根据 model 进行判断
+                    if (res.model.search('iPhone X') != -1) {
+                        self.globalData.isIPX = true
+                    }
+                }
+            })
+        }
+
         onLaunch() {
+            this.checkIsIPhoneX();
             let token = wx.getStorageSync('token');
 //            if(token){
 //                this.login();

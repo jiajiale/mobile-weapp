@@ -3,12 +3,12 @@
 </style>
 <template>
     <view wx:if="{{isRequested}}">
-        <view class="wx-goods-search" style="background: {{searchBg}}">
+        <view class="wx-goods-search" style="background: {{navigationStyle.searchBg}};padding:{{navigationStyle.searchPadding}}">
             <input placeholder="商品搜索" bindfocus="handleSearchFocus"/>
-            <view class="wx-search-icon"><i-icon type="search" size="20" color="#eee"/></view>
+            <view class="wx-search-icon" style="top: {{navigationStyle.searchIconTop}}"><i-icon type="search" size="20" color="#eee"/></view>
         </view>
         <view class="wx-focus">
-            <swiper indicator-dots="{{indicatorDots}}" style="height: 400rpx;"
+            <swiper indicator-dots="{{indicatorDots}}" style="height: 480rpx;"
                     autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
                 <block wx:for="{{focusList}}" wx:key="{{item.id}}">
                     <swiper-item @tap="handleGo" data-url="{{item.target}}">
@@ -188,7 +188,11 @@
             saleGoodsList: [],
             advList: [],
             isRequested: false,
-            searchBg: 'rgba(236,58,62,0)'
+            navigationStyle: {
+                searchBg: 'rgba(236,58,62,0)',
+                searchPadding: '50rpx 30rpx 20rpx',
+                searchIconTop: '58rpx'
+            }
         };
 
         methods = {
@@ -258,9 +262,8 @@
 
         onPageScroll(res) {
             let opacity = res.scrollTop <= 200 ?  res.scrollTop / 200 : 1;
-            this.setData({
-                searchBg: 'rgba(236,58,62,'+ opacity +')'
-            });
+            this.navigationStyle.searchBg = 'rgba(236,58,62,'+ opacity +')';
+            this.$apply();
         }
 
         onShow() {
@@ -272,6 +275,11 @@
 
         onLoad(params) {
             this.params = params;
+
+            if(this.$parent.globalData.isIPX){
+                this.navigationStyle.searchPadding = '100rpx 30rpx 20rpx';
+                this.navigationStyle.searchIconTop = '108rpx';
+            }
         }
     }
 </script>

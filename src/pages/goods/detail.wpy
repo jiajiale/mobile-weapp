@@ -5,6 +5,12 @@
     }
 </style>
 <template>
+    <view class="wx-navigation" style="background: {{navigationStyle.navBg}};padding:{{navigationStyle.navPadding}}">
+        <view class="wx-navigation-icon"><i-icon type="return" size="28" color="{{navigationStyle.navColor}}" @tap="handleBack"/></view>
+        <view class="wx-navigation-title" style="color:{{navigationStyle.navColor}}">
+            <view style="display: {{navigationStyle.navDisplay}}">商品详情</view>
+        </view>
+    </view>
     <view class="wx-goods-album">
         <swiper indicator-dots="{{indicatorDots}}" style="height: 760rpx;"
                 autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
@@ -110,6 +116,7 @@
     export default class GoodsIndex extends wepy.page {
         config = {
             navigationBarTitleText: '商品详情',
+            navigationStyle: "custom",
             usingComponents: {
                 "wxparser": "plugin://wxparserPlugin/wxparser",
                 "i-row": "../../iview/row/index",
@@ -123,6 +130,7 @@
                 "i-input-number": "../../iview/input-number/index",
                 "i-button": "../../iview/button/index",
                 "i-panel": "../../iview/panel/index",
+                "i-icon": "../../iview/icon/index",
             }
         };
         components = {
@@ -145,6 +153,12 @@
             goodsZIndexStyle: 101,
             goodsVisible: false,
             cartList: [],
+            navigationStyle: {
+                navBg: 'rgba(236,58,62,0)',
+                navPadding: '56rpx 0rpx 20rpx',
+                navColor: '#666',
+                navDisplay: 'none'
+            }
         };
 
         computed = {};
@@ -248,6 +262,9 @@
             handleChangeNum({ detail }){
                 this.goods.goods_num = detail.value;
             },
+            handleBack(){
+                wx.navigateBack({delta: 1});
+            }
         };
 
         changeGoodsPrice(){
@@ -293,6 +310,14 @@
             }
         }
 
+        onPageScroll(res) {
+            let opacity = res.scrollTop <= 200 ?  res.scrollTop / 200 : 1;
+            this.navigationStyle.navBg = 'rgba(236,58,62,'+ opacity +')';
+            this.navigationStyle.navColor = res.scrollTop >= 100 ? '#fff' : '#666';
+            this.navigationStyle.navDisplay = res.scrollTop >= 100 ? 'block' : 'none';
+            this.$apply();
+        }
+
         onShow() {
             let _this = this;
             this.checkAuthorize(function () {
@@ -303,6 +328,9 @@
 
         onLoad(params) {
             this.params = params;
+            if(this.$parent.globalData.isIPX){
+                this.navigationStyle.navPadding = '100rpx 0rpx 20rpx';
+            }
         }
     }
 </script>
