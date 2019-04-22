@@ -263,7 +263,9 @@
                 this.goods.goods_num = detail.value;
             },
             handleBack(){
-                wx.navigateBack({delta: 1});
+                wepy.switchTab({
+                    url: '/pages/home/index'
+                })
             }
         };
 
