@@ -140,8 +140,8 @@
         mixins = [authorize];
 
         data = {
-            goodsImgUrl: api.GOODS_IMG_URL,
             params: [],
+            goodsImgUrl: api.GOODS_IMG_URL,
             goodsIds: [],
             goods: [],
             goodsImages: [],
@@ -307,7 +307,7 @@
         onShareAppMessage() {
             return {
                 title: this.goods.goods_name,
-                path: "/pages/goods/detail?id=" + this.goods.id,
+                path: "/pages/goods/detail?id=" + this.goods.id + "&userFrom=" + this.$parent.globalData.userInfo.id,
                 imageUrl: this.goodsImgUrl + this.goods.original_img,
             }
         }
@@ -333,6 +333,8 @@
             if(this.$parent.globalData.isIPX){
                 this.navigationStyle.navPadding = '100rpx 0rpx 20rpx';
             }
+
+            this.checkUserFrom(params);
         }
     }
 </script>

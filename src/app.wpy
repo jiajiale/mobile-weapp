@@ -175,6 +175,7 @@
 //            if(token){
 //                this.login();
 //            }
+            wx.removeStorageSync('userFrom')
         }
     }
 </script>

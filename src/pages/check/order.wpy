@@ -101,9 +101,11 @@
         methods = {
             handleOrder(){
                 let _this = this;
+                let userFrom = wx.getStorageSync('userFrom');
                 this.formData['address_id'] = this.address.id;
                 this.formData['is_goods'] = 1;
                 this.formData['from'] = this.params.from ? this.params.from : '';
+                this.formData['from_user_id'] = userFrom;
                 if(!this.isSubmit){
                     this.isSubmit = true;
                     tip.loading(MSG.COMMITTING);

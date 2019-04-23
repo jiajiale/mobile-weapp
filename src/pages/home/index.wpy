@@ -256,7 +256,7 @@
 
         onShareAppMessage() {
             return {
-                path: "/pages/home/index",
+                path: "/pages/home/index?userFrom=" + this.$parent.globalData.userInfo.id,
             }
         }
 
@@ -280,6 +280,8 @@
                 this.navigationStyle.searchPadding = '100rpx 30rpx 20rpx';
                 this.navigationStyle.searchIconTop = '108rpx';
             }
+
+            this.checkUserFrom(params);
         }
     }
 </script>

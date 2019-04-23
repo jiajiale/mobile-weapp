@@ -145,10 +145,12 @@
             },
             handlePay(e){
                 let _this = this;
+                let userFrom = wx.getStorageSync('userFrom');
                 let formId = e.detail.formId;
                 this.formData['is_goods'] = 0;
                 this.formData['delivery_fee'] = 0;
                 this.formData['cartList'] = this.cartList;
+                this.formData['from_user_id'] = userFrom;
                 this.isSubmit = true;
                 if(!this.orderNo){
                     api.createServiceOrder('POST',this.formData).then(resp => {

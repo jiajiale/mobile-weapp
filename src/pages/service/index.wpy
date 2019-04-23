@@ -396,7 +396,7 @@
                 let item = res.target.dataset.item;
                 return {
                     title: item.goods_name,
-                    path: "/pages/service/index",
+                    path: "/pages/service/index?userFrom=" + this.$parent.globalData.userInfo.id,
                     imageUrl: this.goodsImgUrl + (item.app_img ? item.app_img : item.original_img),
                 }
             }
@@ -415,6 +415,8 @@
         onLoad(params) {
             this.params = params;
             this.cartList = wx.getStorageSync('cartList') ? wx.getStorageSync('cartList') : [];
+
+            this.checkUserFrom(params);
         }
     }
 </script>
