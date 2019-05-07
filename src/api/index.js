@@ -49,6 +49,7 @@ export default{
     queryGoodsList: (method,params) => wxRequest(method,params, "/api/goods/index"),
     queryGoodsDetail: (method,params) => wxRequest(method,params, "/api/goods/detail"),
     queryCategoryList: (method,params) => wxRequest(method,params, "/api/goods/category"),
+    queryGoodsQrcode: (method,params) => wxRequest(method,params, "/api/goods/qrcode"),
     addGoodsCart: (method,params) => wxRequest(method,params, "/api/cart/addGoodsCart"),
     delGoodsCart: (method,params) => wxRequest(method,params, "/api/cart/delGoodsCart"),
     addGoodsOrder: (method,params) => wxRequest(method,params, "/api/cart/addGoodsOrder"),

@@ -44,6 +44,7 @@
 <script>
     import wepy from 'wepy';
     import api from '../api';
+    import util from '../utils/util';
 
     export default class GoodsPost extends wepy.component {
         props = {
@@ -84,7 +85,7 @@
                             wx.saveImageToPhotosAlbum({
                                 filePath: tmpImg,
                                 success() {
-                                    that.handleClose();
+                                    that.$emit('handleClosePost');
                                     wx.showToast({title: '保存成功'})
                                 },
                                 fail() {
@@ -116,17 +117,48 @@
                 that.context.fillText(that.goods.goods_name, that.conv(10), that.conv(35));
                 that.context.stroke();
 
+                that.context.setFontSize(14);
+                that.context.setFillStyle('#333333');
+                that.context.fillText('￥' + that.goods.shop_price, that.conv(75), that.screenH * 0.81 - 100);
+                that.context.stroke();
+
+                that.context.setFontSize(14);
+                that.context.setFillStyle('#333333');
+                that.context.fillText('长按二维码识别购买', that.conv(75), that.screenH * 0.81 - 65);
+                that.context.stroke();
+
                 let logoPath = that.goodsImgUrl + that.goods.original_img;
                 let imgWidth = that.screenW - that.conv(40);
                 wx.getImageInfo({
                     src: logoPath,
                     success(res) {
                         let path = res.path;
-
                         that.context.drawImage(path, that.conv(10), that.conv(40), imgWidth , imgWidth);
-                        that.context.draw();
                     }
                 });
+
+                api.queryGoodsQrcode('POST',{
+                    goods_id: that.goods.id,
+                }).then(resp => {
+                    if(resp.code === 200){
+                        let base64Data = 'data:image/jpg;base64,' + resp.data.code;
+                        let parseCode = util.base64src(base64Data);
+
+                        parseCode.then(val => {
+                            wx.getImageInfo({
+                                src: val,
+                                success(res) {
+                                    let path = res.path;
+                                    that.context.drawImage(path, that.conv(10), that.screenH * 0.81 - 140, 100 , 100);
+                                }
+                            });
+                        });
+                    }
+                });
+
+                setTimeout(function () {
+                    that.context.draw();
+                },3000)
             },10)
         };
     }
