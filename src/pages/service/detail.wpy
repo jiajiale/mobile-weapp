@@ -8,7 +8,7 @@
     <view class="wx-navigation" style="background: {{navigationStyle.navBg}};padding:{{navigationStyle.navPadding}}">
         <view class="wx-navigation-icon"><i-icon type="return" size="28" color="{{navigationStyle.navColor}}" @tap="handleBack"/></view>
         <view class="wx-navigation-title" style="color:{{navigationStyle.navColor}}">
-            <view style="display: {{navigationStyle.navDisplay}}">商品详情</view>
+            <view style="display: {{navigationStyle.navDisplay}}">业务详情</view>
         </view>
     </view>
     <view class="wx-goods-album">
@@ -32,14 +32,11 @@
             <i-cell title="选择规格：" i-class="wx-spec-item" is-link bind:click="switchGoodsSheet">
                 <view slot="footer" style="font-size: 24rpx;color: #999;">{{goods.spec_info}}</view>
             </i-cell>
-            <i-cell title="选择数量：" i-class="wx-spec-item">
-                <i-input-number slot="footer" value="{{goods.goods_num}}" min="1" max="100" bindchange="handleChangeNum" />
-            </i-cell>
         </i-cell-group>
     </view>
 
     <scroll-view class="marginT20 wx-goods-detail">
-        <view class="wx-detail-title">商品介绍</view>
+        <view class="wx-detail-title">业务介绍</view>
         <view class="wx-content">
             <wxparser rich-text="{{goods.goods_content}}" />
         </view>
@@ -67,7 +64,7 @@
                 <view>加入购物车</view>
             </i-col>
             <i-col span="8" i-class="wx-buy-action" @tap="handleCheckOrder">
-                <view>立即购买</view>
+                <view>立即办理</view>
             </i-col>
         </i-row>
     </view>
@@ -102,23 +99,20 @@
             </view>
         </view>
     </GoodsSheet>
-
-    <GoodsPost :visible.sync="postVisible" :goods.sync="goods"></GoodsPost>
 </template>
 
 <script>
     import wepy from 'wepy';
     import ContentSheet from '../../components/content-sheet';
-    import GoodsPost from '../../components/goods-post';
     import authorize from '../../mixins/authorize';
     import api from '../../api';
     import tip from '../../utils/tip';
     import utils from '../../utils/util';
     import MSG from '../../utils/msg';
 
-    export default class GoodsDetail extends wepy.page {
+    export default class ServiceDetail extends wepy.page {
         config = {
-            navigationBarTitleText: '商品详情',
+            navigationBarTitleText: '业务详情',
             navigationStyle: "custom",
             usingComponents: {
                 "wxparser": "plugin://wxparserPlugin/wxparser",
@@ -138,7 +132,6 @@
         };
         components = {
             GoodsSheet: ContentSheet,
-            GoodsPost: GoodsPost,
         };
 
         mixins = [authorize];
@@ -156,7 +149,6 @@
             goodsBottomStyle: 0,
             goodsZIndexStyle: 101,
             goodsVisible: false,
-            postVisible: false,
             cartList: [],
             navigationStyle: {
                 navBg: 'rgba(236,58,62,0)',
@@ -223,8 +215,6 @@
                 this.changeGoodsPrice();
             },
             handleAddCart(){
-                this.postVisible = true;
-                return;
                 if(!utils.isEmptyObject(this.goodsSpecList) && this.goods.goods_spec === undefined){
                     tip.toast(MSG.SELECT_SPEC);
                     return;
@@ -266,19 +256,10 @@
                     });
                 });
             },
-            handleChangeNum({ detail }){
-                this.goods.goods_num = detail.value;
-            },
             handleBack(){
                 wepy.switchTab({
                     url: '/pages/home/index'
                 })
-            }
-        };
-
-        events = {
-            handleClosePost(){
-                this.postVisible = false;
             }
         };
 
@@ -320,7 +301,7 @@
         onShareAppMessage() {
             return {
                 title: this.goods.goods_name,
-                path: "/pages/goods/detail?id=" + this.goods.id + "&userFrom=" + this.$parent.globalData.userInfo.id,
+                path: "/pages/service/detail?id=" + this.goods.id + "&userFrom=" + this.$parent.globalData.userInfo.id,
                 imageUrl: this.goodsImgUrl + this.goods.original_img,
             }
         }
@@ -343,7 +324,6 @@
 
         onLoad(params) {
             this.params = params;
-            params.id = 2139;
             if(this.$parent.globalData.isIPX){
                 this.navigationStyle.navPadding = '100rpx 0rpx 20rpx';
             }

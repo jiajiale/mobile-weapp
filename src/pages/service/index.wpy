@@ -10,7 +10,7 @@
 
     <scroll-view scroll-y bindscrolltolower="onReachBottom" wx:if="{{goodsList.length > 0}}">
         <view class="wx-goods-list">
-            <view class="wx-goods-item" wx:for="{{goodsList}}" wx:key="{{item.id}}">
+            <view class="wx-goods-item" wx:for="{{goodsList}}" wx:key="{{item.id}}" bindtap="handleNavigation" data-item="{{item}}">
                 <i-row class="wx-goods-item-head">
                     <i-col span="24" i-class="col-class">
                         <image src="{{goodsImgUrl + (item.app_img ? item.app_img : item.original_img)}}"
@@ -19,10 +19,6 @@
                 </i-row>
                 <i-row class="wx-goods-item-foot">
                     <i-col span="24" i-class="col-class">
-                        <view class="wx-goods-buy-btn" data-item="{{item}}" bindtap="switchGoodsSheet" wx:if="{{!item.selected}}">我要办理</view>
-                        <view class="wx-goods-buy-btn" wx:else>
-                            <icon class="iconfont icon-duigou" data-item="{{item}}" bindtap="cancelSelectGoods"/>
-                        </view>
                         <view class="wx-goods-price">
                             <span class="new-price">￥{{item.shop_price}}</span>
                             <span class="old-price">￥{{item.market_price}}</span>
@@ -38,86 +34,86 @@
         <LoadMore :hasPage.sync="hasPage" :itemList.sync="goodsList" emptyText="暂无业务信息"></LoadMore>
     </scroll-view>
 
-    <GoodsSheet :visible.sync="goodsVisible" :maxHeight.sync="goodsMaxHeight"
-                :bottomStyle.sync="goodsBottomStyle"
-                :zIndexStyle.sync="goodsZIndexStyle">
-        <view slot="content" wx:if="{{goodsInfo.id}}">
-            <view style="border-bottom: 1rpx solid #e8e8e8">
-                <view class="wx-goods-head-img">
-                    <image src="{{goodsImgUrl + (goodsInfo.app_img ? goodsInfo.app_img : goodsInfo.original_img)}}"
-                           mode="scaleToFill"></image>
-                </view>
-                <view class="wx-goods-head-main">
-                    <icon class="iconfont icon-guanbi wx-sheet-close-icon" bindtap="switchGoodsSheet"/>
-                    <view class="wx-goods-title">{{goodsInfo.goods_name}}</view>
-                    <view class="wx-goods-price">
-                        <span class="new-price">￥{{goodsInfo.shop_price}}</span>
-                        <span class="old-price">￥{{goodsInfo.market_price}}</span>
-                    </view>
-                </view>
-            </view>
-            <view class="wx-goods-specs">
-                <i-panel title="{{specIndex}}" wx:for="{{goodsInfo.spec_list}}" wx:for-index="specIndex" wx:key="{{index}}">
-                    <view class="wx-goods-spec">
-                        <view class="wx-goods-spec-item {{item.class}}" wx:for="{{item}}" wx:key="{{item.item_id}}" data-key="{{specIndex}}" data-item="{{item}}" bindtap="selectSpec">{{item.item}}</view>
-                    </view>
-                </i-panel>
-            </view>
-            <view style="position: fixed;bottom: 0rpx;width: 100%">
-                <i-button type="success" size="small" bindtap="selectGoodsOk">选好了</i-button>
-            </view>
-        </view>
-    </GoodsSheet>
+    <!--<GoodsSheet :visible.sync="goodsVisible" :maxHeight.sync="goodsMaxHeight"-->
+                <!--:bottomStyle.sync="goodsBottomStyle"-->
+                <!--:zIndexStyle.sync="goodsZIndexStyle">-->
+        <!--<view slot="content" wx:if="{{goodsInfo.id}}">-->
+            <!--<view style="border-bottom: 1rpx solid #e8e8e8">-->
+                <!--<view class="wx-goods-head-img">-->
+                    <!--<image src="{{goodsImgUrl + (goodsInfo.app_img ? goodsInfo.app_img : goodsInfo.original_img)}}"-->
+                           <!--mode="scaleToFill"></image>-->
+                <!--</view>-->
+                <!--<view class="wx-goods-head-main">-->
+                    <!--<icon class="iconfont icon-guanbi wx-sheet-close-icon" bindtap="switchGoodsSheet"/>-->
+                    <!--<view class="wx-goods-title">{{goodsInfo.goods_name}}</view>-->
+                    <!--<view class="wx-goods-price">-->
+                        <!--<span class="new-price">￥{{goodsInfo.shop_price}}</span>-->
+                        <!--<span class="old-price">￥{{goodsInfo.market_price}}</span>-->
+                    <!--</view>-->
+                <!--</view>-->
+            <!--</view>-->
+            <!--<view class="wx-goods-specs">-->
+                <!--<i-panel title="{{specIndex}}" wx:for="{{goodsInfo.spec_list}}" wx:for-index="specIndex" wx:key="{{index}}">-->
+                    <!--<view class="wx-goods-spec">-->
+                        <!--<view class="wx-goods-spec-item {{item.class}}" wx:for="{{item}}" wx:key="{{item.item_id}}" data-key="{{specIndex}}" data-item="{{item}}" bindtap="selectSpec">{{item.item}}</view>-->
+                    <!--</view>-->
+                <!--</i-panel>-->
+            <!--</view>-->
+            <!--<view style="position: fixed;bottom: 0rpx;width: 100%">-->
+                <!--<i-button type="success" size="small" bindtap="selectGoodsOk">选好了</i-button>-->
+            <!--</view>-->
+        <!--</view>-->
+    <!--</GoodsSheet>-->
 
-    <CartSheet :visible.sync="cartVisible" :maxHeight.sync="cartMaxHeight">
-        <view slot="title">
-            <view class="wx-sheet-cart-head">
-                选中业务
-                <icon class="iconfont icon-guanbi wx-sheet-close-icon" bindtap="switchCartSheet"/>
-            </view>
-        </view>
-        <view slot="content">
-            <i-swipeout  i-class="wx-sheet-cart-item" actions="{{actions}}" wx:for="{{cartList}}" wx:key="{{item.id}}" data-item="{{item}}" data-index="{{index}}" bindchange="delCartItem">
-                <view slot="content">
-                    <i-cell title="{{item.goods_name}}" label="{{item.spec_info}}">
-                        <view slot="footer">￥{{item.shop_price}}</view>
-                    </i-cell>
-                </view>
-            </i-swipeout>
-        </view>
-    </CartSheet>
-    <view class="wx-cart-bar" wx:if="{{goodsList.length > 0}}">
-        <i-row>
-            <i-col span="16" i-class="col-class">
-                <view class="wx-cart-icon" bindtap="switchCartSheet">
-                    <icon class="iconfont icon-gouwuche" style="font-size: 40rpx"/>
-                    <view class="wx-cart-num">{{cartNum}}</view>
-                </view>
-                <view class="wx-cart-info" wx:if="{{cartNum > 0}}">
-                    <span class="wx-cart-total">{{cartInfo[0]}}</span>
-                </view>
-                <view class="wx-cart-info" wx:else>未选择任何业务</view>
-            </i-col>
-            <i-col span="8" i-class="col-class" wx:if="{{cartList.length}}">
-                <i-button type="success" size="small" bindtap="checkCart">结算</i-button>
-            </i-col>
-            <i-col span="8" i-class="col-class" wx:else>
-                <i-button type="success" size="small" bindtap="checkCart">结算</i-button>
-            </i-col>
-        </i-row>
-    </view>
+    <!--<CartSheet :visible.sync="cartVisible" :maxHeight.sync="cartMaxHeight">-->
+        <!--<view slot="title">-->
+            <!--<view class="wx-sheet-cart-head">-->
+                <!--选中业务-->
+                <!--<icon class="iconfont icon-guanbi wx-sheet-close-icon" bindtap="switchCartSheet"/>-->
+            <!--</view>-->
+        <!--</view>-->
+        <!--<view slot="content">-->
+            <!--<i-swipeout  i-class="wx-sheet-cart-item" actions="{{actions}}" wx:for="{{cartList}}" wx:key="{{item.id}}" data-item="{{item}}" data-index="{{index}}" bindchange="delCartItem">-->
+                <!--<view slot="content">-->
+                    <!--<i-cell title="{{item.goods_name}}" label="{{item.spec_info}}">-->
+                        <!--<view slot="footer">￥{{item.shop_price}}</view>-->
+                    <!--</i-cell>-->
+                <!--</view>-->
+            <!--</i-swipeout>-->
+        <!--</view>-->
+    <!--</CartSheet>-->
+    <!--<view class="wx-cart-bar" wx:if="{{goodsList.length > 0}}">-->
+        <!--<i-row>-->
+            <!--<i-col span="16" i-class="col-class">-->
+                <!--<view class="wx-cart-icon" bindtap="switchCartSheet">-->
+                    <!--<icon class="iconfont icon-gouwuche" style="font-size: 40rpx"/>-->
+                    <!--<view class="wx-cart-num">{{cartNum}}</view>-->
+                <!--</view>-->
+                <!--<view class="wx-cart-info" wx:if="{{cartNum > 0}}">-->
+                    <!--<span class="wx-cart-total">{{cartInfo[0]}}</span>-->
+                <!--</view>-->
+                <!--<view class="wx-cart-info" wx:else>未选择任何业务</view>-->
+            <!--</i-col>-->
+            <!--<i-col span="8" i-class="col-class" wx:if="{{cartList.length}}">-->
+                <!--<i-button type="success" size="small" bindtap="checkCart">结算</i-button>-->
+            <!--</i-col>-->
+            <!--<i-col span="8" i-class="col-class" wx:else>-->
+                <!--<i-button type="success" size="small" bindtap="checkCart">结算</i-button>-->
+            <!--</i-col>-->
+        <!--</i-row>-->
+    <!--</view>-->
 
-    <QRModal :visible.sync="QRVisible">
-        <view slot="title">
-            <view class="wx-modal-head">
-                共{{cartNum}}项业务
-                <icon class="iconfont icon-guanbi wx-modal-close-icon" bindtap="switchQrModal"/>
-            </view>
-        </view>
-        <view slot="content">
-            <image src="{{cartQR}}" mode="scaleToFill" style="width: 500rpx;height: 500rpx;margin: 0rpx 30rpx 30rpx 30rpx;"></image>
-        </view>
-    </QRModal>
+    <!--<QRModal :visible.sync="QRVisible">-->
+        <!--<view slot="title">-->
+            <!--<view class="wx-modal-head">-->
+                <!--共{{cartNum}}项业务-->
+                <!--<icon class="iconfont icon-guanbi wx-modal-close-icon" bindtap="switchQrModal"/>-->
+            <!--</view>-->
+        <!--</view>-->
+        <!--<view slot="content">-->
+            <!--<image src="{{cartQR}}" mode="scaleToFill" style="width: 500rpx;height: 500rpx;margin: 0rpx 30rpx 30rpx 30rpx;"></image>-->
+        <!--</view>-->
+    <!--</QRModal>-->
 </template>
 
 <script>
@@ -197,6 +193,12 @@
         };
 
         methods = {
+            handleNavigation(e){
+                let item = e.currentTarget.dataset.item;
+                wepy.navigateTo({
+                    url: "/pages/service/detail?id=" + item.id
+                })
+            },
             switchCartSheet(){
                 if(this.cartList.length){
                     this.cartVisible = !this.cartVisible;
