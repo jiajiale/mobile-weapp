@@ -8,7 +8,7 @@
             <i-row wx:for="{{cartList}}" wx:key="{{item.id}}">
                 <view class="wx-goods-info">
                     <i-col span="6" i-class="col-class" class="wx-goods-thumb">
-                        <image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill" width="100%" height="100%"></image>
+                        <image src="{{goodsImgThumb + '?goods_id=' + item.goods_id }}" mode="scaleToFill" width="100%" height="100%"></image>
                     </i-col>
                     <i-col span="14" i-class="col-class">
                         <view class="wx-goods-title">{{item.goods_name}}</view>
@@ -51,7 +51,7 @@
         <view class="wx-check-bar">
             <i-row>
                 <i-col span="16" i-class="col-class">
-                    <view class="wx-check-total">￥{{totalPrice}}</view>
+                    <view class="wx-check-total">￥{{totalAmount}}</view>
                 </i-col>
                 <i-col span="8" i-class="col-class">
                     <form bindsubmit="handlePay" report-submit="true">
@@ -91,12 +91,13 @@
         mixins = [authorize];
 
         data = {
-            goodsImgUrl: api.GOODS_IMG_URL,
+            goodsImgThumb: api.THUMBNAIL_IMG,
             photoImgUrl: api.PHOTO_IMG_URL,
             params: null,
             cartList: [],
             fieldList: [],
-            totalPrice: '0.00',
+            totalPrice: {},
+            totalAmount: '0.00',
             formData: {},
             orderNo: '',
             payCode: 'wx',
