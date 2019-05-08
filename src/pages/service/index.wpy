@@ -33,87 +33,6 @@
         </view>
         <LoadMore :hasPage.sync="hasPage" :itemList.sync="goodsList" emptyText="暂无业务信息"></LoadMore>
     </scroll-view>
-
-    <!--<GoodsSheet :visible.sync="goodsVisible" :maxHeight.sync="goodsMaxHeight"-->
-                <!--:bottomStyle.sync="goodsBottomStyle"-->
-                <!--:zIndexStyle.sync="goodsZIndexStyle">-->
-        <!--<view slot="content" wx:if="{{goodsInfo.id}}">-->
-            <!--<view style="border-bottom: 1rpx solid #e8e8e8">-->
-                <!--<view class="wx-goods-head-img">-->
-                    <!--<image src="{{goodsImgUrl + (goodsInfo.app_img ? goodsInfo.app_img : goodsInfo.original_img)}}"-->
-                           <!--mode="scaleToFill"></image>-->
-                <!--</view>-->
-                <!--<view class="wx-goods-head-main">-->
-                    <!--<icon class="iconfont icon-guanbi wx-sheet-close-icon" bindtap="switchGoodsSheet"/>-->
-                    <!--<view class="wx-goods-title">{{goodsInfo.goods_name}}</view>-->
-                    <!--<view class="wx-goods-price">-->
-                        <!--<span class="new-price">￥{{goodsInfo.shop_price}}</span>-->
-                        <!--<span class="old-price">￥{{goodsInfo.market_price}}</span>-->
-                    <!--</view>-->
-                <!--</view>-->
-            <!--</view>-->
-            <!--<view class="wx-goods-specs">-->
-                <!--<i-panel title="{{specIndex}}" wx:for="{{goodsInfo.spec_list}}" wx:for-index="specIndex" wx:key="{{index}}">-->
-                    <!--<view class="wx-goods-spec">-->
-                        <!--<view class="wx-goods-spec-item {{item.class}}" wx:for="{{item}}" wx:key="{{item.item_id}}" data-key="{{specIndex}}" data-item="{{item}}" bindtap="selectSpec">{{item.item}}</view>-->
-                    <!--</view>-->
-                <!--</i-panel>-->
-            <!--</view>-->
-            <!--<view style="position: fixed;bottom: 0rpx;width: 100%">-->
-                <!--<i-button type="success" size="small" bindtap="selectGoodsOk">选好了</i-button>-->
-            <!--</view>-->
-        <!--</view>-->
-    <!--</GoodsSheet>-->
-
-    <!--<CartSheet :visible.sync="cartVisible" :maxHeight.sync="cartMaxHeight">-->
-        <!--<view slot="title">-->
-            <!--<view class="wx-sheet-cart-head">-->
-                <!--选中业务-->
-                <!--<icon class="iconfont icon-guanbi wx-sheet-close-icon" bindtap="switchCartSheet"/>-->
-            <!--</view>-->
-        <!--</view>-->
-        <!--<view slot="content">-->
-            <!--<i-swipeout  i-class="wx-sheet-cart-item" actions="{{actions}}" wx:for="{{cartList}}" wx:key="{{item.id}}" data-item="{{item}}" data-index="{{index}}" bindchange="delCartItem">-->
-                <!--<view slot="content">-->
-                    <!--<i-cell title="{{item.goods_name}}" label="{{item.spec_info}}">-->
-                        <!--<view slot="footer">￥{{item.shop_price}}</view>-->
-                    <!--</i-cell>-->
-                <!--</view>-->
-            <!--</i-swipeout>-->
-        <!--</view>-->
-    <!--</CartSheet>-->
-    <!--<view class="wx-cart-bar" wx:if="{{goodsList.length > 0}}">-->
-        <!--<i-row>-->
-            <!--<i-col span="16" i-class="col-class">-->
-                <!--<view class="wx-cart-icon" bindtap="switchCartSheet">-->
-                    <!--<icon class="iconfont icon-gouwuche" style="font-size: 40rpx"/>-->
-                    <!--<view class="wx-cart-num">{{cartNum}}</view>-->
-                <!--</view>-->
-                <!--<view class="wx-cart-info" wx:if="{{cartNum > 0}}">-->
-                    <!--<span class="wx-cart-total">{{cartInfo[0]}}</span>-->
-                <!--</view>-->
-                <!--<view class="wx-cart-info" wx:else>未选择任何业务</view>-->
-            <!--</i-col>-->
-            <!--<i-col span="8" i-class="col-class" wx:if="{{cartList.length}}">-->
-                <!--<i-button type="success" size="small" bindtap="checkCart">结算</i-button>-->
-            <!--</i-col>-->
-            <!--<i-col span="8" i-class="col-class" wx:else>-->
-                <!--<i-button type="success" size="small" bindtap="checkCart">结算</i-button>-->
-            <!--</i-col>-->
-        <!--</i-row>-->
-    <!--</view>-->
-
-    <!--<QRModal :visible.sync="QRVisible">-->
-        <!--<view slot="title">-->
-            <!--<view class="wx-modal-head">-->
-                <!--共{{cartNum}}项业务-->
-                <!--<icon class="iconfont icon-guanbi wx-modal-close-icon" bindtap="switchQrModal"/>-->
-            <!--</view>-->
-        <!--</view>-->
-        <!--<view slot="content">-->
-            <!--<image src="{{cartQR}}" mode="scaleToFill" style="width: 500rpx;height: 500rpx;margin: 0rpx 30rpx 30rpx 30rpx;"></image>-->
-        <!--</view>-->
-    <!--</QRModal>-->
 </template>
 
 <script>
@@ -154,42 +73,9 @@
         data = {
             params: [],
             goodsImgUrl: api.GOODS_IMG_URL,
-            goodsIds: [],
             goodsList: [],
-            goodsInfo: {},
-            goodsIndex: 0,
-            cartList: [],
-            specInfo: [],
-            goodsMaxHeight: 900,
-            goodsBottomStyle: 0,
-            goodsZIndexStyle: 101,
-            cartMaxHeight: 600,
-            goodsVisible: false,
-            cartVisible: false,
-            QRVisible: false,
-            page: 1,
             hasPage: true,
-            cartQR: '',
-            actions : [
-                {name : '删除', color : '#fff', fontsize : '20', width : 100, icon : 'trash', background : '#ed3f14'}
-            ],
             keywords: ''
-        };
-
-        computed = {
-            cartNum: function () {
-                return this.cartList.length
-            },
-            cartInfo: function () {
-                if(this.cartList.length){
-                    let shopPrice = 0,marketPrice =0;
-                    for(let i in this.cartList){
-                        shopPrice += parseFloat(this.cartList[i]['shop_price']);
-                        marketPrice += parseFloat(this.cartList[i]['market_price']);
-                    }
-                    return ['￥' + shopPrice.toFixed(2),'￥' + marketPrice.toFixed(2)];
-                }
-            }
         };
 
         methods = {
@@ -199,133 +85,7 @@
                     url: "/pages/service/detail?id=" + item.id
                 })
             },
-            switchCartSheet(){
-                if(this.cartList.length){
-                    this.cartVisible = !this.cartVisible;
-                }
-            },
-            switchQrModal(){
-                this.QRVisible = !this.QRVisible;
-            },
-            switchGoodsSheet(e){
-                let item = e.currentTarget.dataset.item;
-                this.goodsVisible = !this.goodsVisible;
-                this.specInfo = [];
-                if(this.goodsVisible){
-                    this.goodsInfo = item;
-
-                    if(this.goodsInfo.spec_list !== null){
-                        this.goodsInfo.goods_spec = [];
-
-                        for(let i in this.goodsInfo.spec_list){
-                            this.goodsInfo.goods_spec[i] = this.goodsInfo.spec_list[i][0].item_id;
-                            this.goodsInfo.spec_list[i][0]['class'] = 'active';
-                            this.specInfo[i] = this.goodsInfo.spec_list[i][0].item;
-                        }
-                        this.changeGoodsPrice();
-                    }
-                }else{
-                    this.goodsInfo = {};
-                }
-            },
-            selectSpec(e){
-                let item = e.currentTarget.dataset.item;
-                let key = e.currentTarget.dataset.key;
-                if(this.goodsInfo.goods_spec !== undefined){
-                    this.goodsInfo.goods_spec[key] = item.item_id;
-                }else{
-                    this.goodsInfo.goods_spec = [];
-                    this.goodsInfo.goods_spec[key] = item.item_id;
-                }
-                this.specInfo[key] = item.item;
-
-                this.goodsInfo.spec_list[key].filter(spec => {
-                    if(spec.item_id === item.item_id){
-                        spec['class'] = 'active';
-                    }else{
-                        spec['class'] = '';
-                    }
-                });
-
-                this.changeGoodsPrice();
-            },
-            selectGoodsOk(){
-                if(!utils.isEmptyObject(this.goodsInfo.spec_list) && this.goodsInfo.goods_spec === undefined){
-                    tip.toast(MSG.SELECT_SPEC);
-                }else{
-                    this.goodsVisible = !this.goodsVisible;
-                    if(utils.GoodsInCart(this.cartList,this.goodsInfo) === false){
-                        let specStrArr = [];
-                        for(let i in this.specInfo){
-                            specStrArr.push(i + ':' + this.specInfo[i]);
-                        }
-                        this.goodsInfo.spec_info = specStrArr.join(',');
-                        if(!this.cartList.length){
-                            this.cartList = [];
-                        }
-                        this.cartList.push(this.goodsInfo);
-
-                        this.syncCartInfo(this.goodsInfo);
-                    }
-                }
-            },
-            cancelSelectGoods(e){
-                let item = e.currentTarget.dataset.item;
-                let i = utils.GoodsInCart(this.cartList,item);
-                if(i !== false){
-                    this.cartList.splice(i,1);
-                    this.syncCartInfo(item);
-                }
-            },
-            checkCart(){
-                let _this = this;
-                if(this.cartList.length){
-                    this.checkLogin(function () {
-                        _this.addGoodsCart();
-                    });
-                }else{
-                    tip.toast(MSG.SELECT_SERVICE);
-                }
-            },
-            delCartItem(e){
-                let index = e.currentTarget.dataset.index;
-                let item = e.currentTarget.dataset.item;
-                tip.loading(MSG.DELETE);
-                api.delGoodsCart('POST',{goods_id: item.id}).then(resp => {
-                    tip.loaded();
-                    this.cartList.splice(index,1);
-                    this.syncCartInfo(item);
-                    if(!this.cartList.length){
-                        this.cartVisible = false;
-                    }
-                    this.$apply();
-                });
-            }
         };
-
-        changeGoodsPrice(){
-            if(this.goodsInfo.spec_price !== null){
-                let goodsSpecArr = [];
-
-                for(let i in this.goodsInfo.goods_spec){
-                    goodsSpecArr.push(this.goodsInfo.goods_spec[i]);
-                }
-                let specKey = goodsSpecArr.sort(utils.sortNumber).join('_');  //排序后组合成 key
-                this.goodsInfo.shop_price = this.goodsInfo.spec_price[specKey]['price'];
-                this.goodsInfo.select_spec = goodsSpecArr;
-            }
-        }
-
-        syncCartInfo(item){
-            let index = this.goodsIds.indexOf(item.id);
-            this.goodsList[index].selected = !this.goodsList[index].selected;
-            wx.setStorageSync('cartList',this.cartList);
-        }
-
-        handleInput(e){
-            let key = e.currentTarget.dataset.key;
-            this.keywords = e.detail.value;
-        }
 
         queryReload(){
             this.page = 1;
@@ -348,47 +108,11 @@
             await api.queryGoodsList('POST',condition).then(resp => {
                 tip.loaded();
                 if(resp.data){
-                    resp.data.goodsList.items.filter(item => {
-                        this.goodsIds.push(item.id);
-                        item.selected = utils.GoodsInCart(this.cartList,item) !== false;
-                    });
                     this.goodsList = this.goodsList.concat(resp.data.goodsList.items);
                     if(resp.data.goodsList.pager.index >= resp.data.goodsList.pager.count){
                         this.hasPage = false;
                     }
                     this.$apply();
-                }
-            });
-        };
-
-        async addGoodsCart() {
-            let cartInfo = [];
-            for(let i in this.cartList){
-                cartInfo.push({
-                    goods_id: this.cartList[i].id,
-                    goods_num: 1,
-                    goods_spec: this.cartList[i].select_spec
-                })
-            }
-            tip.loading(MSG.COMMITTING);
-            await api.addGoodsCart('POST',{
-                cartList: cartInfo,
-            }).then(resp => {
-                tip.loaded();
-                if(resp.status === 'success'){
-                    //if(resp.data.code !== undefined){
-                    //    this.cartQR = 'data:image/jpeg;base64,' + resp.data.code;
-                    //    this.QRVisible = !this.QRVisible;
-                    //    this.cartList = [];
-                    //    wx.setStorageSync('cartList',this.cartList);
-                    //    this.$apply();
-                    //}else{
-                        wx.navigateTo({
-                            url: '/pages/check/service'
-                        })
-                    //}
-                }else{
-                    tip.toast(resp.msg);
                 }
             });
         };
@@ -416,8 +140,6 @@
 
         onLoad(params) {
             this.params = params;
-            this.cartList = wx.getStorageSync('cartList') ? wx.getStorageSync('cartList') : [];
-
             this.checkUserFrom(params);
         }
     }
