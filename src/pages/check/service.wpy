@@ -97,6 +97,7 @@
             totalPrice: {},
             totalAmount: '0.00',
             formData: {},
+            isSubmit: false,
         };
 
         computed = {};
@@ -143,7 +144,7 @@
                 let userFrom = wx.getStorageSync('userFrom');
                 this.formData['is_goods'] = 0;
                 this.formData['delivery_fee'] = 0;
-                this.formData['cartList'] = this.cartList;
+                this.formData['from'] = this.params.from ? this.params.from : '';
                 this.formData['from_user_id'] = userFrom;
                 if(!this.isSubmit){
                     this.isSubmit = true;

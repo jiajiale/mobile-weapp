@@ -68,7 +68,7 @@
             <i-col span="8" i-class="wx-cart-action" @tap="handleAddCart">
                 <view>加入购物车</view>
             </i-col>
-            <i-col span="8" i-class="wx-buy-action" @tap="handleCheckOrder">
+            <i-col span="8" i-class="{{isSubmit ? 'wx-buy-action wx-disable' : 'wx-buy-action'}}" @tap="handleCheckOrder">
                 <view>立即购买</view>
             </i-col>
         </i-row>
@@ -158,6 +158,7 @@
             goodsBottomStyle: 0,
             goodsZIndexStyle: 101,
             goodsVisible: false,
+            isSubmit: false,
             cartList: [],
             navigationStyle: {
                 navBg: 'rgba(236,58,62,0)',
@@ -249,20 +250,25 @@
                         tip.toast(MSG.SELECT_SPEC);
                         return;
                     }
-
-                    api.addGoodsOrder('POST',{
-                        goods_id: _this.goods.id,
-                        goods_num: _this.goods.goods_num,
-                        goods_spec: _this.goods.select_spec
-                    }).then(resp => {
-                        if(resp.code === 200){
-                            wepy.navigateTo({
-                                url: '/pages/check/order?from=goods'
-                            })
-                        }else{
-                            tip.error(resp.msg);
-                        }
-                    });
+                    if(!_this.isSubmit) {
+                        _this.isSubmit = true;
+                        tip.loading(MSG.COMMITTING);
+                        api.addGoodsOrder('POST',{
+                            goods_id: _this.goods.id,
+                            goods_num: _this.goods.goods_num,
+                            goods_spec: _this.goods.select_spec
+                        }).then(resp => {
+                            tip.loaded();
+                            _this.isSubmit = false;
+                            if(resp.code === 200){
+                                wepy.navigateTo({
+                                    url: '/pages/check/order?from=goods'
+                                })
+                            }else{
+                                tip.error(resp.msg);
+                            }
+                        });
+                    }
                 });
             },
             handleChangeNum({ detail }){
