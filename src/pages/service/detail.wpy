@@ -298,7 +298,6 @@
         };
 
         onLoad(params) {
-            params.id = 2124;
             this.params = params;
             if(this.$parent.globalData.isIPX){
                 this.navigationStyle.navPadding = '100rpx 0rpx 20rpx';
