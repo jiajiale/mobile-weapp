@@ -148,7 +148,7 @@
 
         async queryItem() {
             const that = this;
-            tip.loading(MSG.LOADING);
+            tip.loading(MSG.MAKING_POST);
             await api.queryGoodsQrcode('POST',{
                 goods_id: this.params.id,
             }).then(resp => {
