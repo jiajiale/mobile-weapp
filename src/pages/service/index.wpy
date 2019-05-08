@@ -120,9 +120,10 @@
         onShareAppMessage(res) {
             if(res.from === 'button'){
                 let item = res.target.dataset.item;
+                let userFrom = this.$parent.globalData.userInfo.uuid;
                 return {
                     title: item.goods_name,
-                    path: "/pages/service/index?userFrom=" + this.$parent.globalData.userInfo.id,
+                    path: "/pages/service/index?userFrom=" + userFrom,
                     imageUrl: this.goodsImgUrl + (item.app_img ? item.app_img : item.original_img),
                 }
             }

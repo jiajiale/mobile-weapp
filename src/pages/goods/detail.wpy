@@ -329,9 +329,10 @@
         };
 
         onShareAppMessage() {
+            let userFrom = this.$parent.globalData.userInfo.uuid;
             return {
                 title: this.goods.goods_name,
-                path: "/pages/goods/detail?id=" + this.goods.id + "&userFrom=" + this.$parent.globalData.userInfo.id,
+                path: "/pages/goods/detail?id=" + this.goods.id + "&userFrom=" + userFrom,
                 imageUrl: this.goodsImgUrl + this.goods.original_img,
             }
         }

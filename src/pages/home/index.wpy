@@ -255,8 +255,9 @@
         };
 
         onShareAppMessage() {
+            let userFrom = this.$parent.globalData.userInfo.uuid;
             return {
-                path: "/pages/home/index?userFrom=" + this.$parent.globalData.userInfo.id,
+                path: "/pages/home/index?userFrom=" + userFrom,
             }
         }
 
