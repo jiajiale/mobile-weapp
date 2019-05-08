@@ -34,7 +34,7 @@
     <view class="wx-goods-post">
         <div class="wx-post-content">
             <canvas canvas-id="post" style="width: 100%;height: 90%;box-shadow: 2px 2px 2px rgba(0,0,0,.08);"/>
-            <div class="wx-post-download">
+            <div class="wx-post-download" wx:if="{{visible}}">
                 <button plain @tap="handleDownload">下载海报图片</button>
             </div>
         </div>
@@ -51,7 +51,7 @@
 
     export default class Post extends wepy.page {
         config = {
-            navigationBarTitleText: '商品详情',
+            navigationBarTitleText: '商品海报',
             navigationStyle: "custom",
         };
         data = {
@@ -68,11 +68,8 @@
         mixins = [authorize];
 
         methods = {
-            handleClose(){
-                this.$emit('handleClosePost')
-            },
             handleDownload(){
-                let that = this;
+                this.visible = true;
                 setTimeout(() => {
                     wx.canvasToTempFilePath({
                         x: 0,
@@ -83,7 +80,6 @@
                             wx.saveImageToPhotosAlbum({
                                 filePath: tmpImg,
                                 success() {
-                                    that.$emit('handleClosePost');
                                     wx.showToast({title: '保存成功'})
                                 },
                                 fail() {
@@ -183,13 +179,10 @@
         };
 
         onLoad(params) {
-            params.id = 2137;
             this.params = params;
             if(this.$parent.globalData.isIPX){
                 this.navigationStyle.navPadding = '100rpx 0rpx 20rpx';
             }
-
-            this.checkUserFrom(params);
         }
     }
 </script>
