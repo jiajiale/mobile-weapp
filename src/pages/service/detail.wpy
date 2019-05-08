@@ -220,7 +220,7 @@
                     }).then(resp => {
                         if(resp.code === 200){
                             wepy.navigateTo({
-                                url: '/pages/check/order?from=goods'
+                                url: '/pages/check/service?from=service'
                             })
                         }else{
                             tip.error(resp.msg);

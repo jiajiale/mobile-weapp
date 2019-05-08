@@ -206,21 +206,17 @@
             });
         };
 
-        async queryCartInfo() {
+        async queryItem() {
             tip.loading(MSG.LOADING);
-            await api.queryCartInfo('POST',{is_goods: 0}).then(resp => {
+            this.params.is_goods = 0;
+            await api.queryCartInfo('POST',this.params).then(resp => {
                 tip.loaded();
-                if(resp.status === 'success'){
+                if(resp.data){
                     this.cartList = resp.data.cartList;
+                    this.totalPrice = resp.data.totalPrice;
                     this.fieldList = resp.data.fieldList;
-                    this.totalPrice = resp.data.totalPrice.total_fee.toFixed(2);
+                    this.totalAmount = (parseFloat(this.totalPrice.total_fee) + parseFloat(this.totalPrice.delivery_fee)).toFixed(2);
                     this.$apply();
-                }else{
-                    tip.toast(resp.msg,1000,function () {
-                        wx.navigateTo({
-                            url: '/pages/service/index'
-                        })
-                    });
                 }
             });
         };
@@ -228,7 +224,7 @@
         onShow() {
             let _this = this;
             this.checkAuthorize(function () {
-                _this.queryCartInfo();
+                _this.queryItem();
             });
         };
 
