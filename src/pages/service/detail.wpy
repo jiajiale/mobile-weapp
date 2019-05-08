@@ -52,18 +52,9 @@
                             <view>首页</view>
                         </navigator>
                     </i-grid-item>
-                    <i-grid-item i-class="wx-nav-action">
-                        <navigator open-type="switchTab" hover-class="none" url="/pages/cart/index">
-                            <view><icon class="iconfont icon-gouwuche"/></view>
-                            <view>购物车<span class="wx-cart-num" wx:if="{{cartList.length}}">{{cartList.length}}</span></view>
-                        </navigator>
-                    </i-grid-item>
                 </i-grid>
             </i-col>
-            <i-col span="8" i-class="wx-cart-action" @tap="handleAddCart">
-                <view>加入购物车</view>
-            </i-col>
-            <i-col span="8" i-class="wx-buy-action" @tap="handleCheckOrder">
+            <i-col span="16" i-class="wx-buy-action" @tap="handleCheckOrder">
                 <view>立即办理</view>
             </i-col>
         </i-row>
@@ -214,25 +205,6 @@
 
                 this.changeGoodsPrice();
             },
-            handleAddCart(){
-                if(!utils.isEmptyObject(this.goodsSpecList) && this.goods.goods_spec === undefined){
-                    tip.toast(MSG.SELECT_SPEC);
-                    return;
-                }
-
-                if(!this.cartList.length){
-                    this.cartList = [];
-                }
-
-                let index = utils.GoodsInCart(this.cartList,this.goods)
-                if(index === false){
-                    this.cartList.push(this.goods);
-                }else{
-                    this.cartList[index].goods_num += this.goods.goods_num;
-                }
-                this.syncCartInfo();
-                tip.success(MSG.ADD_CART_SUCCESS);
-            },
             handleCheckOrder(){
                 let _this = this;
                 this.checkLogin(function () {
@@ -277,10 +249,6 @@
             }
         }
 
-        syncCartInfo(){
-            wx.setStorageSync('goodsCart',this.cartList);
-        }
-
         async queryItem() {
             tip.loading(MSG.LOADING);
             await api.queryGoodsDetail('POST',{
@@ -318,7 +286,6 @@
             let _this = this;
             this.checkAuthorize(function () {
                 _this.queryItem();
-                _this.cartList = wx.getStorageSync('goodsCart') ? wx.getStorageSync('goodsCart') : [];
             });
         };
 
