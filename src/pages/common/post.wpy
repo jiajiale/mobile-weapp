@@ -1,0 +1,195 @@
+<style lang="less">
+    .wx-goods-post{
+        overflow: hidden;
+        .wx-post-mask{
+            position: fixed;
+            z-index: 100;
+            background-color: rgba(33, 33, 33, 0.7);
+            top:0rpx;
+            left: 0rpx;
+            height: 100%;
+            width: 100%;
+        }
+        .wx-post-content{
+            position: fixed;
+            z-index: 101;
+            top:5%;
+            left: 5%;
+            height: 90%;
+            width: 90%;
+            .wx-post-download{
+                button{
+                    margin-top: 30rpx;
+                    border: none;
+                    background: #ec3a3e;
+                    font-size: 28rpx;
+                    color: #fff;
+                    border-radius: 30rpx;
+                }
+            }
+        }
+    }
+</style>
+<template>
+    <view class="wx-goods-post">
+        <div class="wx-post-content">
+            <canvas canvas-id="post" style="width: 100%;height: 90%;box-shadow: 2px 2px 2px rgba(0,0,0,.08);"/>
+            <div class="wx-post-download">
+                <button plain @tap="handleDownload">下载海报图片</button>
+            </div>
+        </div>
+        <!--<view class="wx-post-mask" @tap="handleClose"></view>-->
+    </view>
+</template>
+<script>
+    import wepy from 'wepy';
+    import api from '../../api';
+    import authorize from '../../mixins/authorize';
+    import tip from '../../utils/tip';
+    import util from '../../utils/util';
+    import MSG from '../../utils/msg';
+
+    export default class Post extends wepy.page {
+        config = {
+            navigationBarTitleText: '商品详情',
+            navigationStyle: "custom",
+        };
+        data = {
+            params: [],
+            goodsImgUrl: api.GOODS_IMG_URL,
+            screenW: wx.getSystemInfoSync().screenWidth,
+            screenH: wx.getSystemInfoSync().screenHeight,
+            ratio: wx.getSystemInfoSync().pixelRatio,
+            context: null,
+            goods: {},
+            base64Data: null,
+            visible: false
+        };
+        mixins = [authorize];
+
+        methods = {
+            handleClose(){
+                this.$emit('handleClosePost')
+            },
+            handleDownload(){
+                let that = this;
+                setTimeout(() => {
+                    wx.canvasToTempFilePath({
+                        x: 0,
+                        y: 0,
+                        canvasId: 'post',
+                        success: function (res) {
+                            let tmpImg = res.tempFilePath;
+                            wx.saveImageToPhotosAlbum({
+                                filePath: tmpImg,
+                                success() {
+                                    that.$emit('handleClosePost');
+                                    wx.showToast({title: '保存成功'})
+                                },
+                                fail() {
+                                    wx.showToast({title: '保存失败'})
+                                }
+                            })
+                        },
+                        fail: function (res) {
+                        }
+                    })
+                }, 50);
+            }
+        };
+
+        conv(val){
+            return this.ratio * val;
+        };
+
+        drawPost(){
+            let that = this;
+            setTimeout(function () {
+                that.context = wx.createCanvasContext('post');
+                that.context.setFillStyle("#ffffff");
+                that.context.fillRect(0, 0, that.conv(that.screenW), that.conv(that.screenH));
+
+                //绘制标题
+                that.context.setFontSize(14);
+                that.context.setFillStyle('#333333');
+                that.context.fillText(that.goods.goods_name, that.conv(10), that.conv(35));
+                that.context.stroke();
+
+                that.context.setFontSize(14);
+                that.context.setFillStyle('#333333');
+                that.context.fillText('￥' + that.goods.shop_price, that.conv(75), that.screenH * 0.81 - 100);
+                that.context.stroke();
+
+                that.context.setFontSize(14);
+                that.context.setFillStyle('#333333');
+                that.context.fillText('长按二维码识别购买', that.conv(75), that.screenH * 0.81 - 65);
+                that.context.stroke();
+
+                let logoPath = that.goodsImgUrl + that.goods.original_img;
+                let imgWidth = that.screenW - that.conv(40);
+
+                wx.getImageInfo({
+                    src: that.base64Data,
+                    success(res) {
+                        let path = res.path;
+                        that.context.drawImage(path, that.conv(10), that.screenH * 0.81 - 140, 100 , 100);
+                    }
+                });
+
+                wx.getImageInfo({
+                    src: logoPath,
+                    success(res) {
+                        let path = res.path;
+                        that.context.drawImage(path, that.conv(10), that.conv(40), imgWidth , imgWidth);
+                        that.context.draw(false,function () {
+                            that.setData({
+                                visible: true
+                            })
+                        });
+                    }
+                });
+            },10)
+        };
+
+        async queryItem() {
+            const that = this;
+            tip.loading(MSG.LOADING);
+            await api.queryGoodsQrcode('POST',{
+                goods_id: this.params.id,
+            }).then(resp => {
+                tip.loaded();
+                if(resp.code === 200){
+                    this.goods = resp.data.goods;
+                    this.base64Data = 'data:image/jpg;base64,' + resp.data.code;
+                    this.base64Data = util.base64src(this.base64Data);
+                    this.base64Data.then(val => {
+                        that.base64Data = val;
+                        this.drawPost();
+                    });
+                    this.$apply();
+                }else{
+                    tip.error(resp.msg,function () {
+                        wx.navigateBack({delta: 2});
+                    });
+                }
+            });
+        };
+
+        onShow() {
+            let _this = this;
+            this.checkAuthorize(function () {
+                _this.queryItem();
+            });
+        };
+
+        onLoad(params) {
+            params.id = 2137;
+            this.params = params;
+            if(this.$parent.globalData.isIPX){
+                this.navigationStyle.navPadding = '100rpx 0rpx 20rpx';
+            }
+
+            this.checkUserFrom(params);
+        }
+    }
+</script>

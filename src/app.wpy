@@ -12,6 +12,7 @@
 
         config = {
             pages: [
+                'pages/common/post',
                 'pages/goods/detail',
                 'pages/home/index',
                 'pages/service/index',

@@ -103,7 +103,7 @@
         </view>
     </GoodsSheet>
 
-    <GoodsPost :visible.sync="postVisible" :goods.sync="goods"></GoodsPost>
+    <!--<GoodsPost :visible.sync="postVisible" :goods.sync="goods"></GoodsPost>-->
 </template>
 
 <script>
@@ -156,7 +156,6 @@
             goodsBottomStyle: 0,
             goodsZIndexStyle: 101,
             goodsVisible: false,
-            postVisible: false,
             cartList: [],
             navigationStyle: {
                 navBg: 'rgba(236,58,62,0)',
@@ -223,8 +222,6 @@
                 this.changeGoodsPrice();
             },
             handleAddCart(){
-                this.postVisible = true;
-                return;
                 if(!utils.isEmptyObject(this.goodsSpecList) && this.goods.goods_spec === undefined){
                     tip.toast(MSG.SELECT_SPEC);
                     return;
