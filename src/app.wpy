@@ -12,9 +12,9 @@
 
         config = {
             pages: [
+                'pages/home/index',
                 'pages/goods/detail',
                 'pages/common/post',
-                'pages/home/index',
                 'pages/service/index',
 //                'pages/service/detail',
                 'pages/user/index',
