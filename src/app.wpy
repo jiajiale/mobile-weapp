@@ -12,11 +12,11 @@
 
         config = {
             pages: [
+                'pages/service/detail',
                 'pages/home/index',
                 'pages/goods/detail',
                 'pages/common/post',
                 'pages/service/index',
-//                'pages/service/detail',
                 'pages/user/index',
                 'pages/user/sales',
                 'pages/user/salesheet',

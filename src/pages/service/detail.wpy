@@ -1,5 +1,5 @@
 <style lang="less">
-    @import "../../assets/styles/goods";
+    @import "../../assets/styles/service";
     page{
         background: #F2F2F2;
     }
@@ -75,7 +75,7 @@
         <view slot="content" wx:if="{{goods.id}}">
             <view style="border-bottom: 1rpx solid #e8e8e8">
                 <view class="wx-goods-head-img">
-                    <image src="{{goodsImgUrl + (goods.app_img ? goods.app_img : goods.original_img)}}"
+                    <image src="{{goodsImgUrl + goods.original_img}}"
                            mode="scaleToFill"></image>
                 </view>
                 <view class="wx-goods-head-main">
@@ -323,6 +323,7 @@
         };
 
         onLoad(params) {
+            params.id = 2124;
             this.params = params;
             if(this.$parent.globalData.isIPX){
                 this.navigationStyle.navPadding = '100rpx 0rpx 20rpx';

@@ -1,3 +1,17 @@
+.wx-navigation{
+  position: fixed;
+  z-index: 10;
+  width: 100%;
+  text-align: center;
+  .wx-navigation-icon{
+    position: absolute;
+    left: 45rpx;
+  }
+  .wx-navigation-title{
+    height: 60rpx;
+    line-height: 60rpx;
+  }
+}
 .wx-search{
   padding: 20rpx 30rpx;
   position: fixed;
@@ -105,17 +119,17 @@
   z-index: 102;
   border-radius: 10rpx;
   border: 1px solid rgba(0,0,0,.1);
-  height: 120rpx;
+  height: 160rpx;
   margin: 10rpx 20rpx 10rpx 30rpx;
   image{
-    width: 220rpx;
-    height: 120rpx;
+    width: 160rpx;
+    height: 160rpx;
     border-radius: 10rpx;
   }
 }
 .wx-goods-head-main{
-  height: 100rpx;
-  padding: 20rpx 20rpx 15rpx 260rpx;
+  height: 140rpx;
+  padding: 20rpx 20rpx 15rpx 220rpx;
   .wx-goods-price{
     height: 40rpx;
     line-height: 30rpx;
@@ -192,6 +206,111 @@
     margin: 10rpx 20rpx;
   }
 }
+.wx-goods-album{
+  height: 760rpx;
+  background: #fff;
+  image{
+    width: 100%;
+    height: 100%;
+  }
+}
+.wx-goods-info{
+  background: #ffffff;
+  padding: 0rpx 20rpx;
+  .wx-title{
+    height: 80rpx;
+    line-height: 100rpx;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .wx-sub-title{
+    height: 60rpx;
+    line-height: 40rpx;
+    font-size: 24rpx;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .wx-price{
+    color:#ec3a3e;
+    font-size:40rpx;
+    padding-bottom:30rpx;
+    position: relative;
+  }
+  .wx-share{
+    position: absolute;
+    right: 20rpx;
+    top: -20rpx;
+    color: #333;
+  }
+}
+.wx-goods-spec{
+
+}
+.wx-goods-detail{
+  background: #fff;
+  margin-bottom: 100rpx;
+  .wx-detail-title{
+    height: 80rpx;
+    line-height: 80rpx;
+    padding: 0rpx 20rpx;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  .wx-content{
+    .wxparser--wxParser-p{
+      margin: 0rpx !important;
+    }
+    img{
+      width: 100%;
+    }
+  }
+  image{
+    width: 100%;
+    display: flex;
+  }
+}
+
+.wx-goods-actions{
+  position: fixed;
+  bottom: 0rpx;
+  width: 100%;
+  text-align: center;
+  height: 100rpx;
+  line-height: 100rpx;
+  background: #fff;
+  z-index: 100;
+  .wx-nav-action{
+    padding: 0rpx;
+    view{
+      height:50rpx;
+      line-height:50rpx;
+      font-size:22rpx;
+    }
+    span.wx-cart-num{
+      position:absolute;
+      top:5rpx;
+      right:20rpx;
+      background:red;
+      border-radius:50%;
+      color:#fff;
+      width:35rpx;
+      height:35rpx;
+      line-height:35rpx;
+      font-size:20rpx;
+    }
+  }
+  .wx-cart-action{
+    background: #EF9C72;
+    color: #Fff;
+  }
+  .wx-buy-action{
+    background: #ec3a3e;
+    color: #Fff;
+  }
+}
+
 .wx-goods-specs{
   padding:20rpx 10rpx;
   margin-bottom: 100rpx;
