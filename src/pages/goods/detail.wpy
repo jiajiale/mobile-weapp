@@ -24,7 +24,9 @@
     <view class="wx-goods-info">
         <view class="wx-title">{{goods.goods_name}}</view>
         <view class="wx-sub-title">{{goods.goods_remark}}</view>
-        <view class="wx-price">￥{{goods.shop_price}}</view>
+        <view class="wx-price">￥{{goods.shop_price}}
+            <view class="wx-share" @tap="handleGo" data-url="/pages/common/post?id={{goods.id}}"><icon class="iconfont icon-fenxiang"/></view>
+        </view>
     </view>
 
     <view class="marginT20 wx-goods-spec">
@@ -265,6 +267,12 @@
             },
             handleChangeNum({ detail }){
                 this.goods.goods_num = detail.value;
+            },
+            handleGo(e){
+                let url = e.currentTarget.dataset.url;
+                if(url){
+                    wepy.navigateTo({url: url});
+                }
             },
             handleBack(){
                 wepy.switchTab({
