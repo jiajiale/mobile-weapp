@@ -53,9 +53,11 @@
             <i-col span="18" i-class="wx-order-money">
                 <view class="wx-price">￥{{ totalAmount }}</view>
             </i-col>
+            <form bindsubmit="handleOrder" report-submit="true">
             <i-col span="6">
-                <view class="{{isSubmit ? 'wx-buy-action wx-disable' : 'wx-buy-action'}}" @tap="handleOrder">提交订单</view>
+                <button class="{{isSubmit ? 'wx-buy-action wx-disable' : 'wx-buy-action'}}" form-type="submit" plain="true">提交订单</button>
             </i-col>
+            </form>
         </i-row>
     </view>
 </template>
@@ -99,13 +101,15 @@
         };
 
         methods = {
-            handleOrder(){
+            handleOrder(e){
                 let _this = this;
+                let formId = e.detail.formId;
                 let userFrom = wx.getStorageSync('userFrom');
                 this.formData['address_id'] = this.address.id;
                 this.formData['is_goods'] = 1;
                 this.formData['from'] = this.params.from ? this.params.from : '';
                 this.formData['from_user_id'] = userFrom;
+                this.formData['form_id'] = formId;
                 if(!this.isSubmit){
                     this.isSubmit = true;
                     tip.loading(MSG.COMMITTING);
@@ -116,7 +120,11 @@
                             if(this.params.from === undefined || this.params.from !== 'goods'){
                                 wx.setStorageSync('goodsCart',null);
                             }
-                            wepy.navigateTo({url: '/pages/pay/index?from=check&order_id=' + resp.data.id});
+                            if(resp.data.id){
+                                wepy.navigateTo({url: '/pages/pay/index?from=check&order_id=' + resp.data.id});
+                            }else{
+                                wx.navigateTo({url: '/pages/user/order'})
+                            }
                         }else{
                             tip.error(resp.msg);
                         }
@@ -135,12 +143,14 @@
             this.params.is_goods = 1;
             await api.queryCartGoods('POST',this.params).then(resp => {
                 tip.loaded();
-                if(resp.data){
+                if(resp.data && resp.data.cartList){
                     this.address = resp.data.address;
                     this.cartList = resp.data.cartList;
                     this.totalPrice = resp.data.totalPrice;
                     this.totalAmount = (parseFloat(this.totalPrice.total_fee) + parseFloat(this.totalPrice.delivery_fee)).toFixed(2);
                     this.$apply();
+                }else{
+                    wx.navigateBack({delta: 1});
                 }
             });
         };

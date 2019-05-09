@@ -101,7 +101,11 @@
 
                     if(result.data === true){
                         // 线下支付
-                        wx.navigateTo({url: '/pages/user/order'})
+                        if(this.goodsOrder.is_goods){
+                            wx.navigateTo({url: '/pages/user/order'})
+                        }else{
+                            wx.navigateTo({url: '/pages/user/service'})
+                        }
                     }else{
                         wx.requestPayment({
                             'timeStamp': result.data.timeStamp,
@@ -111,7 +115,11 @@
                             'paySign': result.data.paySign,
                             'success':function(res){
                                 tip.toast('支付成功',5000,function () {
-                                    wx.navigateTo({url: '/pages/user/order'})
+                                    if(this.goodsOrder.is_goods){
+                                        wx.navigateTo({url: '/pages/user/order'})
+                                    }else{
+                                        wx.navigateTo({url: '/pages/user/service'})
+                                    }
                                 },'success')
                             },
                             'fail':function(res){
