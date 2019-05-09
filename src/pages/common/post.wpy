@@ -51,7 +51,7 @@
 
     export default class Post extends wepy.page {
         config = {
-            navigationBarTitleText: '商品海报',
+            navigationBarTitleText: '分享海报',
         };
         data = {
             params: [],
