@@ -111,8 +111,8 @@
         </i-grid>
     </view>
 
-    <view class="wx-user-adv marginB20">
-        <image src="https://www.caryue.com/Public/Uploads/adv/source/20181109/5be51b0c9ecc8.jpg" mode="scaleToFill"></image>
+    <view class="wx-user-adv marginB20" wx:if="{{adv}}">
+        <image src="{{advImgUrl + adv.images}}" mode="scaleToFill"></image>
     </view>
 </template>
 
@@ -142,6 +142,7 @@
 
         data = {
             advImgUrl: api.ADV_IMG_URL,
+            adv: null,
         };
 
         computed = {};
@@ -161,7 +162,7 @@
         };
 
         onLoad() {
-
+            this.adv = this.$parent.globalData.userInfo.adv;
         }
     }
 </script>

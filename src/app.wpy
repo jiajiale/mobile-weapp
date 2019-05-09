@@ -160,6 +160,16 @@
             });
         }
 
+        updateLocalUser(){
+            let that = this;
+            api.queryUserInfo('POST', null).then(resp => {
+                if (resp.data) {
+                    wx.setStorageSync('userInfo', resp.data);
+                    that.globalData.userInfo = resp.data;
+                }
+            });
+        }
+
         checkIsIPhoneX(){
             const self = this
             wx.getSystemInfo({
@@ -175,9 +185,9 @@
         onLaunch() {
             this.checkIsIPhoneX();
             let token = wx.getStorageSync('token');
-//            if(token){
-//                this.login();
-//            }
+            if(token){
+                this.updateLocalUser();
+            }
             wx.removeStorageSync('userFrom')
         }
     }
