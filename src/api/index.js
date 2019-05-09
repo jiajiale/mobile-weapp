@@ -1,8 +1,8 @@
 import wepy from 'wepy';
 import tip from '../utils/tip';
 
-const APP_URL = 'https://www.caryue.com';
-// const APP_URL = 'https://mobile.caryue.com';
+// const APP_URL = 'https://www.caryue.com';
+const APP_URL = 'http://test.mobile.com';
 const GOODS_IMG_URL = APP_URL + '/Public/Uploads/goods/source/';
 const CATEGORY_IMG_URL = APP_URL + '/Public/Uploads/category/source/';
 const FOCUS_IMG_URL = APP_URL + '/Public/Uploads/focus/source/';

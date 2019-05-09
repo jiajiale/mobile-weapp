@@ -116,6 +116,7 @@
         };
 
         onLoad(params) {
+            params.activity_id = 1;
             this.params = params;
         }
     }
