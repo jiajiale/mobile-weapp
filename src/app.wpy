@@ -12,6 +12,7 @@
 
         config = {
             pages: [
+                'pages/user/customer',
                 'pages/home/index',
                 'pages/goods/detail',
                 'pages/service/detail',
@@ -36,7 +37,6 @@
                 'pages/user/question',
                 'pages/user/contact',
                 'pages/user/point',
-                'pages/user/customer',
                 'pages/user/help',
             ],
             window: {

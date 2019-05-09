@@ -1,17 +1,59 @@
 <style lang="less">
     @import "../../assets/styles/user";
+    .wx-customer-list{
+        background: #fff;
+        .wx-order-info{
+            padding:20rpx;
+            border-bottom: 1px solid #e8e8e8;
+            .wx-order-content{
+                padding-top:10rpx;
+                .wx-spec{
+                    font-size:24rpx;
+                    color: #999;
+                }
+            }
+            .wx-order-image{
+                border-radius: 50%;
+                overflow: hidden;
+                width: 100rpx !important;
+                height: 100rpx !important;
+            }
+            .wx-order-extra{
+                height: 100rpx !important;
+            }
+        }
+    }
 </style>
 <template>
-
+    <view class="wx-customer-list" wx:if="{{customerList.length}}">
+        <repeat for="{{customerList}}" key="{{customer.id}}" item="customer">
+        <OrderItem>
+            <view slot="thumb" style="height: 100%;"><image src="{{customer.avatar}}" mode="scaleToFill"></image></view>
+            <view slot="title">{{customer.nickname}}</view>
+            <view slot="tags">
+                <view class="marginT10">
+                    <view class="wx-spec">下单次数：{{customer.num}}次</view>
+                </view>
+            </view>
+        </OrderItem>
+        </repeat>
+    </view>
+    <view wx:if="{{!customerList.length}}">
+        <NoInfo emptyText="暂无客户信息" marginTop="200"></NoInfo>
+    </view>
 </template>
 
 <script>
     import wepy from 'wepy';
+    import LoadMore from '../../components/load-more';
+    import NoInfo from '../../components/no-info';
     import authorize from '../../mixins/authorize';
+    import pagination from '../../mixins/pagination';
     import api from '../../api';
     import tip from '../../utils/tip';
     import utils from '../../utils/util';
     import MSG from '../../utils/msg';
+    import OrderItem from '../../components/order-item';
 
     export default class UserCustomer extends wepy.page {
         config = {
@@ -20,11 +62,15 @@
             }
         };
         components = {
+            OrderItem: OrderItem,
+            NoInfo: NoInfo,
         };
 
-        mixins = [authorize];
+        mixins = [authorize,pagination];
 
         data = {
+            page: 1,
+            hasPage: true,
             customerList: []
         };
 
@@ -32,14 +78,34 @@
 
         };
 
-        async queryItem() {
-//            tip.loading(MSG.LOADING);
+        queryReload(){
+            this.page = 1;
+            this.pointList = [];
+            this.hasPage = true;
+            this.queryItemList();
+        };
+
+        async queryItemList() {
+            tip.loading(MSG.LOADING);
+            await api.queryCustomerList('POST',{page: this.page}).then(resp => {
+                tip.loaded();
+                if(resp.data){
+                    resp.data.items.filter(item => {
+                        item.gmt_create = utils.formatDateTime(item.gmt_create,'yyyy-MM-dd');
+                    });
+                    this.customerList = this.customerList.concat(resp.data.items);
+                    if(resp.data.pager.index >= resp.data.pager.count){
+                        this.hasPage = false;
+                    }
+                    this.$apply();
+                }
+            });
         };
 
         onShow() {
             let _this = this;
             this.checkAuthorize(function () {
-                _this.queryItem();
+                _this.queryReload();
             });
         };
 
