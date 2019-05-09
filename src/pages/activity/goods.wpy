@@ -1,0 +1,122 @@
+<style lang="less">
+    @import "../../assets/styles/goods";
+</style>
+<template>
+    <scroll-view scroll-y bindscrolltolower="onReachBottom" wx:if="{{goodsList.length > 0}}">
+        <view class="wx-goods-list">
+            <i-row>
+                <i-col span="12" i-class="wx-goods-col" wx:for="{{goodsList}}" wx:key="{{item.id}}" bindtap="handleNavigation" data-item="{{item}}">
+                    <GoodsItem>
+                        <view slot="thumb" style="height: 100%;"><image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image></view>
+                        <view slot="title">{{item.goods_name}}</view>
+                        <view slot="extra"><span class="wx-goods-price">￥{{item.shop_price}}</span></view>
+                    </GoodsItem>
+                </i-col>
+            </i-row>
+        </view>
+        <LoadMore :hasPage.sync="hasPage" :itemList.sync="goodsList" emptyText="暂无商品信息"></LoadMore>
+    </scroll-view>
+    <view wx:if="{{!goodsList.length}}">
+        <NoInfo :emptyText="emptyText" marginTop="200"></NoInfo>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import GoodsItem from '../../components/goods-item';
+    import LoadMore from '../../components/load-more';
+    import NoInfo from '../../components/no-info';
+    import authorize from '../../mixins/authorize';
+    import pagination from '../../mixins/pagination';
+    import api from '../../api';
+    import tip from '../../utils/tip';
+    import utils from '../../utils/util';
+    import MSG from '../../utils/msg';
+
+    export default class ActivityGoods extends wepy.page {
+        config = {
+            navigationBarTitleText: '活动商品',
+            usingComponents: {
+                "i-row": "../../iview/row/index",
+                "i-col": "../../iview/col/index",
+                "i-icon": "../../iview/icon/index",
+            }
+        };
+        components = {
+            GoodsItem: GoodsItem,
+            LoadMore: LoadMore,
+            NoInfo: NoInfo,
+        };
+
+        mixins = [pagination,authorize];
+
+        data = {
+            goodsImgUrl: api.GOODS_IMG_URL,
+            params: [],
+            goodsList: [],
+            keywords: '',
+            page: 1,
+            hasPage: true,
+            emptyText: '暂无商品信息'
+        };
+
+        computed = {};
+
+        methods = {
+            handleNavigation(e){
+                let item = e.currentTarget.dataset.item;
+                if(item.is_goods){
+                    wepy.navigateTo({
+                        url: "/pages/goods/detail?id=" + item.id
+                    })
+                }else{
+                    wepy.navigateTo({
+                        url: "/pages/service/detail?id=" + item.id
+                    })
+                }
+            }
+        };
+
+        queryReload(){
+            this.page = 1;
+            this.goodsList = [];
+            this.hasPage = true;
+            this.queryItemList();
+        };
+
+        async queryItemList() {
+            tip.loading(MSG.LOADING);
+            let conditions = {
+                page: this.page,
+                keywords: this.keywords,
+            };
+
+            if(this.params.activity_id){
+                conditions.activity_id = this.params.activity_id;
+            }
+            await api.queryGoodsList('POST',conditions).then(resp => {
+                tip.loaded();
+                if(resp.data.goodsList){
+                    this.goodsList = this.goodsList.concat(resp.data.goodsList.items);
+                    if(resp.data.goodsList.pager.index >= resp.data.goodsList.pager.count){
+                        this.hasPage = false;
+                    }
+                }
+                this.$apply();
+            });
+        };
+
+        onShow() {
+            let _this = this;
+            this.checkAuthorize(function () {
+                if(!_this.params.from){
+                    _this.queryReload();
+                }
+            });
+        };
+
+        onLoad(params) {
+            this.params = params;
+        }
+    }
+</script>
