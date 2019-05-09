@@ -18,7 +18,7 @@
                     <repeat for="{{item.goods_list}}" key="{{goodsItem.id}}" item="goodsItem">
                         <OrderItem>
                             <view slot="thumb" style="height: 100%;"><image src="{{goodsImgThumb + '?goods_id=' + goodsItem.goods_id}}" mode="scaleToFill"></image></view>
-                            <view slot="title">{{goodsItem.goods_name}}</view>
+                            <view slot="title">{{goodsItem.goods_name}}11</view>
                             <view slot="tags">
                                 <view class="marginT10">
                                     <view class="wx-spec">{{goodsItem.spec_key_name}}</view>

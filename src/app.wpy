@@ -13,9 +13,9 @@
         config = {
             pages: [
                 'pages/home/index',
+                'pages/goods/detail',
                 'pages/service/detail',
                 'pages/activity/goods',
-                'pages/goods/detail',
                 'pages/common/post',
                 'pages/service/index',
                 'pages/user/index',

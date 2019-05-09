@@ -13,7 +13,7 @@
         }
         .wx-order-content{
             float: left;
-            width: calc(100% - 300rpx);
+            width: calc(~"100% - 300rpx");
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
