@@ -4,7 +4,6 @@ export default class authorize extends wepy.mixin {
     checkAuthorize (callback) {
         let token = wx.getStorageSync('token');
         let userInfo = wx.getStorageSync('userInfo');
-        console.log(token)
         if(!token){
             wx.navigateTo({
                 url: '/pages/authorize/index'

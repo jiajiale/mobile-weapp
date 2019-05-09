@@ -84,9 +84,15 @@
             },
             handleNavigation(e){
                 let item = e.currentTarget.dataset.item;
-                wepy.navigateTo({
-                    url: "/pages/goods/detail?id=" + item.id
-                })
+                if(item.is_goods){
+                    wepy.navigateTo({
+                        url: "/pages/goods/detail?id=" + item.id
+                    })
+                }else{
+                    wepy.navigateTo({
+                        url: "/pages/service/detail?id=" + item.id
+                    })
+                }
             }
         };
 
@@ -107,7 +113,7 @@
             let conditions = {
                 page: this.page,
                 keywords: this.keywords,
-                is_goods: 1
+                //is_goods: 1
             };
 
             if(this.params.cate){
