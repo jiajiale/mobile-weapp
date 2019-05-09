@@ -80,7 +80,7 @@
 
         queryReload(){
             this.page = 1;
-            this.pointList = [];
+            this.customerList = [];
             this.hasPage = true;
             this.queryItemList();
         };
