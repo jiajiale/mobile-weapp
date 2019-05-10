@@ -157,6 +157,22 @@ function findArrIndex(arr,field,val){
     });
 }
 
+/**
+ * 影藏手机号
+ * @param mobile
+ * @returns {string|*}
+ */
+function hideMobile(mobile){
+    mobile = "" + mobile;
+
+    if(mobile.length === 11){
+        let reg=/(\d{3})\d{4}(\d{4})/;
+        mobile = mobile.replace(reg, "$1****$2")
+    }
+
+    return mobile
+}
+
 const fsm = wx.getFileSystemManager();
 const FILE_BASE_NAME = 'tmp_base64src';
 function base64src(base64data){
@@ -191,4 +207,5 @@ module.exports = {
     isInArray: isInArray,
     findArrIndex: findArrIndex,
     base64src: base64src,
+    hideMobile: hideMobile,
 };

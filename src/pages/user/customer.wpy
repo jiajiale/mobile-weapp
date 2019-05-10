@@ -29,7 +29,7 @@
         <repeat for="{{customerList}}" key="{{customer.id}}" item="customer">
         <OrderItem>
             <view slot="thumb" style="height: 100%;"><image src="{{customer.avatar}}" mode="scaleToFill"></image></view>
-            <view slot="title">{{customer.nickname}}</view>
+            <view slot="title">{{customer.name}}</view>
             <view slot="tags">
                 <view class="marginT10">
                     <view class="wx-spec">下单次数：{{customer.num}}次</view>
@@ -69,6 +69,7 @@
         mixins = [authorize,pagination];
 
         data = {
+            advImgUrl: api.ADV_IMG_URL,
             page: 1,
             hasPage: true,
             customerList: []
@@ -92,6 +93,8 @@
                 if(resp.data){
                     resp.data.items.filter(item => {
                         item.gmt_create = utils.formatDateTime(item.gmt_create,'yyyy-MM-dd');
+                        item.name = item.nickname ? item.nickname : utils.hideMobile(item.mobile);
+                        item.avatar = item.avatar ? item.avatar : this.advImgUrl + 'user_avatar.png';
                     });
                     this.customerList = this.customerList.concat(resp.data.items);
                     if(resp.data.pager.index >= resp.data.pager.count){
