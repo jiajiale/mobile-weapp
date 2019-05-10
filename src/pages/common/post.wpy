@@ -112,12 +112,12 @@
 
                 that.context.setFontSize(14);
                 that.context.setFillStyle('#333333');
-                that.context.fillText('￥' + that.goods.shop_price, that.conv(75), that.screenH * 0.81 - 130);
+                that.context.fillText('￥' + that.goods.shop_price, that.conv(75), that.screenH * 0.81 - 120);
                 that.context.stroke();
 
                 that.context.setFontSize(14);
                 that.context.setFillStyle('#333333');
-                that.context.fillText('长按二维码识别购买', that.conv(75), that.screenH * 0.81 - 95);
+                that.context.fillText('长按二维码识别购买', that.conv(75), that.screenH * 0.81 - 85);
                 that.context.stroke();
 
                 let logoPath = that.goodsImgUrl + that.goods.original_img;
@@ -127,7 +127,7 @@
                     src: that.base64Data,
                     success(res) {
                         let path = res.path;
-                        that.context.drawImage(path, that.conv(10), that.screenH * 0.81 - 170, 100 , 100);
+                        that.context.drawImage(path, that.conv(10), that.screenH * 0.81 - 160, 100 , 100);
                     }
                 });
 
