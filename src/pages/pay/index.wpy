@@ -85,6 +85,7 @@
         };
 
         async payOrder(formId) {
+            let _this = this;
             if(!this.isSubmit){
                 this.isSubmit = true;
                 tip.loading(MSG.COMMITTING);
@@ -114,8 +115,10 @@
                             'signType': result.data.signType,
                             'paySign': result.data.paySign,
                             'success':function(res){
+                                console.log(res);
+                                console.log(_this.goodsOrder);
                                 tip.toast('支付成功',5000,function () {
-                                    if(this.goodsOrder.is_goods){
+                                    if(!!parseInt(_this.goodsOrder.is_goods)){
                                         wx.navigateTo({url: '/pages/user/order'})
                                     }else{
                                         wx.navigateTo({url: '/pages/user/service'})
