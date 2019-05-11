@@ -305,6 +305,7 @@
                 let specKey = goodsSpecArr.sort(utils.sortNumber).join('_');  //排序后组合成 key
 
                 this.goods.shop_price = this.goodsSpecPrice[specKey]['price'];
+                this.goods.market_price = this.goodsSpecPrice[specKey]['market_price'];
                 this.goods.select_spec = goodsSpecArr;
             }
         }
