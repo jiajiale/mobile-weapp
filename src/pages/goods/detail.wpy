@@ -24,7 +24,9 @@
     <view class="wx-goods-info">
         <view class="wx-title">{{goods.goods_name}}</view>
         <view class="wx-sub-title">{{goods.goods_remark}}</view>
-        <view class="wx-price">￥{{goods.shop_price}}
+        <view class="wx-price">
+            <span>￥{{goods.shop_price}}</span>
+            <span class="wx-line-price">￥{{goods.market_price}}</span>
             <view class="wx-share" @tap="handleGo" data-url="/pages/common/post?id={{goods.id}}"><icon class="iconfont icon-fenxiang"/></view>
         </view>
     </view>
