@@ -96,8 +96,11 @@
 
         setLoginInfo(data) {
             let that = this;
+            let current_time = Date.parse(new Date());
+
             that.globalData.userInfo = data.userInfo;
             wx.setStorageSync('token', data.token);
+            wx.setStorageSync('token_expire', current_time + 172800000);
             wx.setStorageSync('userInfo', data.userInfo);
 
             wx.getSetting({
@@ -119,8 +122,11 @@
         }
 
         login() {
-            let token = wx.setStorageSync('token'), that = this;
-            if (!token) {
+            let token = wx.getStorageSync('token'), that = this;
+            let token_expire = wx.getStorageSync('token_expire');
+            let current_time = Date.parse(new Date());
+
+            if (!token || token_expire < current_time) {
                 wx.login({
                     success: function (res) {
                         if (res.code) {
@@ -186,9 +192,10 @@
             this.checkIsIPhoneX();
             let token = wx.getStorageSync('token');
             if(token){
+                this.login();
                 this.updateLocalUser();
             }
-            wx.removeStorageSync('userFrom')
+            wx.removeStorageSync('userFrom');
         }
     }
 </script>
