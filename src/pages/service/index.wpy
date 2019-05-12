@@ -143,11 +143,5 @@
             this.params = params;
             this.checkUserFrom(params);
         }
-
-        onUnload(){
-            wepy.switchTab({
-                url: '/pages/home/index'
-            })
-        }
     }
 </script>
