@@ -267,10 +267,23 @@
             this.$apply();
         }
 
+        initData(){
+            this.queryItem();
+        }
+
         onShow() {
             let _this = this;
             this.checkAuthorize(function () {
-                _this.queryItem();
+                let result = _this.checkUserFrom(_this.params);
+
+                if(result){
+                    _this.checkLogin(function () {
+                        _this.saveCustomer();
+                        _this.initData();
+                    });
+                }else{
+                    _this.initData();
+                }
             });
         };
 
@@ -281,8 +294,6 @@
                 this.navigationStyle.searchPadding = '100rpx 30rpx 20rpx';
                 this.navigationStyle.searchIconTop = '108rpx';
             }
-
-            this.checkUserFrom(params);
         }
     }
 </script>

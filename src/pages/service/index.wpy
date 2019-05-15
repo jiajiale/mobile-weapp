@@ -129,19 +129,31 @@
             }
         }
 
+        initData(){
+            this.queryReload();
+        }
+
         onShow() {
             let _this = this;
             _this.goodsVisible = false;
             _this.cartVisible = false;
             _this.QRVisible = false;
             this.checkAuthorize(function () {
-                _this.queryReload();
+                let result = _this.checkUserFrom(_this.params);
+
+                if(result){
+                    _this.checkLogin(function () {
+                        _this.saveCustomer();
+                        _this.initData();
+                    });
+                }else{
+                    _this.initData();
+                }
             });
         };
 
         onLoad(params) {
             this.params = params;
-            this.checkUserFrom(params);
         }
     }
 </script>

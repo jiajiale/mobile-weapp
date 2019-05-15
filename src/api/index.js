@@ -73,4 +73,5 @@ export default{
     saveAddress: (method,params) => wxRequest(method,params, "/api/user/saveAddress"),
     delAddress: (method,params) => wxRequest(method,params, "/api/user/delAddress"),
     setDefaultAddress: (method,params) => wxRequest(method,params, "/api/user/setDefaultAddress"),
+    saveCustomer: (method,params) => wxRequest(method,params, "/api/user/saveCustomer"),
 };

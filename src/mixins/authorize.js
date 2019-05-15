@@ -1,4 +1,5 @@
-import wepy from 'wepy'
+import wepy from 'wepy';
+import api from '../api';
 
 export default class authorize extends wepy.mixin {
     checkAuthorize (callback) {
@@ -29,6 +30,22 @@ export default class authorize extends wepy.mixin {
     checkUserFrom(params){
         if(params.userFrom){
             wx.setStorageSync('userFrom', params.userFrom);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    saveCustomer(){
+        let userFrom = wx.getStorageSync('userFrom');
+        let userFromSave = wx.getStorageSync('userFromSave');
+
+        if(userFrom != userFromSave){
+            api.saveCustomer('POST', {from_user_id:userFrom}).then(resp => {
+                if(resp && resp.code === 200){
+                    wx.setStorageSync('userFromSave', userFrom);
+                }
+            });
         }
     }
 }

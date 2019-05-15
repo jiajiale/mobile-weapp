@@ -25,7 +25,7 @@
             </view>
             <view class="wx-goods-content">
                 <view class="wx-title">{{item.goods_name}}</view>
-                <view class="wx-spec">{{item.spec_key_name}}</view>
+                <view class="wx-spec">{{item.spec_key_name ? item.spec_key_name : ''}}</view>
                 <view class="wx-price">￥{{item.member_goods_price}}</view>
             </view>
             <view class="wx-goods-extra">X{{item.goods_num}}</view>
