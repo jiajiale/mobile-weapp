@@ -22,8 +22,8 @@
                         <view>和币</view>
                     </i-col>
                     <i-col span="8" i-class="">
-                        <view>0</view>
-                        <view>收藏</view>
+                        <view>¥0.00</view>
+                        <view>佣金</view>
                     </i-col>
                 </i-row>
             </view>

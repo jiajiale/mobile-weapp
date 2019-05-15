@@ -20,6 +20,7 @@
             }
             .wx-order-extra{
                 height: 100rpx !important;
+                line-height: 100rpx !important;
             }
         }
     }
@@ -34,6 +35,9 @@
                 <view class="marginT10">
                     <view class="wx-spec">下单次数：{{customer.num}}次</view>
                 </view>
+            </view>
+            <view slot="extra">
+                <view style="font-size: 32rpx;">¥{{customer.commission}}</view>
             </view>
         </OrderItem>
         </repeat>
@@ -59,6 +63,7 @@
         config = {
             navigationBarTitleText: '我的客户',
             usingComponents: {
+                "i-icon": "../../iview/icon/index",
             }
         };
         components = {
