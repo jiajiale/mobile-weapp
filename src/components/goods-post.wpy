@@ -1,44 +1,42 @@
 <style lang="less">
+    .post-modal{
+        width: 90% !important;
+    }
     .wx-goods-post{
-        overflow: hidden;
-        .wx-post-mask{
-            position: fixed;
-            z-index: 100;
-            background-color: rgba(33, 33, 33, 0.7);
-            top:0rpx;
-            left: 0rpx;
-            height: 100%;
-            width: 100%;
-        }
-        .wx-post-content{
-            position: fixed;
-            z-index: 101;
-            top:5%;
-            left: 5%;
-            height: 90%;
-            width: 90%;
-            .wx-post-download{
-                button{
-                    margin-top: 20rpx;
-                    border: none;
-                    background: #ec3a3e;
-                    font-size: 28rpx;
-                    color: #fff;
-                    border-radius: 30rpx;
-                }
+        .wx-post-download{
+            button{
+                margin-top: 20rpx;
+                border: none;
+                background: #ec3a3e;
+                font-size: 28rpx;
+                color: #fff;
+                border-radius: 30rpx;
             }
         }
     }
 </style>
 <template>
-    <view class="wx-goods-post" wx:if="{{visible}}">
-        <div class="wx-post-content">
-            <canvas canvas-id="post" style="width: 100%;height: 90%;"/>
+    <!--<view class="wx-goods-post" wx:if="{{visible}}">-->
+        <!--<div class="wx-post-content">-->
+            <!--<canvas canvas-id="post" style="width: 100%;height: 90%;"/>-->
+            <!--<div class="wx-post-download">-->
+                <!--<button plain @tap="handleDownload">下载海报图片</button>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<view class="wx-post-mask" @tap="handleClose"></view>-->
+    <!--</view>-->
+
+    <view class="wx-goods-post">
+        <i-modal visible="{{ visible }}" className="post-modal" show-ok="{{ showBtn }}" show-cancel="{{ showBtn }}" style="width: 90% !important;">
+            <view class="wx-post-title">{{goods.goods_name}}</view>
+            <view class="wx-post-image">
+                <image src="{{goodsImgUrl + goods.original_img}}"
+                       mode="scaleToFill"></image>
+            </view>
             <div class="wx-post-download">
                 <button plain @tap="handleDownload">下载海报图片</button>
             </div>
-        </div>
-        <view class="wx-post-mask" @tap="handleClose"></view>
+        </i-modal>
     </view>
 </template>
 <script>
@@ -61,11 +59,12 @@
             screenH: wx.getSystemInfoSync().screenHeight,
             ratio: wx.getSystemInfoSync().pixelRatio,
             context: null,
+            showBtn: false,
         };
         watch = {
             visible(val) {
                 if(val){
-                    this.drawPost();
+                    //this.drawPost();
                 }
             }
         };

@@ -13,8 +13,8 @@
         config = {
             pages: [
                 'pages/home/index',
-                'pages/activity/goods',
                 'pages/goods/detail',
+                'pages/activity/goods',
                 'pages/service/detail',
                 'pages/common/post',
                 'pages/service/index',
@@ -125,6 +125,7 @@
             let token = wx.getStorageSync('token'), that = this;
             let token_expire = wx.getStorageSync('token_expire');
             let current_time = Date.parse(new Date());
+            console.log(current_time);
 
             if (!token || token_expire < current_time) {
                 wx.login({

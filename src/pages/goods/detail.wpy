@@ -107,7 +107,7 @@
         </view>
     </GoodsSheet>
 
-    <!--<GoodsPost :visible.sync="postVisible" :goods.sync="goods"></GoodsPost>-->
+    <GoodsPost :visible.sync="postVisible" :goods.sync="goods"></GoodsPost>
 </template>
 
 <script>
@@ -138,6 +138,7 @@
                 "i-button": "../../iview/button/index",
                 "i-panel": "../../iview/panel/index",
                 "i-icon": "../../iview/icon/index",
+                "i-modal": "../../iview/modal/index"
             }
         };
         components = {
@@ -160,6 +161,7 @@
             goodsBottomStyle: 0,
             goodsZIndexStyle: 101,
             goodsVisible: false,
+            postVisible: false,
             isSubmit: false,
             cartList: [],
             navigationStyle: {
@@ -374,7 +376,9 @@
         };
 
         onLoad(params) {
+            params.id = 2952;
             this.params = params;
+            this.postVisible = true;
             if(this.$parent.globalData.isIPX){
                 this.navigationStyle.navPadding = '100rpx 0rpx 20rpx';
             }
