@@ -27,7 +27,7 @@
         <view class="wx-price">
             <span>￥{{goods.shop_price}}</span>
             <span class="wx-line-price" wx:if="{{goods.market_price}}">￥{{goods.market_price}}</span>
-            <view class="wx-share" @tap="handleShare"><icon class="iconfont icon-fenxiang"/></view>
+            <view class="wx-share" @tap="handleShare('share')"><icon class="iconfont icon-fenxiang"/></view>
         </view>
     </view>
 
@@ -107,6 +107,22 @@
         </view>
     </GoodsSheet>
 
+    <i-action-sheet visible="{{ postActionVisible }}" bind:cancel="handleCloseAction">
+        <view slot="header" style="padding: 16px">
+            <i-row>
+                <i-col span="12">
+                    <button bindtap="handleShare('wx')" open-type="share" plain style="line-height:30rpx;font-size:12px;border:none;color:#777;">
+                        <icon class="iconfont icon-weixin" style="font-size: 30px;margin-top: 5px;"/>
+                        <view style="line-height: 50rpx;">好友和微信群</view>
+                    </button>
+                </i-col>
+                <i-col span="12" @tap="handleShare('post')">
+                    <icon class="iconfont icon-pengyouquan" style="font-size: 26px;color:#777"/>
+                    <view style="line-height: 50rpx;">生成你的专属海报</view>
+                </i-col>
+            </i-row>
+        </view>
+    </i-action-sheet>
     <GoodsPost :visible.sync="postVisible" :goods.sync="goods"></GoodsPost>
 </template>
 
@@ -138,6 +154,7 @@
                 "i-button": "../../iview/button/index",
                 "i-panel": "../../iview/panel/index",
                 "i-icon": "../../iview/icon/index",
+                "i-action-sheet": "../../iview/action-sheet/index"
             }
         };
         components = {
@@ -161,6 +178,7 @@
             goodsZIndexStyle: 101,
             goodsVisible: false,
             postVisible: false,
+            postActionVisible: false,
             isSubmit: false,
             cartList: [],
             navigationStyle: {
@@ -288,8 +306,18 @@
                     url: '/pages/home/index'
                 })
             },
-            handleShare(){
-                this.postVisible = true
+            handleShare(name){
+                if(name === 'share'){
+                    this.postActionVisible = true;
+                }else if(name === 'wx'){
+                    this.postActionVisible = false;
+                }else if(name === 'post'){
+                    this.postVisible = true;
+                    this.postActionVisible = false;
+                }
+            },
+            handleCloseAction(){
+                this.postActionVisible = false;
             }
         };
 
@@ -380,7 +408,6 @@
         onLoad(params) {
             params.id = 3069;
             this.params = params;
-            this.postVisible = true;
             if(this.$parent.globalData.isIPX){
                 this.navigationStyle.navPadding = '100rpx 0rpx 20rpx';
             }
