@@ -125,12 +125,11 @@
         watch = {
             visible(val) {
                 if(val){
-                    //this.drawPost();
+                    this.queryItem();
                 }
             },
             goods(val) {
                 if(val){
-                    this.queryItem();
                 }
             }
         };
@@ -209,7 +208,7 @@
                 //绘制标题
                 that.context.setFontSize(14);
                 that.context.setFillStyle('#333333');
-                that.context.fillText(that.goods.goods_name, that.scale(20), that.scale(50));
+                that.context.fillText(that.goods.goods_name.substr(0,25), that.scale(20), that.scale(50));
                 that.context.stroke();
 
                 that.context.setFontSize(14);

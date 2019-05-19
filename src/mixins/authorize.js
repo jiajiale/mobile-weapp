@@ -40,9 +40,6 @@ export default class authorize extends wepy.mixin {
         let userFrom = wx.getStorageSync('userFrom');
         let userFromSave = wx.getStorageSync('userFromSave');
 
-        console.log(userFrom);
-        console.log(userFromSave);
-
         if(userFrom != userFromSave){
             api.saveCustomer('POST', {from_user_id:userFrom}).then(resp => {
                 console.log(resp);
