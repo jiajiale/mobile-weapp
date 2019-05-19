@@ -12,8 +12,6 @@
 
         config = {
             pages: [
-                'pages/user/customer',
-                'pages/user/commission',
                 'pages/home/index',
                 'pages/goods/detail',
                 'pages/activity/goods',
@@ -39,6 +37,8 @@
                 'pages/user/contact',
                 'pages/user/point',
                 'pages/user/help',
+                'pages/user/customer',
+                'pages/user/commission',
             ],
             window: {
                 backgroundTextStyle: 'light',
