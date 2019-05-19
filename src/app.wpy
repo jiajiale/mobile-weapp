@@ -12,8 +12,8 @@
 
         config = {
             pages: [
-                'pages/goods/detail',
                 'pages/home/index',
+                'pages/goods/detail',
                 'pages/activity/goods',
                 'pages/service/detail',
                 'pages/common/post',
