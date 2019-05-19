@@ -34,7 +34,7 @@
             <view class="wx-row">
                 <i-row>
                     <i-col span="12" i-class="wx-item"  wx:for="{{saleGoodsList}}" wx:key="{{item.id}}">
-                        <navigator open-type="navigate" hover-class="none" url="/pages/goods/detail?id={{item.id}}&userFrom=aaaa">
+                        <navigator open-type="navigate" hover-class="none" url="/pages/goods/detail?id={{item.id}}">
                         <i-row>
                             <i-col span="14" i-class="wx-left">
                                 <view class="wx-goods-title">{{item.goods_name}}</view>
