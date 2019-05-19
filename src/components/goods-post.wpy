@@ -206,7 +206,6 @@
                 that.context.fillRect(0, 0, that.canvasW, that.canvasH);
                 that.$apply();
 
-                console.log(that.screenW);
                 //绘制标题
                 that.context.setFontSize(14);
                 that.context.setFillStyle('#333333');

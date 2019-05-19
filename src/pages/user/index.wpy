@@ -21,8 +21,8 @@
                         <view>0</view>
                         <view>和币</view>
                     </i-col>
-                    <i-col span="8" i-class="">
-                        <view>¥0.00</view>
+                    <i-col span="8" i-class="" data-url="/pages/user/commission" @tap="handleGo">
+                        <view>¥{{userInfo.commission ? userInfo.commission : '0.00'}}</view>
                         <view>佣金</view>
                     </i-col>
                 </i-row>
@@ -143,6 +143,7 @@
         data = {
             advImgUrl: api.ADV_IMG_URL,
             adv: null,
+            userInfo: {},
         };
 
         computed = {};
@@ -157,7 +158,12 @@
         };
 
         onShow() {
+            let _this = this;
             this.checkAuthorize(function () {
+                _this.$parent.updateLocalUser(function () {
+                    _this.userInfo = _this.$parent.globalData.userInfo;
+                    _this.$apply();
+                });
             });
         };
 

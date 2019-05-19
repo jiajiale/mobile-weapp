@@ -1,10 +1,9 @@
 <style lang="less">
     @import "../../assets/styles/user";
-    .wx-customer-list{
+    .wx-commission-list{
         background: #fff;
         .wx-order-info{
             padding:20rpx;
-            border-bottom: 1px solid #e8e8e8;
             .wx-order-content{
                 padding-top:10rpx;
                 .wx-spec{
@@ -26,26 +25,30 @@
     }
 </style>
 <template>
-    <view class="wx-customer-list" wx:if="{{customerList.length}}">
-        <repeat for="{{customerList}}" key="{{customer.id}}" item="customer">
-            <view @tap="handleGo" data-url="/pages/user/commission?user_id={{customer.user_customer_id}}">
-                <OrderItem>
-                    <view slot="thumb" style="height: 100%;"><image src="{{customer.avatar}}" mode="scaleToFill"></image></view>
-                    <view slot="title">{{customer.name}}</view>
-                    <view slot="tags">
-                        <view class="marginT10">
-                            <view class="wx-spec">下单次数：{{customer.num}}次</view>
+    <view class="wx-commission-list">
+        <view class="marginB20" wx:for="{{commissionList}}" wx:key="{{item.id}}" wx:if="{{commissionList.length}}">
+        <i-card title="{{item.gmt_create}}" full extra="￥{{item.commission}}" i-class="wx-order-card">
+            <view slot="content">
+                <repeat for="{{item.goods_arr}}" key="{{goodsItem.id}}" item="goodsItem">
+                    <OrderItem>
+                        <view slot="thumb" style="height: 100%;"><image src="{{goodsImgThumb + '?goods_id=' + goodsItem.goods_id}}" mode="scaleToFill"></image></view>
+                        <view slot="title">{{goodsItem.goods_name}}</view>
+                        <view slot="tags">
+                            <view class="marginT10">
+                                <view class="wx-spec">X{{goodsItem.goods_num}}</view>
+                            </view>
                         </view>
-                    </view>
-                    <view slot="extra">
-                        <view style="font-size: 32rpx;">¥{{customer.commission}}</view>
-                    </view>
-                </OrderItem>
+                        <view slot="extra">
+                            <view style="font-size: 32rpx;">¥{{goodsItem.commission}}</view>
+                        </view>
+                    </OrderItem>
+                </repeat>
             </view>
-        </repeat>
+        </i-card>
+        </view>
     </view>
-    <view wx:if="{{!customerList.length}}">
-        <NoInfo emptyText="暂无客户信息" marginTop="200"></NoInfo>
+    <view wx:if="{{!commissionList.length}}">
+        <NoInfo emptyText="暂无分佣记录" marginTop="200"></NoInfo>
     </view>
 </template>
 
@@ -61,11 +64,12 @@
     import MSG from '../../utils/msg';
     import OrderItem from '../../components/order-item';
 
-    export default class UserCustomer extends wepy.page {
+    export default class UserCommission extends wepy.page {
         config = {
-            navigationBarTitleText: '我的客户',
+            navigationBarTitleText: '我的分佣',
             usingComponents: {
                 "i-icon": "../../iview/icon/index",
+                "i-card": "../../iview/card/index",
             }
         };
         components = {
@@ -76,40 +80,40 @@
         mixins = [authorize,pagination];
 
         data = {
-            advImgUrl: api.ADV_IMG_URL,
+            goodsImgThumb: api.THUMBNAIL_IMG,
+            params: [],
             page: 1,
             hasPage: true,
-            customerList: []
+            commissionList: []
         };
 
         methods = {
-            handleGo(e){
-                let url = e.currentTarget.dataset.url;
-                console.log(url)
-                if(url){
-                    wepy.navigateTo({url: url});
-                }
-            },
+
         };
 
         queryReload(){
             this.page = 1;
-            this.customerList = [];
+            this.commissionList = [];
             this.hasPage = true;
             this.queryItemList();
         };
 
         async queryItemList() {
             tip.loading(MSG.LOADING);
-            await api.queryCustomerList('POST',{page: this.page}).then(resp => {
+            let conditions = {
+                page: this.page,
+            };
+
+            if(this.params.user_id){
+                conditions.user_customer_id = this.params.user_id;
+            }
+            await api.queryCommissionList('POST',conditions).then(resp => {
                 tip.loaded();
                 if(resp.data){
                     resp.data.items.filter(item => {
                         item.gmt_create = utils.formatDateTime(item.gmt_create,'yyyy-MM-dd');
-                        item.name = item.nickname ? item.nickname : utils.hideMobile(item.mobile);
-                        item.avatar = item.avatar ? item.avatar : this.advImgUrl + 'user_avatar.png';
                     });
-                    this.customerList = this.customerList.concat(resp.data.items);
+                    this.commissionList = this.commissionList.concat(resp.data.items);
                     if(resp.data.pager.index >= resp.data.pager.count){
                         this.hasPage = false;
                     }
@@ -125,8 +129,8 @@
             });
         };
 
-        onLoad() {
-
+        onLoad(params) {
+            this.params = params;
         }
     }
 </script>
