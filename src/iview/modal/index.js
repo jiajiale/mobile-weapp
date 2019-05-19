@@ -10,10 +10,6 @@ Component({
             type: String,
             value: ''
         },
-        className: {
-            type: String,
-            value: ''
-        },
         showOk: {
             type: Boolean,
             value: true

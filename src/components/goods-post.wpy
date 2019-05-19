@@ -1,48 +1,101 @@
 <style lang="less">
-    .post-modal{
-        width: 90% !important;
-    }
     .wx-goods-post{
-        .wx-post-download{
-            button{
-                margin-top: 20rpx;
-                border: none;
-                background: #ec3a3e;
-                font-size: 28rpx;
-                color: #fff;
-                border-radius: 30rpx;
+        position: fixed;
+        z-index: 100;
+        .wx-post-content{
+            z-index: 102;
+            background: #fff;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            width: 70%;
+            padding: 30rpx 40rpx;
+            border-radius: 20rpx;
+            image{
+                width: 100%;
             }
+            .wx-post-title{
+                height: 50rpx;
+                line-height: 50rpx;
+                margin-top: 20rpx;
+            }
+            .wx-post-footer{
+                overflow: hidden;
+                .wx-post-qrcode{
+                    width: 250rpx;
+                    height: 250rpx;
+                    float: left;
+                    image{
+                        height: 100%;
+                    };
+                }
+                .wx-post-txt{
+                    margin-left: 20rpx;
+                    margin-top: 30rpx;
+                    float: left;
+                    .price{
+                        height: 100rpx;
+                        line-height: 100rpx;
+                    }
+                }
+            }
+            .wx-post-download{
+                button{
+                    margin-top: 20rpx;
+                    border: none;
+                    background: #ec3a3e;
+                    font-size: 28rpx;
+                    color: #fff;
+                    border-radius: 30rpx;
+                }
+            }
+        }
+        .wx-post-mask{
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 101;
+            top: 0rpx;
+            left: 0rpx;
+            background: rgba(55,55,55,.6);
         }
     }
 </style>
 <template>
-    <!--<view class="wx-goods-post" wx:if="{{visible}}">-->
+    <view class="wx-goods-post" wx:if="{{visible}}">
         <!--<div class="wx-post-content">-->
-            <!--<canvas canvas-id="post" style="width: 100%;height: 90%;"/>-->
+            <!--<view style="position:absolute;right: 30rpx;" @tap="handleClose"><icon class="iconfont icon-guanbi"/></view>-->
+            <!--<view class="wx-post-title">{{goods.goods_name}}</view>-->
+            <!--<view class="wx-post-image" wx:if="{{goods.original_img}}">-->
+                <!--<image src="{{goodsImgUrl + goods.original_img}}"-->
+                    <!--mode="scaleToFill"></image>-->
+            <!--</view>-->
+            <!--<view class="wx-post-footer">-->
+                <!--<view class="wx-post-qrcode">-->
+                    <!--<image src="{{base64Qr}}" style="width: 100%;height: 100%;"-->
+                           <!--mode="scaleToFill"></image>-->
+                <!--</view>-->
+                <!--<view class="wx-post-txt">-->
+                    <!--<view class="price">{{goods.shop_price}}</view>-->
+                    <!--<view class="tips">长按二维码识别购买</view>-->
+                <!--</view>-->
+            <!--</view>-->
             <!--<div class="wx-post-download">-->
                 <!--<button plain @tap="handleDownload">下载海报图片</button>-->
             <!--</div>-->
         <!--</div>-->
-        <!--<view class="wx-post-mask" @tap="handleClose"></view>-->
-    <!--</view>-->
-
-    <view class="wx-goods-post">
-        <i-modal visible="{{ visible }}" className="post-modal" show-ok="{{ showBtn }}" show-cancel="{{ showBtn }}" style="width: 90% !important;">
-            <view class="wx-post-title">{{goods.goods_name}}</view>
-            <view class="wx-post-image">
-                <image src="{{goodsImgUrl + goods.original_img}}"
-                       mode="scaleToFill"></image>
-            </view>
-            <div class="wx-post-download">
-                <button plain @tap="handleDownload">下载海报图片</button>
-            </div>
-        </i-modal>
+        <canvas canvas-id="post" style="position:fixed;top:0;z-index:200;width:{{canvasW}}px; height:{{canvasH}}px"/>
+        <view class="wx-post-mask" @tap="handleClose"></view>
     </view>
 </template>
 <script>
     import wepy from 'wepy';
     import api from '../api';
+    import tip from '../utils/tip';
     import util from '../utils/util';
+    import MSG from '../utils/msg';
 
     export default class GoodsPost extends wepy.component {
         props = {
@@ -58,13 +111,22 @@
             screenW: wx.getSystemInfoSync().screenWidth,
             screenH: wx.getSystemInfoSync().screenHeight,
             ratio: wx.getSystemInfoSync().pixelRatio,
+            canvasW: '375',
+            canvasH: '600',
             context: null,
             showBtn: false,
+            base64Qr: null,
+            base64Data: null,
         };
         watch = {
             visible(val) {
                 if(val){
                     //this.drawPost();
+                }
+            },
+            goods(val) {
+                if(val){
+                    this.queryItem();
                 }
             }
         };
@@ -99,65 +161,83 @@
             }
         };
 
-        conv(val){
-            return this.ratio * val;
+        async queryItem() {
+            const that = this;
+            tip.loading(MSG.MAKING_POST);
+            await api.queryGoodsQrcode('POST',{
+                goods_id: that.goods.id,
+            }).then(resp => {
+                tip.loaded();
+                if(resp.code === 200){
+                    this.base64Data = 'data:image/jpg;base64,' + resp.data.code;
+                    this.base64Qr = this.base64Data;
+                    this.base64Data = util.base64src(this.base64Data);
+                    this.base64Data.then(val => {
+                        that.base64Data = val;
+                        that.drawPost();
+                    });
+                    this.$apply();
+                }else{
+                    tip.error(resp.msg,function () {
+                        wx.navigateBack({delta: 2});
+                    });
+                }
+            });
         };
+
+        scale(val){
+            let ratio = this.screenW / 375;
+            return val * ratio;
+        }
 
         drawPost(){
             let that = this;
             setTimeout(function () {
+                let imgWidth = that.scale(335);
+                that.canvasW = that.scale(375);
+                that.canvasH = that.scale(600);
                 that.context = wx.createCanvasContext('post');
                 that.context.setFillStyle("#ffffff");
-                that.context.fillRect(0, 0, that.conv(that.screenW), that.conv(that.screenH));
+                that.context.fillRect(0, 0, that.canvasW, that.canvasH);
+                that.$apply();
 
+                console.log(that.screenW);
                 //绘制标题
                 that.context.setFontSize(14);
                 that.context.setFillStyle('#333333');
-                that.context.fillText(that.goods.goods_name, that.conv(10), that.conv(35));
+                that.context.fillText(that.goods.goods_name, that.scale(20), that.scale(50));
                 that.context.stroke();
 
                 that.context.setFontSize(14);
                 that.context.setFillStyle('#333333');
-                that.context.fillText('￥' + that.goods.shop_price, that.conv(75), that.screenH * 0.81 - 100);
+                that.context.fillText('￥' + that.goods.shop_price, that.scale(150), imgWidth + that.scale(135));
                 that.context.stroke();
 
                 that.context.setFontSize(14);
                 that.context.setFillStyle('#333333');
-                that.context.fillText('长按二维码识别购买', that.conv(75), that.screenH * 0.81 - 65);
+                that.context.fillText('长按二维码识别购买', that.scale(150), imgWidth + that.scale(175));
                 that.context.stroke();
 
                 let logoPath = that.goodsImgUrl + that.goods.original_img;
-                let imgWidth = that.screenW - that.conv(40);
                 wx.getImageInfo({
                     src: logoPath,
                     success(res) {
                         let path = res.path;
-                        that.context.drawImage(path, that.conv(10), that.conv(40), imgWidth , imgWidth);
+                        that.context.drawImage(path, that.scale(20), that.scale(80), imgWidth , imgWidth);
                     }
                 });
 
-                api.queryGoodsQrcode('POST',{
-                    goods_id: that.goods.id,
-                }).then(resp => {
-                    if(resp.code === 200){
-                        let base64Data = 'data:image/jpg;base64,' + resp.data.code;
-                        let parseCode = util.base64src(base64Data);
-
-                        parseCode.then(val => {
-                            wx.getImageInfo({
-                                src: val,
-                                success(res) {
-                                    let path = res.path;
-                                    that.context.drawImage(path, that.conv(10), that.screenH * 0.81 - 140, 100 , 100);
-                                }
-                            });
-                        });
+                wx.getImageInfo({
+                    src: that.base64Data,
+                    success(res) {
+                        let path = res.path;
+                        that.context.drawImage(path, that.scale(20), imgWidth + that.scale(95), that.scale(120) , that.scale(120));
                     }
                 });
 
                 setTimeout(function () {
                     that.context.draw();
-                },3000)
+                },500)
             },10)
         };
     }

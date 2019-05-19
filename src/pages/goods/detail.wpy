@@ -27,7 +27,7 @@
         <view class="wx-price">
             <span>￥{{goods.shop_price}}</span>
             <span class="wx-line-price" wx:if="{{goods.market_price}}">￥{{goods.market_price}}</span>
-            <view class="wx-share" @tap="handleGo" data-url="/pages/common/post?id={{goods.id}}"><icon class="iconfont icon-fenxiang"/></view>
+            <view class="wx-share" @tap="handleShare"><icon class="iconfont icon-fenxiang"/></view>
         </view>
     </view>
 
@@ -138,7 +138,6 @@
                 "i-button": "../../iview/button/index",
                 "i-panel": "../../iview/panel/index",
                 "i-icon": "../../iview/icon/index",
-                "i-modal": "../../iview/modal/index"
             }
         };
         components = {
@@ -288,6 +287,9 @@
                 wepy.switchTab({
                     url: '/pages/home/index'
                 })
+            },
+            handleShare(){
+                this.postVisible = true
             }
         };
 
@@ -376,7 +378,7 @@
         };
 
         onLoad(params) {
-            params.id = 2952;
+            params.id = 3069;
             this.params = params;
             this.postVisible = true;
             if(this.$parent.globalData.isIPX){
