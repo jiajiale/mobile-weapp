@@ -81,7 +81,7 @@
                            mode="scaleToFill"></image>
                 </view>
                 <view class="wx-post-txt">
-                    <view class="price">{{goods.shop_price}}</view>
+                    <view class="price">￥{{goods.goods_price}}</view>
                     <view class="tips">长按二维码识别购买</view>
                 </view>
             </view>
@@ -213,7 +213,7 @@
 
                 that.context.setFontSize(14);
                 that.context.setFillStyle('#333333');
-                that.context.fillText('￥' + that.goods.shop_price, that.scale(150), imgWidth + that.scale(135));
+                that.context.fillText('￥' + that.goods.goods_price, that.scale(150), imgWidth + that.scale(135));
                 that.context.stroke();
 
                 that.context.setFontSize(14);
