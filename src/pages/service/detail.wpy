@@ -27,7 +27,10 @@
         <view class="wx-price">
             <span>￥{{goods.shop_price}}</span>
             <span class="wx-line-price" wx:if="{{goods.market_price}}">￥{{goods.market_price}}</span>
-            <view class="wx-share" @tap="handleShare('share')"><icon class="iconfont icon-fenxiang"/></view>
+            <view class="wx-share" @tap="handleShare('share')">
+                <view><icon class="iconfont icon-fenxiang"/></view>
+                <view style="font-size: 24rpx;">分享</view>
+            </view>
         </view>
     </view>
 
