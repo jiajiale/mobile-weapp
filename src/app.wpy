@@ -12,6 +12,7 @@
 
         config = {
             pages: [
+                'pages/pay/index',
                 'pages/home/index',
                 'pages/goods/detail',
                 'pages/activity/goods',
@@ -24,7 +25,6 @@
                 'pages/user/order',
                 'pages/user/code',
                 'pages/check/order',
-                'pages/pay/index',
                 'pages/user/service',
                 'pages/category/index',
                 'pages/user/address',

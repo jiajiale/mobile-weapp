@@ -164,6 +164,7 @@
         };
 
         onLoad(params) {
+            params.order_id = 4285;
             this.params = params;
         }
 
