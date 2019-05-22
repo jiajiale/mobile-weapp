@@ -12,6 +12,9 @@
             <i-cell title="商品金额" i-class="wx-spec-item" value="￥{{goodsOrder.goods_price}}"></i-cell>
             <i-cell title="运费" i-class="wx-spec-item" value="￥{{goodsOrder.shipping_price}}"></i-cell>
             <i-cell title="需付款" i-class="wx-spec-item" value="￥{{goodsOrder.total_amount}}"></i-cell>
+            <i-cell title="积分抵扣" i-class="wx-spec-item" is-link bind:click="switchPointPay">
+                <view slot="footer" style="font-size: 24rpx;color: #999;">使用移动积分</view>
+            </i-cell>
         </i-cell-group>
     </view>
 
@@ -35,11 +38,37 @@
         </i-row>
         </form>
     </view>
+
+    <PointSheet :visible.sync="pointVisible" :maxHeight.sync="pointMaxHeight"
+                :bottomStyle.sync="pointBottomStyle"
+                :zIndexStyle.sync="pointZIndexStyle">
+        <view slot="content">
+            <view class="wx-pay-point">
+                <icon class="iconfont icon-guanbi wx-sheet-close-icon" style="position: absolute;top:10rpx;right:20rpx;" bindtap="switchPointPay"/>
+
+                <i-panel title="积分抵扣">
+                    <view style="text-align: center;">
+                        <i-input value="{{ point }}" type="number" maxlength="2" i-class="wx-point" autofocus placeholder="清输入抵扣积分" />
+                    </view>
+                </i-panel>
+                <view style="text-align: center;">
+                    <i-input value="{{ payCode }}" type="number" maxlength="1" mode="wrapped" i-class="wx-code" disabled/>
+                    <i-input value="{{ payCode }}" type="number" maxlength="1" mode="wrapped" i-class="wx-code" disabled/>
+                    <i-input value="{{ payCode }}" type="number" maxlength="1" mode="wrapped" i-class="wx-code" disabled/>
+                    <i-input value="{{ payCode }}" type="number" maxlength="1" mode="wrapped" i-class="wx-code" disabled/>
+                </view>
+            </view>
+            <view style="position: fixed;bottom: 0rpx;width: 100%">
+                <i-button type="success" size="small">确认抵扣</i-button>
+            </view>
+        </view>
+    </PointSheet>
 </template>
 
 <script>
     import wepy from 'wepy';
     import authorize from '../../mixins/authorize';
+    import ContentSheet from '../../components/content-sheet';
     import api from '../../api';
     import tip from '../../utils/tip';
     import utils from '../../utils/util';
@@ -52,22 +81,35 @@
                 "i-panel": "../../iview/panel/index",
                 "i-cell-group": "../../iview/cell-group/index",
                 "i-cell": "../../iview/cell/index",
+                "i-button": "../../iview/button/index",
+                "i-input": "../../iview/input/index"
             }
+        };
+        components = {
+            PointSheet: ContentSheet,
         };
 
         mixins = [authorize];
 
         data = {
             params: [],
+            pointMaxHeight: 900,
+            pointBottomStyle: 0,
+            pointZIndexStyle: 101,
+            pointVisible: true,
             isSubmit: false,
             isOffline: false,
             goodsOrder: {},
             payModeList: [],
+            point: '',
             payCode: '',
             payName: ''
         };
 
         methods = {
+            switchPointPay(e){
+                this.pointVisible = !this.pointVisible;
+            },
             handlePay(e){
                 let formId = e.detail.formId;
                 this.payOrder(formId);
