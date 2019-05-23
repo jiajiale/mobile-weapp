@@ -61,6 +61,7 @@ export default{
     payOrder: (method,params) => wxRequest(method,params, "/api/order/pay"),
     createPointOrder: (method,params) => wxRequest(method,params, "/api/point/createPointOrder"),
     payPointOrder: (method,params) => wxRequest(method,params, "/api/point/payPointOrder"),
+    queryPointUser: (method,params) => wxRequest(method,params, "/api/point/queryPointUser"),
     queryUserInfo: (method,params) => wxRequest(method,params, "/api/user/queryUserInfo"),
     cancelOrder: (method,params) => wxRequest(method,params, "/api/user/cancelOrder"),
     receiveOrder: (method,params) => wxRequest(method,params, "/api/user/receiveOrder"),

@@ -111,13 +111,18 @@
             payName: '',
             hasPointOrder: false,
             pointBtnTxt: '发送验证码',
-            pointMoney: 0
+            pointMoney: 0,
+            isCYUser: false
         };
 
         methods = {
             switchPointPay(e){
                 if(!parseFloat(this.pointMoney)){
-                    this.pointVisible = !this.pointVisible;
+                    if(this.isCYUser){
+                        this.pointVisible = !this.pointVisible;
+                    }else{
+                        tip.toast('你还不是畅由用户');
+                    }
                 }
             },
             handleInput(e){
@@ -192,6 +197,18 @@
                     }
                 });
             }
+        }
+
+        queryPointUser(){
+            let _this = this;
+            api.queryPointUser('POST', null).then(resp => {
+                if (resp && resp.code === 200) {
+                    _this.isCYUser = resp.data.isCYUser;
+                    _this.$apply();
+                } else {
+                    tip.error(resp.msg);
+                }
+            });
         }
 
         async payOrder(formId) {
@@ -271,6 +288,7 @@
             let _this = this;
             this.checkAuthorize(function () {
                 _this.queryItem();
+                _this.queryPointUser();
             });
         };
 
