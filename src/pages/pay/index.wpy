@@ -11,7 +11,7 @@
             <i-cell title="订单编号" i-class="wx-spec-item" value="￥{{goodsOrder.order_sn}}"></i-cell>
             <i-cell title="商品金额" i-class="wx-spec-item" value="￥{{goodsOrder.goods_price}}"></i-cell>
             <i-cell title="运费" i-class="wx-spec-item" value="￥{{goodsOrder.shipping_price}}"></i-cell>
-            <i-cell title="积分抵扣" i-class="wx-spec-item" is-link bind:click="switchPointPay">
+            <i-cell title="积分抵扣" i-class="wx-spec-item" is-link bind:click="switchPointPay" wx:if="{{isCYUser}}">
                 <view slot="footer" style="font-size: 24rpx;color: #999;">
                     <span wx:if="{{pointMoney}}">￥{{pointMoney}}</span>
                     <span wx:else>使用移动积分</span>
@@ -52,18 +52,18 @@
                 </view>
                 <i-panel title="积分抵扣">
                     <view style="text-align: center;">
-                        <i-input bindchange="handleInput" data-key="point" type="number" maxlength="2" i-class="wx-point" autofocus placeholder="清输入抵扣积分" />
+                        <i-input bindchange="handleInput" data-key="point" type="number" maxlength="5" i-class="wx-point" autofocus placeholder="清输入抵扣积分" />
                     </view>
                 </i-panel>
                 <view style="text-align: center;">
-                    <i-input bindchange="handleInput" data-key="code" data-index="0" type="number" maxlength="1" mode="wrapped" i-class="wx-code"/>
-                    <i-input bindchange="handleInput" data-key="code" data-index="1" type="number" maxlength="1" mode="wrapped" i-class="wx-code"/>
-                    <i-input bindchange="handleInput" data-key="code" data-index="2" type="number" maxlength="1" mode="wrapped" i-class="wx-code"/>
-                    <i-input bindchange="handleInput" data-key="code" data-index="3" type="number" maxlength="1" mode="wrapped" i-class="wx-code"/>
+                    <i-input bindchange="handleInput" data-key="code" data-index="0" autofocus="{{focus[0]}}" type="number" maxlength="1" mode="wrapped" i-class="wx-code"/>
+                    <i-input bindchange="handleInput" data-key="code" data-index="1" autofocus="{{focus[1]}}" type="number" maxlength="1" mode="wrapped" i-class="wx-code"/>
+                    <i-input bindchange="handleInput" data-key="code" data-index="2" autofocus="{{focus[2]}}" type="number" maxlength="1" mode="wrapped" i-class="wx-code"/>
+                    <i-input bindchange="handleInput" data-key="code" data-index="3" autofocus="{{focus[3]}}" type="number" maxlength="1" mode="wrapped" i-class="wx-code"/>
                 </view>
             </view>
             <view style="position: fixed;bottom: 0rpx;width: 100%">
-                <i-button type="success" class="{{isSubmit ? 'wx-buy-action wx-disable' : 'wx-buy-action'}}" size="small" bindtap="submitPoint">{{ pointBtnTxt }}</i-button>
+                <i-button type="success" i-class="{{isSubmit ? 'wx-buy-action wx-disable' : 'wx-buy-action'}}" size="small" bindtap="submitPoint">{{ pointBtnTxt }}</i-button>
             </view>
         </view>
     </PointSheet>
@@ -107,6 +107,7 @@
             payModeList: [],
             point: '',
             codeArr: [],
+            focus: [],
             payCode: '',
             payName: '',
             hasPointOrder: false,
@@ -135,6 +136,10 @@
                     this.pointBtnTxt = '发送验证码';
                 }else if(key === 'code'){
                     this.codeArr[index] = e.detail.detail.value;
+                    if(e.detail.detail.value){
+                        this.focus[parseInt(index)] = false;
+                        this.focus[parseInt(index)+1] = true;
+                    }
                 }
             },
             submitPoint(){
@@ -172,8 +177,9 @@
                         _this.hasPointOrder = true;
                         _this.pointBtnTxt = '确认抵扣';
                         _this.$apply();
+                        tip.toast(resp.msg);
                     }else{
-                        tip.error(resp.msg);
+                        tip.toast(resp.msg);
                     }
                 });
             }
