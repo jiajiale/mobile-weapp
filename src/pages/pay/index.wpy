@@ -116,7 +116,9 @@
 
         methods = {
             switchPointPay(e){
-                this.pointVisible = !this.pointVisible;
+                if(!parseFloat(this.pointMoney)){
+                    this.pointVisible = !this.pointVisible;
+                }
             },
             handleInput(e){
                 let key = e.currentTarget.dataset.key;
@@ -164,7 +166,6 @@
                     if(resp && resp.code === 200){
                         _this.hasPointOrder = true;
                         _this.pointBtnTxt = '确认抵扣';
-                        _this.switchPointPay();
                         _this.$apply();
                     }else{
                         tip.error(resp.msg);
@@ -184,6 +185,7 @@
                     _this.isSubmit = false;
                     if (resp && resp.code === 200) {
                         _this.pointMoney = resp.data.integral_money;
+                        _this.pointVisible = false;
                         _this.$apply();
                     } else {
                         tip.error(resp.msg);
@@ -273,7 +275,7 @@
         };
 
         onLoad(params) {
-            params.order_id = 4285;
+//            params.order_id = 4285;
             this.params = params;
         }
 

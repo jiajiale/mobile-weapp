@@ -12,7 +12,6 @@
 
         config = {
             pages: [
-                'pages/pay/index',
                 'pages/home/index',
                 'pages/goods/detail',
                 'pages/activity/goods',
@@ -33,6 +32,7 @@
                 'pages/authorize/index',
                 'pages/authorize/login',
                 'pages/check/service',
+                'pages/pay/index',
                 'pages/user/question',
                 'pages/user/contact',
                 'pages/user/point',
