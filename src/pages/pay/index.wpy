@@ -11,10 +11,13 @@
             <i-cell title="订单编号" i-class="wx-spec-item" value="￥{{goodsOrder.order_sn}}"></i-cell>
             <i-cell title="商品金额" i-class="wx-spec-item" value="￥{{goodsOrder.goods_price}}"></i-cell>
             <i-cell title="运费" i-class="wx-spec-item" value="￥{{goodsOrder.shipping_price}}"></i-cell>
-            <i-cell title="需付款" i-class="wx-spec-item" value="￥{{goodsOrder.total_amount}}"></i-cell>
             <i-cell title="积分抵扣" i-class="wx-spec-item" is-link bind:click="switchPointPay">
-                <view slot="footer" style="font-size: 24rpx;color: #999;">使用移动积分</view>
+                <view slot="footer" style="font-size: 24rpx;color: #999;">
+                    <span wx:if="{{pointMoney}}">￥{{pointMoney}}</span>
+                    <span wx:else>使用移动积分</span>
+                </view>
             </i-cell>
+            <i-cell title="需付款" i-class="wx-spec-item" value="￥{{goodsOrder.total_amount - pointMoney}}"></i-cell>
         </i-cell-group>
     </view>
 
@@ -44,22 +47,23 @@
                 :zIndexStyle.sync="pointZIndexStyle">
         <view slot="content">
             <view class="wx-pay-point">
-                <icon class="iconfont icon-guanbi wx-sheet-close-icon" style="position: absolute;top:10rpx;right:20rpx;" bindtap="switchPointPay"/>
-
+                <view bindtap="switchPointPay" style="position: absolute;top:10rpx;right:20rpx;z-index: 200;">
+                    <icon class="iconfont icon-guanbi wx-sheet-close-icon"/>
+                </view>
                 <i-panel title="积分抵扣">
                     <view style="text-align: center;">
-                        <i-input value="{{ point }}" type="number" maxlength="2" i-class="wx-point" autofocus placeholder="清输入抵扣积分" />
+                        <i-input bindchange="handleInput" data-key="point" type="number" maxlength="2" i-class="wx-point" autofocus placeholder="清输入抵扣积分" />
                     </view>
                 </i-panel>
                 <view style="text-align: center;">
-                    <i-input value="{{ payCode }}" type="number" maxlength="1" mode="wrapped" i-class="wx-code" disabled/>
-                    <i-input value="{{ payCode }}" type="number" maxlength="1" mode="wrapped" i-class="wx-code" disabled/>
-                    <i-input value="{{ payCode }}" type="number" maxlength="1" mode="wrapped" i-class="wx-code" disabled/>
-                    <i-input value="{{ payCode }}" type="number" maxlength="1" mode="wrapped" i-class="wx-code" disabled/>
+                    <i-input bindchange="handleInput" data-key="code" data-index="0" type="number" maxlength="1" mode="wrapped" i-class="wx-code"/>
+                    <i-input bindchange="handleInput" data-key="code" data-index="1" type="number" maxlength="1" mode="wrapped" i-class="wx-code"/>
+                    <i-input bindchange="handleInput" data-key="code" data-index="2" type="number" maxlength="1" mode="wrapped" i-class="wx-code"/>
+                    <i-input bindchange="handleInput" data-key="code" data-index="3" type="number" maxlength="1" mode="wrapped" i-class="wx-code"/>
                 </view>
             </view>
             <view style="position: fixed;bottom: 0rpx;width: 100%">
-                <i-button type="success" size="small">确认抵扣</i-button>
+                <i-button type="success" class="{{isSubmit ? 'wx-buy-action wx-disable' : 'wx-buy-action'}}" size="small" bindtap="submitPoint">{{ pointBtnTxt }}</i-button>
             </view>
         </view>
     </PointSheet>
@@ -96,19 +100,42 @@
             pointMaxHeight: 900,
             pointBottomStyle: 0,
             pointZIndexStyle: 101,
-            pointVisible: true,
+            pointVisible: false,
             isSubmit: false,
             isOffline: false,
             goodsOrder: {},
             payModeList: [],
             point: '',
+            codeArr: [],
             payCode: '',
-            payName: ''
+            payName: '',
+            hasPointOrder: false,
+            pointBtnTxt: '发送验证码',
+            pointMoney: 0
         };
 
         methods = {
             switchPointPay(e){
                 this.pointVisible = !this.pointVisible;
+            },
+            handleInput(e){
+                let key = e.currentTarget.dataset.key;
+                let index = e.currentTarget.dataset.index;
+
+                if(key === 'point'){
+                    this.point = e.detail.detail.value;
+                    this.hasPointOrder = false;
+                    this.pointBtnTxt = '发送验证码';
+                }else if(key === 'code'){
+                    this.codeArr[index] = e.detail.detail.value;
+                }
+            },
+            submitPoint(){
+                if(!this.hasPointOrder){
+                    this.pointOrder();
+                }else{
+                    this.pointPay();
+                }
             },
             handlePay(e){
                 let formId = e.detail.formId;
@@ -125,6 +152,45 @@
                 });
             }
         };
+
+        pointOrder(){
+            let _this = this;
+            if(!this.isSubmit){
+                this.isSubmit = true;
+                tip.loading(MSG.COMMITTING);
+                api.createPointOrder('POST',{point:this.point,order_id:this.goodsOrder.id}).then(resp => {
+                    tip.loaded();
+                    _this.isSubmit = false;
+                    if(resp && resp.code === 200){
+                        _this.hasPointOrder = true;
+                        _this.pointBtnTxt = '确认抵扣';
+                        _this.switchPointPay();
+                        _this.$apply();
+                    }else{
+                        tip.error(resp.msg);
+                    }
+                });
+            }
+        }
+
+        pointPay(){
+            let _this = this;
+            let code = this.codeArr.join('');
+            if(!this.isSubmit) {
+                this.isSubmit = true;
+                tip.loading(MSG.COMMITTING);
+                api.payPointOrder('POST', {code: code, order_id: this.goodsOrder.id}).then(resp => {
+                    tip.loaded();
+                    _this.isSubmit = false;
+                    if (resp && resp.code === 200) {
+                        _this.pointMoney = resp.data.integral_money;
+                        _this.$apply();
+                    } else {
+                        tip.error(resp.msg);
+                    }
+                });
+            }
+        }
 
         async payOrder(formId) {
             let _this = this;
@@ -191,6 +257,7 @@
                         }
                     });
                     this.goodsOrder = resp.data.goodsOrder;
+                    this.pointMoney = this.goodsOrder.integral_money;
                     this.$apply();
                 }else{
                     wx.navigateBack({delta: 1});

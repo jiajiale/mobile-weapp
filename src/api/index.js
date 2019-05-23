@@ -2,7 +2,7 @@ import wepy from 'wepy';
 import tip from '../utils/tip';
 
 // const APP_URL = 'https://www.caryue.com';
-const APP_URL = 'https://mobile.caryue.com';
+const APP_URL = 'http://test.mobile.com';
 const GOODS_IMG_URL = APP_URL + '/Public/Uploads/goods/source/';
 const CATEGORY_IMG_URL = APP_URL + '/Public/Uploads/category/source/';
 const FOCUS_IMG_URL = APP_URL + '/Public/Uploads/focus/source/';
@@ -59,6 +59,8 @@ export default{
     createServiceOrder: (method,params) => wxRequest(method,params, "/api/order/service"),
     queryPayOrder: (method,params) => wxRequest(method,params, "/api/order/queryPayOrder"),
     payOrder: (method,params) => wxRequest(method,params, "/api/order/pay"),
+    createPointOrder: (method,params) => wxRequest(method,params, "/api/point/createPointOrder"),
+    payPointOrder: (method,params) => wxRequest(method,params, "/api/point/payPointOrder"),
     queryUserInfo: (method,params) => wxRequest(method,params, "/api/user/queryUserInfo"),
     cancelOrder: (method,params) => wxRequest(method,params, "/api/user/cancelOrder"),
     receiveOrder: (method,params) => wxRequest(method,params, "/api/user/receiveOrder"),
