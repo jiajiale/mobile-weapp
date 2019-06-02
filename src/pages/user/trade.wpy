@@ -1,0 +1,97 @@
+<style lang="less">
+    @import "../../assets/styles/user";
+    .wx-withdraw-list{
+        background: #fff;
+        .wx-order-info{
+            padding:20rpx;
+            border-bottom: 1px solid #e8e8e8;
+            .wx-order-content{
+                padding-top:10rpx;
+                .wx-spec{
+                    font-size:24rpx;
+                    color: #999;
+                }
+            }
+            /*.wx-order-image{*/
+                /*border-radius: 50%;*/
+                /*overflow: hidden;*/
+                /*width: 100rpx !important;*/
+                /*height: 100rpx !important;*/
+            /*}*/
+            .wx-order-extra{
+                height: 100rpx !important;
+                line-height: 100rpx !important;
+            }
+        }
+    }
+</style>
+<template>
+    <view class="wx-withdraw-list" wx:if="{{withdrawList.length}}">
+        <repeat for="{{withdrawList}}" key="{{withdraw.id}}" item="withdraw">
+            <view>
+                <OrderItem>
+                    <view slot="title">2019-02-25</view>
+                    <view slot="tags">
+                        <view class="marginT10">
+                            <view class="wx-spec">待审核</view>
+                        </view>
+                    </view>
+                    <view slot="extra">
+                        <view style="font-size: 32rpx;">¥100.00</view>
+                    </view>
+                </OrderItem>
+            </view>
+        </repeat>
+    </view>
+    <view wx:if="{{!withdrawList.length}}">
+        <NoInfo emptyText="暂无提现记录" marginTop="200"></NoInfo>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import LoadMore from '../../components/load-more';
+    import NoInfo from '../../components/no-info';
+    import authorize from '../../mixins/authorize';
+    import pagination from '../../mixins/pagination';
+    import api from '../../api';
+    import tip from '../../utils/tip';
+    import utils from '../../utils/util';
+    import MSG from '../../utils/msg';
+    import OrderItem from '../../components/order-item';
+
+    export default class UserTrade extends wepy.page {
+        config = {
+            navigationBarTitleText: '提现记录',
+            usingComponents: {
+
+            }
+        };
+
+        data = {
+            page: 1,
+            hasPage: true,
+            withdrawList: [1,2]
+        };
+
+        components = {
+            OrderItem: OrderItem,
+            NoInfo: NoInfo,
+        };
+
+        mixins = [authorize];
+
+        methods = {
+
+        };
+
+        onShow() {
+            this.checkAuthorize(function () {
+            });
+        };
+
+        onLoad() {
+
+        }
+    }
+</script>

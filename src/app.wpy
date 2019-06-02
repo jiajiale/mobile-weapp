@@ -12,6 +12,8 @@
 
         config = {
             pages: [
+                'pages/user/trade',
+                'pages/user/withdraw',
                 'pages/home/index',
                 'pages/goods/detail',
                 'pages/activity/goods',

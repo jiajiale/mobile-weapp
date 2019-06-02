@@ -1,0 +1,63 @@
+<style lang="less">
+    @import "../../assets/styles/user";
+
+</style>
+<template>
+    <view class="wx-withdraw-box">
+        <view class="wx-head">
+            <view class="wx-title">我的佣金</view>
+            <view class="wx-amount">¥1000.23</view>
+        </view>
+        <view class="wx-body">
+            <i-panel title="提现金额" hide-border>
+                <view class="wx-icon">¥</view>
+                <i-input i-class="wx-input" type="number" maxlength="8" value="{{ value5 }}" placeholder="请输入提现金额" />
+            </i-panel>
+            <view class="wx-tips">实际到账金额为扣除提现手续费后金额</view>
+        </view>
+        <view>
+            <i-button type="success">提交</i-button>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import authorize from '../../mixins/authorize';
+    import api from '../../api';
+    import tip from '../../utils/tip';
+    import utils from '../../utils/util';
+    import MSG from '../../utils/msg';
+
+    export default class UserWithdraw extends wepy.page {
+        config = {
+            navigationBarTitleText: '我要提现',
+            usingComponents: {
+                "i-panel": "../../iview/panel/index",
+                "i-input": "../../iview/input/index",
+                "i-button": "../../iview/button/index"
+            }
+        };
+
+        data = {
+        };
+
+        components = {
+        };
+
+        mixins = [authorize];
+
+        methods = {
+
+        };
+
+        onShow() {
+            this.checkAuthorize(function () {
+            });
+        };
+
+        onLoad() {
+
+        }
+    }
+</script>

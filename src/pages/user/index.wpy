@@ -101,11 +101,11 @@
                     </i-grid-icon>
                     <i-grid-label>我的二维码</i-grid-label>
                 </i-grid-item>
-                <i-grid-item i-class="wx-item" data-url="/pages/user/contact" @tap="handleGo">
+                <i-grid-item i-class="wx-item" data-url="/pages/user/trade" @tap="handleGo">
                     <i-grid-icon i-class="wx-icon">
-                        <icon class="iconfont icon-lianxiwomen"/>
+                        <icon class="iconfont icon-qiandaijinbi"/>
                     </i-grid-icon>
-                    <i-grid-label>联系我们</i-grid-label>
+                    <i-grid-label>提现记录</i-grid-label>
                 </i-grid-item>
             </i-row>
         </i-grid>
