@@ -78,4 +78,6 @@ export default{
     delAddress: (method,params) => wxRequest(method,params, "/api/user/delAddress"),
     setDefaultAddress: (method,params) => wxRequest(method,params, "/api/user/setDefaultAddress"),
     saveCustomer: (method,params) => wxRequest(method,params, "/api/user/saveCustomer"),
+    applyWithdraw: (method,params) => wxRequest(method,params, "/api/user/applyWithdraw"),
+    queryWithdrawList: (method,params) => wxRequest(method,params, "/api/user/queryWithdrawList"),
 };

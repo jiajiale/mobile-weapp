@@ -12,8 +12,6 @@
 
         config = {
             pages: [
-                'pages/user/trade',
-                'pages/user/withdraw',
                 'pages/home/index',
                 'pages/goods/detail',
                 'pages/activity/goods',
@@ -41,6 +39,8 @@
                 'pages/user/help',
                 'pages/user/customer',
                 'pages/user/commission',
+                'pages/user/trade',
+                'pages/user/withdraw',
             ],
             window: {
                 backgroundTextStyle: 'light',

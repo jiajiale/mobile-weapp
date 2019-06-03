@@ -2,6 +2,7 @@
     @import "../../assets/styles/user";
     .wx-withdraw-list{
         background: #fff;
+        margin-bottom:100rpx;
         .wx-order-info{
             padding:20rpx;
             border-bottom: 1px solid #e8e8e8;
@@ -12,17 +13,24 @@
                     color: #999;
                 }
             }
-            /*.wx-order-image{*/
-                /*border-radius: 50%;*/
-                /*overflow: hidden;*/
-                /*width: 100rpx !important;*/
-                /*height: 100rpx !important;*/
-            /*}*/
+            .wx-order-image{
+                display: none;
+            }
             .wx-order-extra{
                 height: 100rpx !important;
                 line-height: 100rpx !important;
             }
         }
+    }
+    .wx-commission-btn{
+        position: fixed;
+        bottom: 0rpx;
+        width: 100%;
+        height: 80rpx;
+        line-height: 80rpx;
+        background: #ec3a3e;
+        text-align: center;
+        color:#fff;
     }
 </style>
 <template>
@@ -30,14 +38,17 @@
         <repeat for="{{withdrawList}}" key="{{withdraw.id}}" item="withdraw">
             <view>
                 <OrderItem>
-                    <view slot="title">2019-02-25</view>
+                    <view slot="title">{{withdraw.gmt_create}}</view>
                     <view slot="tags">
                         <view class="marginT10">
-                            <view class="wx-spec">待审核</view>
+                            <view class="wx-spec">{{withdraw.status_str}}</view>
                         </view>
                     </view>
                     <view slot="extra">
-                        <view style="font-size: 32rpx;">¥100.00</view>
+                        <view style="font-size: 32rpx;">¥{{withdraw.amount}}</view>
+                    </view>
+                    <view slot="footer" wx:if="{{withdraw.note}}">
+                        <view>{{withdraw.note}}</view>
                     </view>
                 </OrderItem>
             </view>
@@ -46,6 +57,7 @@
     <view wx:if="{{!withdrawList.length}}">
         <NoInfo emptyText="暂无提现记录" marginTop="200"></NoInfo>
     </view>
+    <view wx:if="{{withdrawList.length}}" class="wx-commission-btn" data-url="/pages/user/withdraw" bindtap="handleGo">我要提现</view>
 </template>
 
 <script>
@@ -56,6 +68,7 @@
     import pagination from '../../mixins/pagination';
     import api from '../../api';
     import tip from '../../utils/tip';
+    import enums from '../../utils/enums';
     import utils from '../../utils/util';
     import MSG from '../../utils/msg';
     import OrderItem from '../../components/order-item';
@@ -71,7 +84,7 @@
         data = {
             page: 1,
             hasPage: true,
-            withdrawList: [1,2]
+            withdrawList: []
         };
 
         components = {
@@ -79,14 +92,52 @@
             NoInfo: NoInfo,
         };
 
-        mixins = [authorize];
+        mixins = [authorize,pagination];
 
         methods = {
+            handleGo(e){
+                this.checkLogin(function () {
+                    let url = e.currentTarget.dataset.url;
+                    wepy.navigateTo({url: url});
+                });
+            }
+        };
 
+        queryReload(){
+            this.page = 1;
+            this.withdrawList = [];
+            this.hasPage = true;
+            this.queryItemList();
+        };
+
+        async queryItemList() {
+            tip.loading(MSG.LOADING);
+            let conditions = {
+                page: this.page,
+            };
+
+            await api.queryWithdrawList('POST',conditions).then(resp => {
+                tip.loaded();
+                if(resp.data){
+                    resp.data.items.filter(item => {
+                        item.gmt_create = utils.formatDateTime(item.gmt_create,'yyyy-MM-dd HH:mm:ss');
+                        item.status_str = enums.getDesc('WITHDRAW_STATUS',item.status);
+                    });
+                    this.withdrawList = this.withdrawList.concat(resp.data.items);
+                    if(resp.data.pager.index >= resp.data.pager.count){
+                        this.hasPage = false;
+                    }
+                    this.$apply();
+                }
+            });
         };
 
         onShow() {
+            let _this = this;
             this.checkAuthorize(function () {
+                _this.checkLogin(function () {
+                    _this.queryReload();
+                });
             });
         };
 

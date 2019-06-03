@@ -7,10 +7,11 @@ export default{
         YES : [1,'是'],
         NO : [0,'否']
     },
-    REAGENT_STATUS : {
-        LEND : [1,'已借出'],
-        BACK : [2,'已归还'],
-        DISCARD : [3,'已废弃']
+    WITHDRAW_STATUS : {
+        UNCHECK : [1,'待审核'],
+        UNPASS : [2,'审核不通过'],
+        UNPAY : [3,'待打款'],
+        PAID : [4,'提现成功']
     },
     getValue: function(enumName,status) {
         var result = '';

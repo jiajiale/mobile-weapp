@@ -6,17 +6,17 @@
     <view class="wx-withdraw-box">
         <view class="wx-head">
             <view class="wx-title">我的佣金</view>
-            <view class="wx-amount">¥1000.23</view>
+            <view class="wx-amount">¥{{userInfo.commission}}</view>
         </view>
         <view class="wx-body">
             <i-panel title="提现金额" hide-border>
                 <view class="wx-icon">¥</view>
-                <i-input i-class="wx-input" type="number" maxlength="8" value="{{ value5 }}" placeholder="请输入提现金额" />
+                <i-input i-class="wx-input" bindchange="handleInput" type="number" maxlength="8" placeholder="请输入提现金额" />
             </i-panel>
             <view class="wx-tips">实际到账金额为扣除提现手续费后金额</view>
         </view>
         <view>
-            <i-button type="success">提交</i-button>
+            <i-button i-class="{{isSubmit ? 'wx-buy-action wx-disable' : 'wx-buy-action'}}" type="success" bindtap="submitWithdraw">提交</i-button>
         </view>
     </view>
 </template>
@@ -40,6 +40,8 @@
         };
 
         data = {
+            userInfo: {},
+            amount: ''
         };
 
         components = {
@@ -48,11 +50,47 @@
         mixins = [authorize];
 
         methods = {
-
+            submitWithdraw(){
+                this.applyWithdraw();
+            },
+            handleInput(e){
+                this.amount = e.detail.detail.value;
+            },
         };
 
+        applyWithdraw(){
+            let _this = this;
+            if(!this.isSubmit){
+                this.isSubmit = true;
+                tip.loading(MSG.COMMITTING);
+                api.applyWithdraw('POST',{amount:this.amount}).then(resp => {
+                    tip.loaded();
+                    _this.isSubmit = false;
+                    if(resp && resp.code === 200){
+                        tip.toast(resp.msg);
+                        _this.$parent.updateLocalUser(function () {
+                            _this.userInfo = _this.$parent.globalData.userInfo;
+                            _this.$apply();
+                            wepy.navigateTo({
+                                url: '/pages/user/trade'
+                            })
+                        });
+                    }else{
+                        tip.toast(resp.msg);
+                    }
+                });
+            }
+        }
+
         onShow() {
+            let _this = this;
             this.checkAuthorize(function () {
+                _this.checkLogin(function () {
+                    _this.$parent.updateLocalUser(function () {
+                        _this.userInfo = _this.$parent.globalData.userInfo;
+                        _this.$apply();
+                    });
+                });
             });
         };
 

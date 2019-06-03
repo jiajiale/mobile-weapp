@@ -59,7 +59,7 @@
     <view wx:if="{{!commissionList.length}}">
         <NoInfo emptyText="暂无分佣记录" marginTop="200"></NoInfo>
     </view>
-    <view class="wx-commission-btn" bindtap="handleGo">我要提现</view>
+    <view wx:if="{{commissionList.length}}" class="wx-commission-btn" data-url="/pages/user/withdraw" bindtap="handleGo">我要提现</view>
 </template>
 
 <script>
