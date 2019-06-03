@@ -1,7 +1,7 @@
 <style lang="less">
     @import "../../assets/styles/user";
     .wx-commission-list{
-        margin-bottom:100rpx;
+        padding-bottom:100rpx;
         .wx-order-info{
             padding:20rpx;
             .wx-order-content{
