@@ -54,6 +54,10 @@
         </i-row>
     </view>
 
+    <view class="marginB20" wx:if="{{userInfo && userInfo.notice}}">
+        <i-notice-bar icon="systemprompt">{{userInfo.notice}}</i-notice-bar>
+    </view>
+
     <view class="wx-user-module marginB20">
         <i-grid>
             <i-row>
@@ -132,7 +136,8 @@
                 "i-grid": "../../iview/grid/index",
                 "i-grid-item": "../../iview/grid-item/index",
                 "i-grid-icon": "../../iview/grid-icon/index",
-                "i-grid-label": "../../iview/grid-label/index"
+                "i-grid-label": "../../iview/grid-label/index",
+                "i-notice-bar": "../../iview/notice-bar/index"
             }
         };
         components = {
