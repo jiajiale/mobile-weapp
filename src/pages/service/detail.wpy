@@ -272,8 +272,8 @@
                 }
             },
             handleBack(){
-                wx.navigateBack({
-                    delta: 1
+                wepy.navigateTo({
+                    url: "/pages/service/index"
                 })
             },
             handleShare(name){

@@ -361,11 +361,18 @@
                 tip.loaded();
                 if(resp.data){
                     this.goods = resp.data.goods;
-                    this.goods.goods_num = 1;
-                    this.goodsImages = resp.data.goodsImages;
-                    this.goodsSpecList = resp.data.goodsSpec;
-                    this.goodsSpecPrice = resp.data.goodsSpecPrice;
-                    this.$apply();
+
+                    if(!!this.goods.is_goods){
+                        this.goods.goods_num = 1;
+                        this.goodsImages = resp.data.goodsImages;
+                        this.goodsSpecList = resp.data.goodsSpec;
+                        this.goodsSpecPrice = resp.data.goodsSpecPrice;
+                        this.$apply();
+                    }else{
+                        wepy.navigateTo({
+                            url: "/pages/service/detail?id=" + this.goods.id
+                        })
+                    }
                 }
             });
         };

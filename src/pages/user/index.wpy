@@ -55,7 +55,7 @@
     </view>
 
     <view class="marginB20" wx:if="{{userInfo && userInfo.notice}}">
-        <i-notice-bar icon="systemprompt">{{userInfo.notice}}</i-notice-bar>
+        <i-notice-bar icon="systemprompt" loop="{{isLoop}}">{{userInfo.notice}}</i-notice-bar>
     </view>
 
     <view class="wx-user-module marginB20">
@@ -148,6 +148,7 @@
         data = {
             advImgUrl: api.ADV_IMG_URL,
             adv: null,
+            isLoop: false,
             userInfo: {},
         };
 
@@ -167,6 +168,9 @@
             this.checkAuthorize(function () {
                 _this.$parent.updateLocalUser(function () {
                     _this.userInfo = _this.$parent.globalData.userInfo;
+                    if(_this.userInfo.notice && _this.userInfo.notice.length > 25){
+                        _this.isLoop = true;
+                    }
                     _this.$apply();
                 });
             });
