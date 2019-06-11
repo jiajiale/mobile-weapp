@@ -34,6 +34,14 @@
     }
 </style>
 <template>
+    <view>
+        <i-tabs current="{{ current }}" color="#ec3a3e" bindchange="handleChangeStatus">
+            <i-tab key="ALL" title="全部订单"></i-tab>
+            <i-tab key="COMMISSION" title="分佣订单"></i-tab>
+            <i-tab key="GOODS" title="商品订单"></i-tab>
+            <i-tab key="SERVICE" title="业务订单"></i-tab>
+        </i-tabs>
+    </view>
     <view class="wx-commission-list">
         <view class="marginB20" wx:for="{{commissionList}}" wx:key="{{item.id}}" wx:if="{{commissionList.length}}">
         <i-card title="{{item.gmt_create}}" full extra="￥{{item.commission}}" i-class="wx-order-card">
@@ -57,7 +65,7 @@
         </view>
     </view>
     <view wx:if="{{!commissionList.length}}">
-        <NoInfo emptyText="暂无分佣记录" marginTop="200"></NoInfo>
+        <NoInfo emptyText="暂无推广记录" marginTop="200"></NoInfo>
     </view>
     <view wx:if="{{commissionList.length}}" class="wx-commission-btn" data-url="/pages/user/withdraw" bindtap="handleGo">我要提现</view>
 </template>
@@ -76,8 +84,10 @@
 
     export default class UserCommission extends wepy.page {
         config = {
-            navigationBarTitleText: '我的分佣',
+            navigationBarTitleText: '我的推广',
             usingComponents: {
+                "i-tabs": "../../iview/tabs/index",
+                "i-tab": "../../iview/tab/index",
                 "i-icon": "../../iview/icon/index",
                 "i-card": "../../iview/card/index",
             }
@@ -91,6 +101,7 @@
 
         data = {
             goodsImgThumb: api.THUMBNAIL_IMG,
+            current: 'ALL',
             params: [],
             page: 1,
             hasPage: true,
@@ -98,6 +109,10 @@
         };
 
         methods = {
+            handleChangeStatus({ detail }){
+                this.current = detail.key;
+                this.queryReload();
+            },
             handleGo(e){
                 this.checkLogin(function () {
                     let url = e.currentTarget.dataset.url;
@@ -117,6 +132,7 @@
             tip.loading(MSG.LOADING);
             let conditions = {
                 page: this.page,
+                type: this.current,
             };
 
             if(this.params.user_id){
