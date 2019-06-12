@@ -157,7 +157,7 @@
                         if(_this.current === 'COMMISSION'){
                             item.extra = item.commission;
                         }else{
-                            item.extra = '';
+                            item.extra = item.status_desc;
                         }
                     });
                     this.commissionList = this.commissionList.concat(resp.data.items);
