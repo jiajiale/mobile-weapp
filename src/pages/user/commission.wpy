@@ -1,9 +1,8 @@
 <style lang="less">
     @import "../../assets/styles/user";
     .wx-commission-list{
-        padding-bottom:100rpx;
         .wx-order-info{
-            padding:20rpx;
+            padding:20rpx 0rpx;
             .wx-order-content{
                 padding-top:10rpx;
                 .wx-spec{
@@ -22,6 +21,13 @@
             }
         }
     }
+    .wx-other-order{
+        .wx-order-info{
+            .wx-order-content{
+                width: calc(~"100% - 120rpx");
+            }
+        }
+    }
     .wx-commission-btn{
         position: fixed;
         bottom: 0rpx;
@@ -31,6 +37,7 @@
         background: #ec3a3e;
         text-align: center;
         color:#fff;
+        overflow: hidden;
     }
 </style>
 <template>
@@ -42,9 +49,9 @@
             <i-tab key="SERVICE" title="业务订单"></i-tab>
         </i-tabs>
     </view>
-    <view class="wx-commission-list">
+    <view class="{{current === 'COMMISSION' ? 'wx-commission-list wx-commission-order' : 'wx-commission-list wx-other-order'}}">
         <view class="marginB20" wx:for="{{commissionList}}" wx:key="{{item.id}}" wx:if="{{commissionList.length}}">
-        <i-card title="{{item.gmt_create}}" full extra="￥{{item.commission}}" i-class="wx-order-card">
+        <i-card title="{{item.gmt_create}}" full extra="{{item.extra}}" i-class="wx-order-card">
             <view slot="content">
                 <repeat for="{{item.goods_arr}}" key="{{goodsItem.id}}" item="goodsItem">
                     <OrderItem>
@@ -55,7 +62,7 @@
                                 <view class="wx-spec">X{{goodsItem.goods_num}}</view>
                             </view>
                         </view>
-                        <view slot="extra">
+                        <view slot="extra" wx:if="{{current === 'COMMISSION'}}">
                             <view style="font-size: 32rpx;">¥{{goodsItem.commission}}</view>
                         </view>
                     </OrderItem>
@@ -67,7 +74,7 @@
     <view wx:if="{{!commissionList.length}}">
         <NoInfo emptyText="暂无推广记录" marginTop="200"></NoInfo>
     </view>
-    <view wx:if="{{commissionList.length}}" class="wx-commission-btn" data-url="/pages/user/withdraw" bindtap="handleGo">我要提现</view>
+    <view wx:if="{{commissionList.length && current === 'COMMISSION'}}" class="wx-commission-btn" data-url="/pages/user/withdraw" bindtap="handleGo">我要提现</view>
 </template>
 
 <script>
@@ -129,6 +136,7 @@
         };
 
         async queryItemList() {
+            let _this = this;
             tip.loading(MSG.LOADING);
             let conditions = {
                 page: this.page,
@@ -143,6 +151,11 @@
                 if(resp.data){
                     resp.data.items.filter(item => {
                         item.gmt_create = utils.formatDateTime(item.gmt_create,'yyyy-MM-dd');
+                        if(_this.current === 'COMMISSION'){
+                            item.extra = item.commission;
+                        }else{
+                            item.extra = '';
+                        }
                     });
                     this.commissionList = this.commissionList.concat(resp.data.items);
                     if(resp.data.pager.index >= resp.data.pager.count){
