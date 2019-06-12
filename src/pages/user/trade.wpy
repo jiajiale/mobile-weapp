@@ -2,7 +2,7 @@
     @import "../../assets/styles/user";
     .wx-withdraw-list{
         background: #fff;
-        padding-bottom:100rpx;
+        margin-bottom:100rpx;
         .wx-order-info{
             padding:20rpx;
             border-bottom: 1px solid #e8e8e8;

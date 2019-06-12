@@ -21,6 +21,9 @@
             }
         }
     }
+    .wx-commission-order{
+        padding-bottom: 100rpx;
+    }
     .wx-other-order{
         .wx-order-info{
             .wx-order-content{
