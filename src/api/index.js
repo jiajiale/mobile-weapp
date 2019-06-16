@@ -69,6 +69,7 @@ export default{
     returnOrder: (method,params) => wxRequest(method,params, "/api/user/returnOrder"),
     queryReturnList: (method,params) => wxRequest(method,params, "/api/user/queryReturnList"),
     queryOrderList: (method,params) => wxRequest(method,params, "/api/user/getOrderList"),
+    queryOrderDetail: (method,params) => wxRequest(method,params, "/api/user/getOrderDetail"),
     queryPointList: (method,params) => wxRequest(method,params, "/api/user/queryPointList"),
     queryCustomerList: (method,params) => wxRequest(method,params, "/api/user/queryCustomerList"),
     queryCommissionList: (method,params) => wxRequest(method,params, "/api/user/queryCommissionList"),
