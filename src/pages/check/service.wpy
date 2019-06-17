@@ -22,7 +22,7 @@
         </view>
 
         <view class="wx-check-body">
-            <view class="wx-check-body-title">填写信息</view>
+            <view class="wx-check-body-title">填写信息（注：信息为开户人信息）</view>
             <view class="wx-check-info">
                 <i-input  bindchange="handleInput" data-key="name" title="姓　　名" placeholder="请输入办理人姓名" right="true"/>
                 <i-input  bindchange="handleInput" data-key="mobile" title="手机号码" placeholder="请输入办理人手机号码" right="true"/>

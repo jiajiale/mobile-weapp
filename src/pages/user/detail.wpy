@@ -3,12 +3,16 @@
         background: #F2F2F2;
     }
     .wx-order-detail{
+        overflow: hidden;
         .wx-order-card{
             background: #fff;
             border: none !important;
         }
         .wx-order-address{
             background: #fff;
+        }
+        .wx-order-bottom{
+            margin-bottom:100rpx;
         }
         .wx-goods-title{
             height: 80rpx;
@@ -101,7 +105,7 @@
         <i-cell-group>
             <i-cell title="商品金额" i-class="wx-spec-item" value="¥{{goodsOrder.goods_price}}"></i-cell>
             <i-cell title="应付金额" i-class="wx-spec-item" value="¥{{goodsOrder.order_amount}}"></i-cell>
-            <i-cell title="下单时间" i-class="wx-spec-item" value="¥{{goodsOrder.gmt_create}}"></i-cell>
+            <i-cell title="下单时间" i-class="wx-spec-item" value="{{goodsOrder.gmt_create}}"></i-cell>
         </i-cell-group>
 
         <i-panel title="地址信息" i-class="marginT20 wx-order-address" wx:if="{{goodsOrder.is_goods == '1'}}">
@@ -112,14 +116,15 @@
             </i-cell-group>
         </i-panel>
 
-        <i-panel title="客户信息" i-class="marginT20 wx-order-address" wx:if="{{goodsOrder.is_goods == '0'}}">
+        <i-panel title="客户信息" i-class="marginT20 wx-order-address wx-order-bottom" wx:if="{{goodsOrder.is_goods == '0'}}">
             <i-cell-group>
                 <i-cell title="客户姓名" i-class="wx-spec-item" value="{{goodsOrder.consignee}}"></i-cell>
                 <i-cell title="手机号码" i-class="wx-spec-item" value="{{goodsOrder.mobile}}"></i-cell>
+                <i-cell title="{{item.name}}" i-class="wx-spec-item" value="{{item.value}}" wx:for="{{fieldList}}" wx:key="{{item.id}}"></i-cell>
             </i-cell-group>
         </i-panel>
 
-        <i-panel title="物流信息" i-class="marginT20 wx-order-address" wx:if="{{goodsOrder.is_goods == '1'}}">
+        <i-panel title="物流信息" i-class="marginT20 wx-order-address wx-order-bottom" wx:if="{{goodsOrder.is_goods == '1'}}">
             <i-cell-group>
                 <i-cell title="物流方式" i-class="wx-spec-item" value="{{goodsOrder.shipping_name}}"></i-cell>
                 <i-cell title="快递单号" i-class="wx-spec-item" value="{{goodsOrder.delivery_info.invoice_no}}"></i-cell>
@@ -140,8 +145,8 @@
 
     <i-modal title="{{confirmTxt}}" visible="{{ confirmModal }}" actions="{{ confirmBtn }}" bind:click="handleConfirm">
         <view style="margin-bottom: 20rpx;" wx:if="{{action == 'confirm'}}">确定已经办理了吗？</view>
-        <view wx:else>
-            <i-input type="textarea" value="{{ note }}" mode="wrapped" i-class="wx-order-note" placeholder="请填写取消原因"/>
+        <view wx:else style="display: {{confirmModal ? 'block' : 'none'}}">
+            <i-input type="textarea" bindchange="handleInput" value="{{ note }}" mode="wrapped" i-class="wx-order-note" placeholder="请填写取消原因"/>
         </view>
     </i-modal>
 </template>
@@ -179,6 +184,7 @@
             params: [],
             goodsOrder: {},
             goodsList: [],
+            fieldList: [],
             note: '',
             action: '',
             confirmModal: false,
@@ -197,6 +203,9 @@
         computed = {};
 
         methods = {
+            handleInput(e){
+                this.note = e.detail.detail.value;
+            },
             cancelOrder(e){
                 this.action = e.currentTarget.dataset.action;
                 this.confirmModal = true;
@@ -212,34 +221,48 @@
             handleConfirm({ detail }){
                 if(detail.index === 0){
                     this.confirmModal = false;
+                    this.note = '';
                 }else{
-                    this.confirmBtn[1].loading = true;
+                    const confirmBtn = [...this.data.confirmBtn];
+                    confirmBtn[1].loading = true;
                     let _this = this;
 
+
                     if(this.action === 'cancel'){
-                        api.handleOrder('POST',{order_id: this.goodsOrder.id,action: this.action}).then(resp => {
-                            this.confirmBtn[1].loading = false;
+                        api.handleOrder('POST',{order_id: this.goodsOrder.id,action: this.action,note: this.note}).then(resp => {
+                            confirmBtn[1].loading = false;
+                            this.note = '';
+                            this.setData({
+                                confirmBtn: confirmBtn
+                            });
                             if(resp.code === 200){
-                                this.confirmModal = false;
-                                tip.success(resp.msg);
+                                this.setData({
+                                    confirmModal: false
+                                });
+                                tip.toast(resp.msg);
                                 setTimeout(function () {
                                     _this.queryItem();
                                 },500)
                             }else{
-                                tip.error(resp.msg)
+                                tip.toast(resp.msg)
                             }
                         });
                     }else if(this.action === 'confirm'){
-                        api.receiveOrder('POST',{order_id: this.goodsOrder.id,action: this.action}).then(resp => {
-                            this.confirmBtn[1].loading = false;
+                        api.handleOrder('POST',{order_id: this.goodsOrder.id,action: this.action}).then(resp => {
+                            confirmBtn[1].loading = false;
+                            this.setData({
+                                confirmBtn: confirmBtn
+                            });
                             if(resp.code === 200){
-                                this.confirmModal = false;
-                                tip.success(resp.msg);
+                                this.setData({
+                                    confirmModal: false
+                                });
+                                tip.toast(resp.msg);
                                 setTimeout(function () {
                                     _this.queryItem();
                                 },500)
                             }else{
-                                tip.error(resp.msg)
+                                tip.toast(resp.msg)
                             }
                         });
                     }
@@ -253,10 +276,11 @@
                 order_id: this.params.id,
             }).then(resp => {
                 tip.loaded();
-                console.log(resp);
                 if(resp.data){
                    this.goodsOrder = resp.data;
-                   this.goodsList = resp.data.goods_list;
+                   this.goodsList = resp.data.goodsList;
+                   this.fieldList = resp.data.fieldList;
+                   this.confirmModal = false;
                    this.$apply();
                 }
             });

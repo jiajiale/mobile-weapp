@@ -2,6 +2,13 @@
     @import "../../assets/styles/service";
 </style>
 <template>
+    <view class="wx-navigation" style="background: rgba(236,58,62,1);padding:56rpx 0rpx 20rpx;">
+        <view class="wx-navigation-icon"><i-icon type="return" size="28" color="#fff" @tap="handleBack"/></view>
+        <view class="wx-navigation-title" style="color:#fff">
+            <view>业务列表</view>
+        </view>
+    </view>
+
     <view class="wx-search">
         <input placeholder="请输入名称" value="{{keywords}}" data-key="name" bindinput="handleInput"/>
         <view class="wx-search-icon"><i-icon type="search" size="20" color="#999999"/></view>
@@ -50,6 +57,7 @@
     export default class ServiceIndex extends wepy.page {
         config = {
             navigationBarTitleText: '业务',
+            navigationStyle: "custom",
             usingComponents: {
                 "i-row": "../../iview/row/index",
                 "i-col": "../../iview/col/index",
@@ -83,6 +91,11 @@
                 let item = e.currentTarget.dataset.item;
                 wepy.navigateTo({
                     url: "/pages/service/detail?id=" + item.id
+                })
+            },
+            handleBack(){
+                wepy.switchTab({
+                    url: '/pages/home/index'
                 })
             },
         };
