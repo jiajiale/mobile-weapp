@@ -1,9 +1,11 @@
 <style lang="less">
-    @import "../../assets/styles/user";
+    page{
+        background: #F2F2F2;
+    }
 </style>
 <template>
     <i-cell-group wx:if="{{pointList.length}}">
-        <i-cell title="{{item.desc}}" wx:for="{{pointList}}" wx:key="{{item.id}}">
+        <i-cell title="{{item.desc}}" wx:for="{{pointList}}" wx:key="{{item.id}}" value="{{item.point}}">
             <view slot="footer"></view>
         </i-cell>
     </i-cell-group>

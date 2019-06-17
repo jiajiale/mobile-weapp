@@ -3,18 +3,22 @@
         background: #F2F2F2;
     }
     .wx-order-detail{
-        background: #fff;
+        .wx-order-card{
+            background: #fff;
+            border: none !important;
+        }
+        .wx-order-address{
+            background: #fff;
+        }
         .wx-goods-title{
             height: 80rpx;
             line-height: 80rpx;
             padding: 0rpx 20px;
-            border-top: 1px solid #e8e8e8;
             border-bottom: 1px solid #e8e8e8;
         }
         .wx-goods-info{
             overflow: hidden;
             padding: 20rpx;
-            border-bottom: 1px solid #e8e8e8;
             .wx-goods-image{
                 float: left;
                 width: 120rpx;
@@ -47,28 +51,99 @@
                     color:#ec3a3e;
                 }
             }
+            .wx-goods-extra{
+                float: right;
+                height: 120rpx;
+                line-height: 120rpx;
+            }
         }
+    }
+    .wx-order-actions{
+        position: fixed;
+        bottom: 0rpx;
+        width: 100%;
+        text-align: center;
+        height: 100rpx;
+        line-height: 100rpx;
+        background: #fff;
+        z-index: 100;
+        .wx-cancel{
+            background: #EF9C72;
+            color: #Fff;
+        }
+        .wx-confirm{
+            background: #ec3a3e;
+            color: #Fff;
+        }
+    }
+    .wx-order-note{
+        border: 1px solid #e8e8e8;
+        text-align: left;
     }
 </style>
 <template>
     <view class="wx-order-detail">
-        <view class="wx-goods-info" wx:for="{{goodsList}}" wx:key="{{item.id}}">
-            <view class="wx-goods-image">
-                <image src="{{goodsImgThumb + '?goods_id=' + item.goods_id }}"/>
+        <i-card title="{{goodsOrder.order_sn}}" full extra="{{goodsOrder.status_desc}}" i-class="wx-order-card">
+            <view slot="content">
+                <view class="wx-goods-info" wx:for="{{goodsList}}" wx:key="{{item.id}}">
+                    <view class="wx-goods-image">
+                        <image src="{{goodsImgThumb + '?goods_id=' + item.goods_id }}"/>
+                    </view>
+                    <view class="wx-goods-content">
+                        <view class="wx-title">{{item.goods_name}}</view>
+                        <view class="wx-spec">{{item.spec_key_name ? item.spec_key_name : ''}}</view>
+                        <view class="wx-price">￥{{item.member_goods_price}}</view>
+                    </view>
+                    <view class="wx-goods-extra">X{{item.goods_num}}</view>
+                </view>
             </view>
-            <view class="wx-goods-content">
-                <view class="wx-title">{{item.goods_name}}</view>
-                <view class="wx-spec">{{item.spec_key_name ? item.spec_key_name : ''}}</view>
-                <view class="wx-price">￥{{item.member_goods_price}}</view>
-            </view>
-            <view class="wx-goods-extra">X{{item.goods_num}}</view>
-        </view>
+        </i-card>
         <i-cell-group>
-            <i-cell title="订单编号" i-class="wx-spec-item" value="{{goodsOrder.order_sn}}"></i-cell>
             <i-cell title="商品金额" i-class="wx-spec-item" value="¥{{goodsOrder.goods_price}}"></i-cell>
             <i-cell title="应付金额" i-class="wx-spec-item" value="¥{{goodsOrder.order_amount}}"></i-cell>
+            <i-cell title="下单时间" i-class="wx-spec-item" value="¥{{goodsOrder.gmt_create}}"></i-cell>
         </i-cell-group>
+
+        <i-panel title="地址信息" i-class="marginT20 wx-order-address" wx:if="{{goodsOrder.is_goods == '1'}}">
+            <i-cell-group>
+                <i-cell title="收货人" i-class="wx-spec-item" value="{{goodsOrder.consignee}}"></i-cell>
+                <i-cell title="手机号" i-class="wx-spec-item" value="{{goodsOrder.mobile}}"></i-cell>
+                <i-cell title="收货地址" i-class="wx-spec-item" value="{{goodsOrder.region}}{{goodsOrder.address}}"></i-cell>
+            </i-cell-group>
+        </i-panel>
+
+        <i-panel title="客户信息" i-class="marginT20 wx-order-address" wx:if="{{goodsOrder.is_goods == '0'}}">
+            <i-cell-group>
+                <i-cell title="客户姓名" i-class="wx-spec-item" value="{{goodsOrder.consignee}}"></i-cell>
+                <i-cell title="手机号码" i-class="wx-spec-item" value="{{goodsOrder.mobile}}"></i-cell>
+            </i-cell-group>
+        </i-panel>
+
+        <i-panel title="物流信息" i-class="marginT20 wx-order-address" wx:if="{{goodsOrder.is_goods == '1'}}">
+            <i-cell-group>
+                <i-cell title="物流方式" i-class="wx-spec-item" value="{{goodsOrder.shipping_name}}"></i-cell>
+                <i-cell title="快递单号" i-class="wx-spec-item" value="{{goodsOrder.delivery_info.invoice_no}}"></i-cell>
+            </i-cell-group>
+        </i-panel>
     </view>
+
+    <view class="wx-order-actions" wx:if="{{goodsOrder.is_goods == '0' && goodsOrder.handle_btn}}">
+        <i-row>
+            <i-col span="12" i-class="wx-cancel">
+                <view data-action="cancel" @tap="cancelOrder">取消办理</view>
+            </i-col>
+            <i-col span="12" i-class="{{isSubmit ? 'wx-confirm wx-disable' : 'wx-confirm'}}">
+                <view data-action="confirm" @tap="confirmOrder">确认办理</view>
+            </i-col>
+        </i-row>
+    </view>
+
+    <i-modal title="{{confirmTxt}}" visible="{{ confirmModal }}" actions="{{ confirmBtn }}" bind:click="handleConfirm">
+        <view style="margin-bottom: 20rpx;" wx:if="{{action == 'confirm'}}">确定已经办理了吗？</view>
+        <view wx:else>
+            <i-input type="textarea" value="{{ note }}" mode="wrapped" i-class="wx-order-note" placeholder="请填写取消原因"/>
+        </view>
+    </i-modal>
 </template>
 
 <script>
@@ -84,8 +159,14 @@
         config = {
             navigationBarTitleText: '订单详情',
             usingComponents: {
+                "i-row": "../../iview/row/index",
+                "i-col": "../../iview/col/index",
+                "i-card": "../../iview/card/index",
+                "i-panel": "../../iview/panel/index",
                 "i-cell-group": "../../iview/cell-group/index",
                 "i-cell": "../../iview/cell/index",
+                "i-modal": "../../iview/modal/index",
+                "i-input": "../../iview/input/index",
             }
         };
         components = {
@@ -97,13 +178,73 @@
             goodsImgThumb: api.THUMBNAIL_IMG,
             params: [],
             goodsOrder: {},
-            goodsList: []
+            goodsList: [],
+            note: '',
+            action: '',
+            confirmModal: false,
+            confirmTxt: '删除',
+            confirmBtn: [
+                {
+                    name: '取消'
+                },
+                {
+                    name: '删除',
+                    loading: false
+                }
+            ],
         };
 
         computed = {};
 
         methods = {
+            cancelOrder(e){
+                this.action = e.currentTarget.dataset.action;
+                this.confirmModal = true;
+                this.confirmTxt = '取消原因';
+                this.confirmBtn[1].name = '确定';
+            },
+            confirmOrder(e){
+                this.action = e.currentTarget.dataset.action;
+                this.confirmModal = true;
+                this.confirmTxt = '办理确认';
+                this.confirmBtn[1].name = '确定';
+            },
+            handleConfirm({ detail }){
+                if(detail.index === 0){
+                    this.confirmModal = false;
+                }else{
+                    this.confirmBtn[1].loading = true;
+                    let _this = this;
 
+                    if(this.action === 'cancel'){
+                        api.handleOrder('POST',{order_id: this.goodsOrder.id,action: this.action}).then(resp => {
+                            this.confirmBtn[1].loading = false;
+                            if(resp.code === 200){
+                                this.confirmModal = false;
+                                tip.success(resp.msg);
+                                setTimeout(function () {
+                                    _this.queryItem();
+                                },500)
+                            }else{
+                                tip.error(resp.msg)
+                            }
+                        });
+                    }else if(this.action === 'confirm'){
+                        api.receiveOrder('POST',{order_id: this.goodsOrder.id,action: this.action}).then(resp => {
+                            this.confirmBtn[1].loading = false;
+                            if(resp.code === 200){
+                                this.confirmModal = false;
+                                tip.success(resp.msg);
+                                setTimeout(function () {
+                                    _this.queryItem();
+                                },500)
+                            }else{
+                                tip.error(resp.msg)
+                            }
+                        });
+                    }
+                }
+            },
         };
 
         async queryItem() {
@@ -130,7 +271,6 @@
         };
 
         onLoad(params) {
-            params.id = 4633;
             this.params = params;
         }
     }

@@ -1,6 +1,48 @@
 <style lang="less">
-    @import "../../assets/styles/user";
-
+    page{
+        background: #F2F2F2;
+    }
+    .wx-withdraw-box{
+        background: #fff;
+        border-radius: 10rpx;
+        width: 80%;
+        margin: 180rpx auto;
+        padding: 30rpx 20rpx;
+        .wx-head{
+            text-align: center;
+            .wx-title{
+                height: 80rpx;
+                padding-top: 50rpx;
+            }
+            .wx-amount{
+                font-size: 50rpx;
+                line-height: 80rpx;
+            }
+        }
+        .wx-body{
+            .wx-icon{
+                font-size:50rpx;
+                top:20rpx;
+                position:absolute;
+                left:40rpx;
+                z-index:20;
+            }
+            .wx-input{
+                padding-left: 80rpx;
+                padding-top:10rpx;
+                input{
+                    font-size: 50rpx;
+                }
+            }
+            .wx-tips{
+                font-size:24rpx;
+                padding-left:30rpx;
+                color:#999;
+                height:80rpx;
+                line-height:80rpx;
+            }
+        }
+    }
 </style>
 <template>
     <view class="wx-withdraw-box">

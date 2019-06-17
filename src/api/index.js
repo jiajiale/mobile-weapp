@@ -65,6 +65,7 @@ export default{
     queryUserInfo: (method,params) => wxRequest(method,params, "/api/user/queryUserInfo"),
     cancelOrder: (method,params) => wxRequest(method,params, "/api/user/cancelOrder"),
     receiveOrder: (method,params) => wxRequest(method,params, "/api/user/receiveOrder"),
+    handleOrder: (method,params) => wxRequest(method,params, "/api/user/handleServiceOrder"),
     queryReturnGoods: (method,params) => wxRequest(method,params, "/api/user/getReturnGoods"),
     returnOrder: (method,params) => wxRequest(method,params, "/api/user/returnOrder"),
     queryReturnList: (method,params) => wxRequest(method,params, "/api/user/queryReturnList"),

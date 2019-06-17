@@ -1,5 +1,7 @@
 <style lang="less">
-    @import "../../assets/styles/user";
+    page{
+        background: #F2F2F2;
+    }
     .wx-commission-list{
         .wx-order-info{
             padding:20rpx 0rpx;
@@ -54,7 +56,7 @@
     </view>
     <view class="{{current === 'COMMISSION' ? 'wx-commission-list wx-commission-order' : 'wx-commission-list wx-other-order'}}">
         <view class="marginB20" wx:for="{{commissionList}}" wx:key="{{item.id}}" wx:if="{{commissionList.length}}">
-        <i-card title="{{item.gmt_create}}" full extra="{{item.extra}}" i-class="wx-order-card">
+        <i-card title="{{item.gmt_create}}" full extra="{{item.extra}}" i-class="wx-order-card" data-url="/pages/user/detail?id={{item.id}}" data-type="order" bindtap="handleGo">
             <view slot="content">
                 <repeat for="{{item.goods_arr}}" key="{{goodsItem.id}}" item="goodsItem">
                     <OrderItem>
@@ -68,6 +70,9 @@
                         <view slot="extra" wx:if="{{current === 'COMMISSION'}}">
                             <view style="font-size: 32rpx;">¥{{goodsItem.commission}}</view>
                         </view>
+                        <view slot="extra" wx:if="{{current === 'SERVICE'}}">
+                            <view style="font-size: 32rpx;position: absolute;right: 20rpx;"><i-icon type="enter" /></view>
+                        </view>
                     </OrderItem>
                 </repeat>
             </view>
@@ -77,7 +82,7 @@
     <view wx:if="{{!commissionList.length}}">
         <NoInfo emptyText="暂无推广记录" marginTop="200"></NoInfo>
     </view>
-    <view wx:if="{{commissionList.length && current === 'COMMISSION'}}" class="wx-commission-btn" data-url="/pages/user/withdraw" bindtap="handleGo">我要提现</view>
+    <view wx:if="{{commissionList.length && current === 'COMMISSION'}}" class="wx-commission-btn" data-url="/pages/user/withdraw" data-type="withdraw" bindtap="handleGo">我要提现</view>
 </template>
 
 <script>
@@ -124,8 +129,13 @@
                 this.queryReload();
             },
             handleGo(e){
+                let url = e.currentTarget.dataset.url;
+                let type = e.currentTarget.dataset.type;
+
+                if(type === 'order' && this.current !== 'SERVICE'){
+                    return;
+                }
                 this.checkLogin(function () {
-                    let url = e.currentTarget.dataset.url;
                     wepy.navigateTo({url: url});
                 });
             }

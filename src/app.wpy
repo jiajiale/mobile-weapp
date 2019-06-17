@@ -12,7 +12,6 @@
 
         config = {
             pages: [
-                'pages/user/detail',
                 'pages/home/index',
                 'pages/goods/detail',
                 'pages/activity/goods',
@@ -35,12 +34,13 @@
                 'pages/check/service',
                 'pages/pay/index',
                 'pages/user/question',
-                'pages/user/contact',
                 'pages/user/point',
-                'pages/user/customer',
                 'pages/user/commission',
+                'pages/user/contact',
+                'pages/user/customer',
                 'pages/user/trade',
                 'pages/user/withdraw',
+                'pages/user/detail',
             ],
             window: {
                 backgroundTextStyle: 'light',
