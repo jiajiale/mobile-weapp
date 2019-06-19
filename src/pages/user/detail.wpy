@@ -144,7 +144,7 @@
     </view>
 
     <i-modal title="{{confirmTxt}}" visible="{{ confirmModal }}" actions="{{ confirmBtn }}" bind:click="handleConfirm">
-        <view style="margin-bottom: 20rpx;" wx:if="{{action == 'confirm'}}">确定已经办理了吗？</view>
+        <view style="margin-bottom: 20rpx;" wx:if="{{action == 'confirm'}}">确定可以办理了吗？</view>
         <view wx:else style="display: {{confirmModal ? 'block' : 'none'}}">
             <i-input type="textarea" bindchange="handleInput" value="{{ note }}" mode="wrapped" i-class="wx-order-note" placeholder="请填写取消原因"/>
         </view>
