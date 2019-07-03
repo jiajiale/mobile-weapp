@@ -1,5 +1,32 @@
 <style lang="less">
-    @import "../../assets/styles/goods";
+    page{
+        background: #F2F2F2;
+    }
+    .wx-goods-list{
+        padding: 10rpx 20rpx;
+        .wx-goods-col{
+            padding: 10rpx 15rpx 20rpx 15rpx;
+            font-size: 25rpx;
+            .wx-goods-info{
+                box-shadow: 0 2px 2px rgba(0,0,0,.08);
+            }
+            .wx-goods-image{
+                height: 280rpx;
+            }
+            .wx-goods-title{
+                padding: 0rpx 10rpx;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .wx-goods-extra{
+                padding: 0rpx 10rpx;
+                .wx-goods-price{
+                    color:#ec3a3e;
+                }
+            }
+        }
+    }
 </style>
 <template>
     <scroll-view scroll-y bindscrolltolower="onReachBottom" wx:if="{{goodsList.length > 0}}">
