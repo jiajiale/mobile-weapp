@@ -1,5 +1,7 @@
 <style lang="less">
-    @import "../../assets/styles/user";
+    page{
+        background: #F2F2F2;
+    }
 </style>
 <template>
     <i-cell-group>

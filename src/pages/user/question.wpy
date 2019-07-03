@@ -1,5 +1,4 @@
 <style lang="less">
-    @import "../../assets/styles/user";
 </style>
 <template>
 
