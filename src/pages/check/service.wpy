@@ -30,22 +30,24 @@
             </view>
         </view>
 
-        <view class="wx-check-body" style="margin-bottom: 150rpx;" wx:for="{{fieldList}}" wx:if="{{item.type == 2}}" wx:key="{{index}}">
-            <view class="wx-check-body-title">上传证件</view>
-            <i-row>
-                <view class="wx-check-image">
-                    <i-col span="6" i-class="col-class" wx:for="{{formData.photos}}" wx:key="{{index}}">
-                        <view class="wx-image-upload">
-                            <image src="{{photoImgUrl + item}}" mode="scaleToFill" style="width: 100%;height: 100%;"></image>
-                        </view>
-                        <view class="wx-upload-info" bindtap="deleteImage" data-index="{{index}}">删除</view>
-                    </i-col>
-                    <i-col span="6" i-class="col-class">
-                        <view class="wx-image-upload" bindtap="uploadImage"><i-icon type="camera_fill" /></view>
-                        <view class="wx-upload-info">上传</view>
-                    </i-col>
-                </view>
-            </i-row>
+        <view style="margin-bottom: 150rpx;">
+            <view class="wx-check-body" wx:for="{{fieldList}}" wx:if="{{item.type == 2}}" wx:key="{{index}}">
+                <view class="wx-check-body-title">上传{{item.alias}}</view>
+                <i-row>
+                    <view class="wx-check-image">
+                        <i-col span="6" i-class="col-class" wx:for="{{formData[item.label]}}" wx:for-item="image" wx:key="{{index}}">
+                            <view class="wx-image-upload">
+                                <image src="{{photoImgUrl + image}}" mode="scaleToFill" style="width: 100%;height: 100%;"></image>
+                            </view>
+                            <view class="wx-upload-info" bindtap="deleteImage" data-label="{{item.label}}" data-index="{{index}}">删除</view>
+                        </i-col>
+                        <i-col span="6" i-class="col-class">
+                            <view class="wx-image-upload" bindtap="uploadImage" data-label="{{item.label}}" data-num="{{item.num}}"><i-icon type="camera_fill" /></view>
+                            <view class="wx-upload-info">上传</view>
+                        </i-col>
+                    </view>
+                </i-row>
+            </view>
         </view>
 
         <view class="wx-check-bar">
@@ -98,7 +100,12 @@
             fieldList: [],
             totalPrice: {},
             totalAmount: '0.00',
-            formData: {},
+            formData: {
+                name: 'aaa',
+                mobile: '18067988403',
+                identity: '420922454747454741',
+                company: '测试'
+            },
             isSubmit: false,
         };
 
@@ -109,8 +116,17 @@
                 let key = e.currentTarget.dataset.key;
                 this.formData[key] = e.detail.detail.value;
             },
-            uploadImage(){
+            uploadImage(e){
                 let _this = this;
+                let label = e.currentTarget.dataset.label;
+                let num = e.currentTarget.dataset.num;
+                num = num !== undefined ? parseInt(num) : 3;
+
+                if(_this.formData[label] !== undefined && _this.formData[label].length >= num){
+                    tip.toast('最多上传'+ num +'张图片');
+                    return;
+                }
+
                 wx.chooseImage({
                     count: 1,
                     sizeType: ['original', 'compressed'],
@@ -124,10 +140,10 @@
                             success(res) {
                                 let result = JSON.parse(res.data);
                                 if(result.state === 'success'){
-                                    if(_this.formData.photos === undefined){
-                                        _this.formData.photos = [];
+                                    if(_this.formData[label] === undefined){
+                                        _this.formData[label] = [];
                                     }
-                                    _this.formData.photos.push(result.data);
+                                    _this.formData[label].push(result.data);
                                     _this.$apply();
                                 }else{
                                     tip.toast(result.msg);
@@ -138,8 +154,12 @@
                 })
             },
             deleteImage(e){
+                console.log(e.currentTarget.dataset);
                 let index = e.currentTarget.dataset.index;
-                this.formData.photos.splice(index,1);
+                let label = e.currentTarget.dataset.label;
+                console.log(label);
+                console.log(this.formData[label])
+                this.formData[label].splice(index,1);
             },
             handleOrder(e){
                 let _this = this;
@@ -163,7 +183,7 @@
                                 wx.navigateTo({url: '/pages/user/service'})
                             }
                         }else{
-                            tip.error(resp.msg);
+                            tip.toast(resp.msg);
                         }
                     });
                 }
@@ -195,6 +215,8 @@
         };
 
         onLoad(params) {
+            params.token = "ECEDFF7E7DB80454416073D982F842D4";
+            params.from = "goods";
             this.params = params;
         }
     }
