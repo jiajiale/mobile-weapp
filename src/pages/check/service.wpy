@@ -100,12 +100,7 @@
             fieldList: [],
             totalPrice: {},
             totalAmount: '0.00',
-            formData: {
-                name: 'aaa',
-                mobile: '18067988403',
-                identity: '420922454747454741',
-                company: '测试'
-            },
+            formData: {},
             isSubmit: false,
         };
 
@@ -215,8 +210,6 @@
         };
 
         onLoad(params) {
-            params.token = "ECEDFF7E7DB80454416073D982F842D4";
-            params.from = "goods";
             this.params = params;
         }
     }

@@ -120,7 +120,8 @@
             <i-cell-group>
                 <i-cell title="客户姓名" i-class="wx-spec-item" value="{{goodsOrder.consignee}}"></i-cell>
                 <i-cell title="手机号码" i-class="wx-spec-item" value="{{goodsOrder.mobile}}"></i-cell>
-                <i-cell title="{{item.name}}" i-class="wx-spec-item" value="{{item.value}}" wx:for="{{fieldList}}" wx:key="{{item.id}}"></i-cell>
+                <i-cell title="{{item.name}}" i-class="wx-spec-item" value="{{item.value}}" wx:for="{{fieldList}}" wx:if="{{item.type == 1}}" wx:key="{{item.id}}"></i-cell>
+                <!--<i-cell title="{{item.name}}" i-class="wx-spec-item" value="{{item.value}}" wx:for="{{fieldList}}" wx:if="{{item.type == 2}}" wx:key="{{item.id}}"></i-cell>-->
             </i-cell-group>
         </i-panel>
 
