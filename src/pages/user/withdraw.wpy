@@ -11,12 +11,18 @@
         .wx-head{
             text-align: center;
             .wx-title{
-                height: 80rpx;
+                height: 50rpx;
                 padding-top: 50rpx;
             }
             .wx-amount{
                 font-size: 50rpx;
                 line-height: 80rpx;
+            }
+            .wx-amount-info{
+                margin-top: 40rpx;
+                .wx-item{
+                    line-height: 45rpx;
+                }
             }
         }
         .wx-body{
@@ -49,6 +55,18 @@
         <view class="wx-head">
             <view class="wx-title">我的佣金</view>
             <view class="wx-amount">¥{{userInfo.commission}}</view>
+            <view class="wx-amount-info">
+                <i-row>
+                    <i-col span="12" i-class="wx-item">
+                        <view style="border-right: 1rpx solid #e8e8e8;">可提现金额</view>
+                        <view style="border-right: 1rpx solid #e8e8e8;">¥{{userInfo.avail_commission}}</view>
+                    </i-col>
+                    <i-col span="12" i-class="wx-item">
+                        <view>预估佣金</view>
+                        <view>¥{{userInfo.estimate_commission}}</view>
+                    </i-col>
+                </i-row>
+            </view>
         </view>
         <view class="wx-body">
             <i-panel title="提现金额" hide-border>
@@ -75,6 +93,8 @@
         config = {
             navigationBarTitleText: '我要提现',
             usingComponents: {
+                "i-row": "../../iview/row/index",
+                "i-col": "../../iview/col/index",
                 "i-panel": "../../iview/panel/index",
                 "i-input": "../../iview/input/index",
                 "i-button": "../../iview/button/index"
