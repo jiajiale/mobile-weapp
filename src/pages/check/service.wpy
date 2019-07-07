@@ -24,9 +24,9 @@
         <view class="wx-check-body">
             <view class="wx-check-body-title">填写信息（注：信息为开户人信息）</view>
             <view class="wx-check-info">
-                <i-input  bindchange="handleInput" data-key="name" title="姓　　名" placeholder="请输入办理人姓名" right="true"/>
-                <i-input  bindchange="handleInput" data-key="mobile" title="手机号码" placeholder="请输入办理人手机号码" right="true"/>
-                <i-input wx:for="{{fieldList}}" wx:if="{{item.type == 1}}" wx:key="{{index}}" bindchange="handleInput" data-key="{{item.label}}" title="{{item.name}}" placeholder="请{{item.tips}}" right="true"/>
+                <i-input value="{{formData.name}}" bindchange="handleInput" data-key="name" title="姓　　名" placeholder="请输入办理人姓名" right="true"/>
+                <i-input value="{{formData.mobile}}" bindchange="handleInput" data-key="mobile" title="手机号码" placeholder="请输入办理人手机号码" right="true"/>
+                <i-input value="{{formData[item.label]}}" wx:for="{{fieldList}}" wx:if="{{item.type == 1}}" wx:key="{{index}}" bindchange="handleInput" data-key="{{item.label}}" title="{{item.name}}" placeholder="请{{item.tips}}" right="true"/>
             </view>
         </view>
 
@@ -149,11 +149,8 @@
                 })
             },
             deleteImage(e){
-                console.log(e.currentTarget.dataset);
                 let index = e.currentTarget.dataset.index;
                 let label = e.currentTarget.dataset.label;
-                console.log(label);
-                console.log(this.formData[label])
                 this.formData[label].splice(index,1);
             },
             handleOrder(e){
@@ -194,6 +191,18 @@
                     this.cartList = resp.data.cartList;
                     this.totalPrice = resp.data.totalPrice;
                     this.fieldList = resp.data.fieldList;
+
+                    let enrollInfo = resp.data.enrollInfo;
+                    if(enrollInfo !== undefined){
+                        this.formData.name = enrollInfo.name ? enrollInfo.name : '';
+                        this.formData.mobile = enrollInfo.mobile ? enrollInfo.mobile : '';
+
+                        this.fieldList.forEach((item) => {
+                            if(enrollInfo[item.label] !== undefined){
+                                this.formData[item.label] = enrollInfo[item.label]
+                            }
+                        })
+                    }
                     this.totalAmount = (parseFloat(this.totalPrice.total_fee) + parseFloat(this.totalPrice.delivery_fee)).toFixed(2);
                     this.$apply();
                 }else{
