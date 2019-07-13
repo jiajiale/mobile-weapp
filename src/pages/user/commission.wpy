@@ -2,7 +2,61 @@
     page{
         background: #F2F2F2;
     }
+    .wx-commission-head{
+        position: fixed;
+        z-index: 100;
+        width: 100%;
+        top: 0rpx;
+        border-bottom: 1px solid #dddee1;
+        background: #fff;
+
+        .wx-head-tabs{
+            display: inline-block;
+            width: 90%;
+            .wx-tabs::after{
+                border-bottom: none;
+            }
+        }
+        .wx-head-extra{
+            display: inline-block;
+            width: 10%;
+            text-align: center;
+            height: 84rpx;
+            line-height: 84rpx;
+        }
+
+        .wx-commission-search{
+            padding: 20rpx 30rpx;
+            position: relative;
+            input{
+                background: #efefef;
+                border-radius: 20rpx;
+                height: 60rpx;
+                line-height: 60rpx;
+                padding-left:70rpx;
+                font-size:28rpx;
+                margin-right:80rpx;
+            }
+            .wx-search-icon{
+                position: absolute;
+                top:28rpx;
+                left:50rpx;
+            }
+            .wx-search-btn{
+                position: absolute;
+                top:20rpx;
+                right:30rpx;
+                font-size:28rpx;
+                display:inline-block;
+                height:60rpx;
+                line-height:60rpx;
+                padding:0rpx 10rpx;
+            }
+        }
+    }
+
     .wx-commission-list{
+        margin-top:210rpx;
         .wx-order-info{
             padding:20rpx 0rpx;
             .wx-order-content{
@@ -46,14 +100,29 @@
     }
 </style>
 <template>
-    <view>
-        <i-tabs current="{{ current }}" color="#ec3a3e" bindchange="handleChangeStatus">
-            <i-tab key="ALL" title="全部订单"></i-tab>
-            <i-tab key="COMMISSION" title="分佣订单"></i-tab>
-            <i-tab key="GOODS" title="商品订单"></i-tab>
-            <i-tab key="SERVICE" title="业务订单"></i-tab>
-        </i-tabs>
+    <view class="wx-commission-head">
+        <view style="border-bottom: 1px solid #eee;">
+            <view class="wx-head-tabs">
+                <i-tabs current="{{ current }}" color="#ec3a3e" bindchange="handleChangeStatus" i-class="wx-tabs">
+                    <i-tab key="ALL" title="全部订单"></i-tab>
+                    <i-tab key="COMMISSION" title="分佣订单"></i-tab>
+                    <i-tab key="GOODS" title="商品订单"></i-tab>
+                    <i-tab key="SERVICE" title="业务订单"></i-tab>
+                </i-tabs>
+            </view>
+
+            <view class="wx-head-extra">
+                <i-icon type="unfold" />
+            </view>
+        </view>
+
+        <view class="wx-commission-search">
+            <input placeholder="姓名/手机号" value="{{keywords}}" bindinput="handleSearchInput"/>
+            <view class="wx-search-icon"><i-icon type="search" size="20" color="#999999"/></view>
+            <view class="wx-search-btn" @tap="queryReload">搜索</view>
+        </view>
     </view>
+
     <view class="{{current === 'COMMISSION' ? 'wx-commission-list wx-commission-order' : 'wx-commission-list wx-other-order'}}">
         <view class="marginB20" wx:for="{{commissionList}}" wx:key="{{item.id}}" wx:if="{{commissionList.length}}">
         <i-card title="{{item.gmt_create}}" full extra="{{item.extra}}" i-class="wx-order-card" data-url="/pages/user/detail?id={{item.id}}" data-type="order" bindtap="handleGo">
@@ -120,6 +189,7 @@
             params: [],
             page: 1,
             hasPage: true,
+            keywords: '',
             commissionList: []
         };
 
@@ -141,6 +211,10 @@
             }
         };
 
+        handleSearchInput(e){
+            this.keywords = e.detail.value;
+        }
+
         queryReload(){
             this.page = 1;
             this.commissionList = [];
@@ -154,6 +228,7 @@
             let conditions = {
                 page: this.page,
                 type: this.current,
+                keywords: this.keywords
             };
 
             if(this.params.user_id){
