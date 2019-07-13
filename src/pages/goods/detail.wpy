@@ -196,30 +196,8 @@
         computed = {};
 
         methods = {
-            switchGoodsSheet(e){
-                let item = e.currentTarget.dataset.item;
-                this.goodsVisible = !this.goodsVisible;
-                this.specInfo = [];
-                if(this.goodsVisible){
-                    this.goodsInfo = item;
-
-                    if(this.goodsSpecList !== null){
-                        if(this.goods.select_spec.length === 0){
-                            this.setDefaultGoodsSpec();
-                        }else{
-                            this.goods.goods_spec = [];
-                            let index = 0;
-                            for(let i in this.goodsSpecList){
-                                for(let j in this.goodsSpecList[i]){
-                                    if(this.goodsSpecList[i][j].item_id === this.goods.select_spec[index]){
-                                        this.specInfo[i] = this.goodsSpecList[i][j].item;
-                                    }
-                                }
-                                index++;
-                            }
-                        }
-                    }
-                }
+            switchGoodsSheet(){
+                this.selectGoodsSpec();
             },
             selectGoodsOk(){
                 if(!utils.isEmptyObject(this.goodsSpecList) && this.goods.goods_spec === undefined){
@@ -255,7 +233,8 @@
                 this.changeGoodsPrice();
             },
             handleAddCart(){
-                if(!utils.isEmptyObject(this.goodsSpecList) && this.goods.goods_spec === undefined){
+                if(!utils.isEmptyObject(this.goodsSpecList) && this.goods.spec_info === undefined){
+                    this.selectGoodsSpec();
                     tip.toast(MSG.SELECT_SPEC);
                     return;
                 }
@@ -264,7 +243,7 @@
                     this.cartList = [];
                 }
 
-                let index = utils.GoodsInCart(this.cartList,this.goods)
+                let index = utils.GoodsInCart(this.cartList,this.goods);
                 if(index === false){
                     this.cartList.push(this.goods);
                 }else{
@@ -276,7 +255,8 @@
             handleCheckOrder(){
                 let _this = this;
                 this.checkLogin(function () {
-                    if(!utils.isEmptyObject(_this.goodsSpecList) && _this.goods.goods_spec === undefined){
+                    if(!utils.isEmptyObject(_this.goodsSpecList) && _this.goods.spec_info === undefined){
+                        _this.selectGoodsSpec();
                         tip.toast(MSG.SELECT_SPEC);
                         return;
                     }
@@ -336,6 +316,24 @@
             }
         };
 
+        selectGoodsSpec(){
+            this.goodsVisible = !this.goodsVisible;
+            this.specInfo = [];
+            if(this.goodsVisible){
+
+                if(this.goodsSpecList !== null){
+                    this.goods.goods_spec = [];
+
+                    for(let i in this.goodsSpecList){
+                        this.goods.goods_spec[i] = this.goodsSpecList[i][0].item_id;
+                        this.goodsSpecList[i][0]['class'] = 'active';
+                        this.specInfo[i] = this.goodsSpecList[i][0].item;
+                    }
+                    this.changeGoodsPrice();
+                }
+            }
+        }
+
         setDefaultGoodsSpec(){
             this.goods.goods_spec = [];
             let specStrArr = [];
@@ -389,7 +387,7 @@
                         this.goodsSpecList = resp.data.goodsSpec;
                         this.goodsSpecLen = Object.keys(this.goodsSpecList).length;
                         this.goodsSpecPrice = resp.data.goodsSpecPrice;
-                        this.setDefaultGoodsSpec();
+                        //this.setDefaultGoodsSpec();
                         this.$apply();
                     }else{
                         wepy.navigateTo({
