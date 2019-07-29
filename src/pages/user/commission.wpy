@@ -239,11 +239,7 @@
                 if(resp.data){
                     resp.data.items.filter(item => {
                         item.gmt_create = utils.formatDateTime(item.gmt_create,'yyyy-MM-dd');
-                        if(_this.current === 'COMMISSION'){
-                            item.extra = item.commission;
-                        }else{
-                            item.extra = item.status_desc;
-                        }
+                        item.extra = item.status_desc;
                     });
                     this.commissionList = this.commissionList.concat(resp.data.items);
                     if(resp.data.pager.index >= resp.data.pager.count){
