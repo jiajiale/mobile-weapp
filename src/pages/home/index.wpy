@@ -44,6 +44,9 @@
                                 <image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image>
                             </i-col>
                         </i-row>
+                        <i-row>
+                            <view style="padding-bottom: 15rpx;color: #ec3a3e;font-size: 24rpx;">￥{{item.shop_price}}</view>
+                        </i-row>
                         </navigator>
                     </i-col>
                 </i-row>
