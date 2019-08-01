@@ -34,8 +34,9 @@
             </i-card>
             <view class="wx-order-append">
                 <view class="wx-count">共{{item.goods_list.length}}件商品，实付<span style="color: #ec3a3e;">￥{{item.order_amount}}</span></view>
-                <view class="wx-actions" wx:if="{{item.pay_btn === 1 || item.cancel_btn === 1 || item.receive_btn === 1}}">
+                <view class="wx-actions" wx:if="{{item.pay_btn === 1 || item.cancel_btn === 1 || item.refund_btn === 1 || item.receive_btn === 1}}">
                     <view class="cancel-btn" wx:if="{{item.cancel_btn === 1}}" data-action="cancel" data-item="{{item}}" @tap="cancelOrder">关闭订单</view>
+                    <view class="pay-btn" wx:if="{{item.refund_btn === 1}}" data-action="refund" data-item="{{item}}" @tap="refundOrder">申请退款</view>
                     <view class="pay-btn" wx:if="{{item.pay_btn === 1}}" data-action="pay">
                         <form bindsubmit="handlePay" report-submit="true">
                             <button form-type="submit" plain data-item="{{item}}" style="border:none;padding:0rpx;font-size:24rpx;display:inline-block;color:#fff;height:34rpx;line-height:34rpx;">付款</button>
@@ -50,7 +51,10 @@
     </view>
 
     <i-modal title="{{confirmTxt}}确认" visible="{{ confirmModal }}" actions="{{ confirmBtn }}" bind:click="handleConfirm">
-        <view style="margin-bottom: 20rpx;">确定要{{confirmTxt}}吗？</view>
+        <view style="margin-bottom: 20rpx;" wx:if="{{action == 'cancel'}}">确定要{{confirmTxt}}吗？</view>
+        <view wx:else style="display: {{confirmModal ? 'block' : 'none'}}">
+            <i-input type="textarea" bindchange="handleInput" value="{{ note }}" mode="wrapped" i-class="wx-order-note" placeholder="请填写退款原因"/>
+        </view>
     </i-modal>
 </template>
 
@@ -74,6 +78,7 @@
                 "i-tab": "../../iview/tab/index",
                 "i-card": "../../iview/card/index",
                 "i-modal": "../../iview/modal/index",
+                "i-input": "../../iview/input/index",
             }
         };
         components = {
@@ -91,6 +96,8 @@
             goodsOrder: {},
             page: 1,
             hasPage: true,
+            note: '',
+            action: '',
             confirmModal: false,
             confirmTxt: '删除',
             confirmBtn: [
@@ -111,12 +118,22 @@
                 this.current = detail.key;
                 this.queryReload();
             },
+            handleInput(e){
+                this.note = e.detail.detail.value;
+            },
             cancelOrder(e){
                 this.order = e.currentTarget.dataset.item;
                 this.action = e.currentTarget.dataset.action;
                 this.confirmModal = true;
                 this.confirmTxt = '关闭';
                 this.confirmBtn[1].name = '关闭';
+            },
+            refundOrder(e){
+                this.order = e.currentTarget.dataset.item;
+                this.action = e.currentTarget.dataset.action;
+                this.confirmModal = true;
+                this.confirmTxt = '退款';
+                this.confirmBtn[1].name = '退款';
             },
             handlePay(e){
                 let formId = e.detail.formId;
@@ -135,12 +152,25 @@
                             this.confirmBtn[1].loading = false;
                             if(resp.code === 200){
                                 this.confirmModal = false;
-                                tip.success(resp.msg);
+                                tip.toast(resp.msg);
                                 setTimeout(function () {
                                     _this.queryReload();
                                 },500)
                             }else{
-                                tip.error(resp.msg)
+                                tip.toast(resp.msg)
+                            }
+                        });
+                    }else if(this.action === 'refund'){
+                        api.refundOrder('POST',{order_id: this.order.id,note: this.note}).then(resp => {
+                            this.confirmBtn[1].loading = false;
+                            if(resp.code === 200){
+                                this.confirmModal = false;
+                                tip.toast(resp.msg);
+                                setTimeout(function () {
+                                    _this.queryReload();
+                                },500)
+                            }else{
+                                tip.toast(resp.msg)
                             }
                         });
                     }

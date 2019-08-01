@@ -64,6 +64,7 @@ export default{
     queryPointUser: (method,params) => wxRequest(method,params, "/api/point/queryPointUser"),
     queryUserInfo: (method,params) => wxRequest(method,params, "/api/user/queryUserInfo"),
     cancelOrder: (method,params) => wxRequest(method,params, "/api/user/cancelOrder"),
+    refundOrder: (method,params) => wxRequest(method,params, "/api/user/refundOrder"),
     receiveOrder: (method,params) => wxRequest(method,params, "/api/user/receiveOrder"),
     handleOrder: (method,params) => wxRequest(method,params, "/api/user/handleServiceOrder"),
     queryReturnGoods: (method,params) => wxRequest(method,params, "/api/user/getReturnGoods"),
