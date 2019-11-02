@@ -13,18 +13,20 @@
             border-radius: 8rpx;
             .wx-coupon-left{
                 text-align: center;
-                /*background: #e8e8e8;*/
                 .wx-price{
                     font-size: 60rpx;
                     height: 100rpx;
                     line-height: 120rpx;
                     span{
-                        font-size: 40rpx;
+                        font-size: 30rpx;
                     }
                 }
                 .wx-note{
                     height: 80rpx;
                 }
+            }
+            .wx-left-bg{
+                background: #e8e8e8;
             }
             .wx-coupon-mid{
                 padding-left: 20rpx;
@@ -41,6 +43,13 @@
             .wx-coupon-right{
                 text-align: center;
                 line-height: 180rpx;
+                .wx-btn{
+                    background: #ec3a3e;
+                    border: 1rpx solid #ec3a3e;
+                    padding:6rpx 12rpx;
+                    color: #fff;
+                    border-radius: 30rpx;
+                }
                 .iconfont{
                     font-size: 70rpx;
                 }
@@ -59,17 +68,23 @@
     <view class="wx-coupon-list marginT20">
         <view class="marginB20" wx:for="{{couponList}}" wx:key="{{item.id}}" wx:if="{{couponList.length}}">
             <i-row i-class="wx-coupon">
-                <i-col span="6" i-class="wx-coupon-left">
+                <i-col span="6" i-class="wx-coupon-left" wx:if="{{current == 'UNUSED'}}">
+                    <view class="wx-price"><span>￥</span>8</view>
+                    <view class="wx-note">满10元使用</view>
+                </i-col>
+                <i-col span="6" i-class="wx-coupon-left wx-left-bg" wx:else>
                     <view class="wx-price"><span>￥</span>8</view>
                     <view class="wx-note">满10元使用</view>
                 </i-col>
                 <i-col span="14" i-class="wx-coupon-mid">
                     <view class="wx-title">8元注册红包</view>
                     <view class="wx-cate">全场通用</view>
-                    <view>有效期至2019-11-12 23:59</view>
+                    <view>有效期2019-11-12 至 2019-11-20</view>
                 </i-col>
                 <i-col span="4" i-class="wx-coupon-right">
-                    <view><icon class="iconfont icon-yiguoqi"/></view>
+                    <view wx:if="{{current == 'UNUSED'}}"><span class="wx-btn">去使用</span></view>
+                    <view wx:if="{{current == 'USED'}}"><icon class="iconfont icon-yishiyong"/></view>
+                    <view wx:if="{{current == 'EXPIRED'}}"><icon class="iconfont icon-yiguoqi"/></view>
                 </i-col>
             </i-row>
         </view>
@@ -115,6 +130,7 @@
 
         methods = {
             handleChangeStatus({ detail }){
+                this.current = detail.key;
             },
         };
 
