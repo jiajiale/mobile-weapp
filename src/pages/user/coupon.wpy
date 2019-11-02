@@ -1,0 +1,156 @@
+<style lang="less">
+    page{
+        background: #F2F2F2;
+    }
+    .wx-coupon-list{
+        .wx-coupon{
+            border: 1rpx solid #e9e9e9;
+            margin: 0rpx 20rpx;
+            background: #ffffff;
+            font-size: 24rpx;
+            color: #80848f;
+            height: 180rpx;
+            border-radius: 8rpx;
+            .wx-coupon-left{
+                text-align: center;
+                /*background: #e8e8e8;*/
+                .wx-price{
+                    font-size: 60rpx;
+                    height: 100rpx;
+                    line-height: 120rpx;
+                    span{
+                        font-size: 40rpx;
+                    }
+                }
+                .wx-note{
+                    height: 80rpx;
+                }
+            }
+            .wx-coupon-mid{
+                padding-left: 20rpx;
+                .wx-title{
+                    font-size: 28rpx;
+                    height: 80rpx;
+                    line-height: 90rpx;
+                }
+                .wx-cate{
+                    height: 40rpx;
+                    line-height: 40rpx;
+                }
+            }
+            .wx-coupon-right{
+                text-align: center;
+                line-height: 180rpx;
+                .iconfont{
+                    font-size: 70rpx;
+                }
+            }
+        }
+    }
+</style>
+<template>
+    <view>
+        <i-tabs current="{{ current }}" color="#ec3a3e" bindchange="handleChangeStatus">
+            <i-tab key="UNUSED" title="未使用"></i-tab>
+            <i-tab key="USED" title="已使用"></i-tab>
+            <i-tab key="EXPIRED" title="已过期"></i-tab>
+        </i-tabs>
+    </view>
+    <view class="wx-coupon-list marginT20">
+        <view class="marginB20" wx:for="{{couponList}}" wx:key="{{item.id}}" wx:if="{{couponList.length}}">
+            <i-row i-class="wx-coupon">
+                <i-col span="6" i-class="wx-coupon-left">
+                    <view class="wx-price"><span>￥</span>8</view>
+                    <view class="wx-note">满10元使用</view>
+                </i-col>
+                <i-col span="14" i-class="wx-coupon-mid">
+                    <view class="wx-title">8元注册红包</view>
+                    <view class="wx-cate">全场通用</view>
+                    <view>有效期至2019-11-12 23:59</view>
+                </i-col>
+                <i-col span="4" i-class="wx-coupon-right">
+                    <view><icon class="iconfont icon-yiguoqi"/></view>
+                </i-col>
+            </i-row>
+        </view>
+        <view wx:if="{{!couponList.length}}">
+            <NoInfo emptyText="暂无订单信息" marginTop="200"></NoInfo>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import LoadMore from '../../components/load-more';
+    import NoInfo from '../../components/no-info';
+    import authorize from '../../mixins/authorize';
+    import pagination from '../../mixins/pagination';
+    import api from '../../api';
+    import tip from '../../utils/tip';
+    import utils from '../../utils/util';
+    import MSG from '../../utils/msg';
+
+    export default class UserCoupon extends wepy.page {
+        config = {
+            navigationBarTitleText: '我的优惠券',
+            usingComponents: {
+                "i-tabs": "../../iview/tabs/index",
+                "i-tab": "../../iview/tab/index",
+                "i-row": "../../iview/row/index",
+                "i-col": "../../iview/col/index"
+            }
+        };
+        components = {
+            NoInfo: NoInfo,
+        };
+
+        mixins = [authorize,pagination];
+
+        data = {
+            current: 'UNUSED',
+            page: 1,
+            hasPage: true,
+            couponList: [1,2]
+        };
+
+        methods = {
+            handleChangeStatus({ detail }){
+            },
+        };
+
+        queryReload(){
+            this.page = 1;
+            this.pointList = [];
+            this.hasPage = true;
+            this.queryItemList();
+        };
+
+        async queryItemList() {
+            tip.loading(MSG.LOADING);
+            await api.queryPointList('POST',{page: this.page}).then(resp => {
+                tip.loaded();
+                if(resp.data){
+                    resp.data.items.filter(item => {
+                        item.gmt_create = utils.formatDateTime(item.gmt_create,'yyyy-MM-dd');
+                    });
+                    this.pointList = this.pointList.concat(resp.data.items);
+                    if(resp.data.pager.index >= resp.data.pager.count){
+                        this.hasPage = false;
+                    }
+                    this.$apply();
+                }
+            });
+        };
+
+        onShow() {
+            let _this = this;
+            this.checkAuthorize(function () {
+                _this.queryReload();
+            });
+        };
+
+        onLoad() {
+
+        }
+    }
+</script>

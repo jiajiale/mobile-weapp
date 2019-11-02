@@ -13,7 +13,7 @@
             </view>
             <view class="wx-user-wallet">
                 <i-row>
-                    <i-col span="8" i-class="wx-border-right">
+                    <i-col span="8" i-class="wx-border-right" data-url="/pages/user/coupon" @tap="handleGo">
                         <view>0</view>
                         <view>优惠券</view>
                     </i-col>

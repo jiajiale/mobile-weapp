@@ -12,6 +12,7 @@
 
         config = {
             pages: [
+                'pages/user/coupon',
                 'pages/home/index',
                 'pages/goods/detail',
                 'pages/activity/goods',
