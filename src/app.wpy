@@ -12,6 +12,7 @@
 
         config = {
             pages: [
+                'pages/user/coupon',
                 'pages/home/index',
                 'pages/goods/detail',
                 'pages/activity/goods',
@@ -41,7 +42,6 @@
                 'pages/user/trade',
                 'pages/user/withdraw',
                 'pages/user/detail',
-                'pages/user/coupon',
             ],
             window: {
                 backgroundTextStyle: 'light',

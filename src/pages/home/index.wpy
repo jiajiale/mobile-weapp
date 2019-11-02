@@ -141,6 +141,9 @@
             </i-row>
         </view>
     </view>
+    <i-modal visible="{{ couponModal }}">
+        优惠券
+    </i-modal>
 </template>
 
 <script>
@@ -163,7 +166,8 @@
                 "i-grid": "../../iview/grid/index",
                 "i-grid-item": "../../iview/grid-item/index",
                 "i-icon": "../../iview/icon/index",
-                "i-tag": "../../iview/tag/index"
+                "i-tag": "../../iview/tag/index",
+                "i-modal": "../../iview/modal/index",
             }
         };
         components = {
@@ -191,6 +195,7 @@
             saleGoodsList: [],
             advList: [],
             isRequested: false,
+            couponModal: true,
             navigationStyle: {
                 searchBg: 'rgba(236,58,62,0)',
                 searchPadding: '50rpx 30rpx 20rpx',
