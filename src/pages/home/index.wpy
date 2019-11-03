@@ -243,6 +243,12 @@
             }
         };
 
+        events = {
+            handleClosePost(){
+                this.couponVisible = false;
+            }
+        };
+
         async queryItem() {
             tip.loading(MSG.LOADING);
             this.isRequested = false;

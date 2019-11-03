@@ -72,7 +72,7 @@
                     <CouponItem current="UNUSED" position="index"></CouponItem>
                 </view>
             </view>
-            <div class="wx-post-close">
+            <div class="wx-post-close" @tap="handleClose">
                 <i-icon type="delete" size="40" color="#ffffff"/>
             </div>
         </div>
@@ -102,7 +102,9 @@
             CouponItem: CouponItem,
         };
         methods = {
-
+            handleClose(){
+                this.$emit('handleClosePost')
+            },
         };
     }
 </script>
