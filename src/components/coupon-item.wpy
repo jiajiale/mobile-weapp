@@ -56,23 +56,49 @@
             }
         }
     }
+    .wx-coupon-index{
+        .wx-coupon-left{
+            border-right: 1rpx dashed #c8c8c8;
+            position:relative;
+            .wx-price{
+                color:#ea4f48;
+            }
+            .wx-dot{
+                position: absolute;
+                background: #ea4f48;
+                width:30rpx;
+                height:30rpx;
+                border-radius:50%;
+            }
+            .wx-dot-up{
+                right:-15rpx;
+                top:-25rpx;
+            }
+            .wx-dot-down{
+                right:-15rpx;
+                bottom:-25rpx;
+            }
+        }
+    }
 </style>
 <template>
     <i-row i-class="wx-coupon">
         <i-col span="6" i-class="wx-coupon-left" wx:if="{{current == 'UNUSED'}}">
             <view class="wx-price"><span>￥</span>8</view>
             <view class="wx-note">满10元使用</view>
+            <span class="wx-dot wx-dot-up"></span>
+            <span class="wx-dot wx-dot-down"></span>
         </i-col>
         <i-col span="6" i-class="wx-coupon-left wx-left-bg" wx:else>
             <view class="wx-price"><span>￥</span>8</view>
             <view class="wx-note">满10元使用</view>
         </i-col>
-        <i-col span="14" i-class="wx-coupon-mid">
+        <i-col span="12" i-class="wx-coupon-mid">
             <view class="wx-title">8元注册红包</view>
             <view class="wx-cate">全场通用</view>
-            <view>有效期2019-11-12 至 2019-11-20</view>
+            <view>有效期30天</view>
         </i-col>
-        <i-col span="4" i-class="wx-coupon-right">
+        <i-col span="6" i-class="wx-coupon-right">
             <view wx:if="{{current == 'UNUSED'}}"><span class="wx-btn">去使用</span></view>
             <view wx:if="{{current == 'USED'}}"><icon class="iconfont icon-yishiyong"/></view>
             <view wx:if="{{current == 'EXPIRED'}}"><icon class="iconfont icon-yiguoqi"/></view>
@@ -82,16 +108,11 @@
 <script>
     import wepy from 'wepy'
 
-    export default class OrderItem extends wepy.component {
+    export default class CouponItem extends wepy.component {
         props = {
             current: {
                 type: String
             }
         };
-        watch = {
-            current (newValue, oldValue) {
-                console.log(`num value: ${oldValue} -> ${newValue}`)
-            }
-        }
     }
 </script>

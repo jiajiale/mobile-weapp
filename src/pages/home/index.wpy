@@ -141,14 +141,13 @@
             </i-row>
         </view>
     </view>
-    <i-modal visible="{{ couponModal }}">
-        优惠券
-    </i-modal>
+    <CouponPost :visible.sync="couponVisible"></CouponPost>
 </template>
 
 <script>
     import wepy from 'wepy';
     import GoodsItem from '../../components/goods-item';
+    import CouponPost from '../../components/coupon-post';
     import authorize from '../../mixins/authorize';
     import api from '../../api';
     import tip from '../../utils/tip';
@@ -172,6 +171,7 @@
         };
         components = {
             GoodsItem: GoodsItem,
+            CouponPost: CouponPost,
         };
 
         mixins = [authorize];
@@ -195,7 +195,7 @@
             saleGoodsList: [],
             advList: [],
             isRequested: false,
-            couponModal: true,
+            couponVisible: true,
             navigationStyle: {
                 searchBg: 'rgba(236,58,62,0)',
                 searchPadding: '50rpx 30rpx 20rpx',

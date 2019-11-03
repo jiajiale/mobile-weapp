@@ -11,7 +11,7 @@
     </view>
     <view class="wx-coupon-list marginT20">
         <view class="marginB20" wx:for="{{couponList}}" wx:key="{{item.id}}" wx:if="{{couponList.length}}">
-            <CouponItem :current="current"></CouponItem>
+            <CouponItem :current.sync="current"></CouponItem>
         </view>
         <view wx:if="{{!couponList.length}}">
             <NoInfo emptyText="暂无订单信息" marginTop="200"></NoInfo>
