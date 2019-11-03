@@ -65,10 +65,7 @@
                 <view class="wx-head-title">送你2张优惠券</view>
             </view>
             <view class="wx-coupon-list wx-coupon-index">
-                <view class="marginB20">
-                    <CouponItem current="UNUSED" position="index"></CouponItem>
-                </view>
-                <view class="marginB20">
+                <view class="marginB20" wx:for="{{couponList}}" wx:key="{{item.id}}">
                     <CouponItem current="UNUSED" position="index"></CouponItem>
                 </view>
             </view>
@@ -91,6 +88,9 @@
         props = {
             visible: {
                 type: Boolean
+            },
+            couponList: {
+                type: Array
             }
         };
         data = {

@@ -141,7 +141,7 @@
             </i-row>
         </view>
     </view>
-    <CouponPost :visible.sync="couponVisible"></CouponPost>
+    <CouponPost :visible.sync="couponVisible" :couponList.sync="couponList"></CouponPost>
 </template>
 
 <script>
@@ -196,6 +196,7 @@
             advList: [],
             isRequested: false,
             couponVisible: true,
+            couponList: [1],
             navigationStyle: {
                 searchBg: 'rgba(236,58,62,0)',
                 searchPadding: '50rpx 30rpx 20rpx',
@@ -268,6 +269,15 @@
             });
         };
 
+        async queryCoupon() {
+            this.isRequested = false;
+            await api.queryLoginCoupon('POST',null).then(resp => {
+                this.isRequested = true;
+
+                this.$apply();
+            });
+        };
+
         onShareAppMessage() {
             let userFrom = this.$parent.globalData.userInfo.uuid;
             return {
@@ -283,6 +293,7 @@
 
         initData(){
             this.queryItem();
+            this.queryCoupon();
         }
 
         onShow() {
