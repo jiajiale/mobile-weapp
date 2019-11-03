@@ -83,22 +83,22 @@
 </style>
 <template>
     <i-row i-class="wx-coupon">
-        <i-col span="6" i-class="wx-coupon-left" wx:if="{{current == 'UNUSED'}}">
+        <i-col span="{{lspan}}" i-class="wx-coupon-left" wx:if="{{current == 'UNUSED'}}">
             <view class="wx-price"><span>￥</span>8</view>
             <view class="wx-note">满10元使用</view>
             <span class="wx-dot wx-dot-up"></span>
             <span class="wx-dot wx-dot-down"></span>
         </i-col>
-        <i-col span="6" i-class="wx-coupon-left wx-left-bg" wx:else>
+        <i-col span="{{lspan}}" i-class="wx-coupon-left wx-left-bg" wx:else>
             <view class="wx-price"><span>￥</span>8</view>
             <view class="wx-note">满10元使用</view>
         </i-col>
-        <i-col span="12" i-class="wx-coupon-mid">
+        <i-col span="{{mspan}}" i-class="wx-coupon-mid">
             <view class="wx-title">8元注册红包</view>
             <view class="wx-cate">全场通用</view>
             <view>有效期30天</view>
         </i-col>
-        <i-col span="6" i-class="wx-coupon-right">
+        <i-col span="{{rspan}}" i-class="wx-coupon-right">
             <view wx:if="{{current == 'UNUSED'}}"><span class="wx-btn">去使用</span></view>
             <view wx:if="{{current == 'USED'}}"><icon class="iconfont icon-yishiyong"/></view>
             <view wx:if="{{current == 'EXPIRED'}}"><icon class="iconfont icon-yiguoqi"/></view>
@@ -112,7 +112,21 @@
         props = {
             current: {
                 type: String
+            },
+            position: {
+                type: String
             }
         };
+        computed = {
+            lspan () {
+                return this.position == 'index' ? 7 : 6;
+            },
+            mspan () {
+                return this.position == 'index' ? 11 : 12;
+            },
+            rspan () {
+                return this.position == 'index' ? 6 : 6;
+            }
+        }
     }
 </script>

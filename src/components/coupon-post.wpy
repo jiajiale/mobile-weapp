@@ -66,10 +66,10 @@
             </view>
             <view class="wx-coupon-list wx-coupon-index">
                 <view class="marginB20">
-                    <CouponItem current="UNUSED"></CouponItem>
+                    <CouponItem current="UNUSED" position="index"></CouponItem>
                 </view>
                 <view class="marginB20">
-                    <CouponItem current="UNUSED"></CouponItem>
+                    <CouponItem current="UNUSED" position="index"></CouponItem>
                 </view>
             </view>
             <div class="wx-post-close">
