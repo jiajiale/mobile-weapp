@@ -62,12 +62,14 @@
         <div class="wx-post-content">
             <view class="wx-coupon-head">
                 <view class="wx-head-top"></view>
-                <view class="wx-head-title">送你2张优惠券</view>
+                <view class="wx-head-title">送你{{couponList.length}}张优惠券</view>
             </view>
             <view class="wx-coupon-list wx-coupon-index">
-                <view class="marginB20" wx:for="{{couponList}}" wx:key="{{item.id}}">
-                    <CouponItem current="UNUSED" position="index"></CouponItem>
-                </view>
+                <repeat for="{{couponList}}" key="index" index="index" item="item">
+                    <view class="marginB20">
+                        <CouponItem current="UNUSED" position="index" :coupon.sync="item"></CouponItem>
+                    </view>
+                </repeat>
             </view>
             <div class="wx-post-close" @tap="handleClose">
                 <i-icon type="delete" size="40" color="#ffffff"/>

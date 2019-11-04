@@ -195,7 +195,7 @@
             saleGoodsList: [],
             advList: [],
             isRequested: false,
-            couponVisible: true,
+            couponVisible: false,
             couponList: [1],
             navigationStyle: {
                 searchBg: 'rgba(236,58,62,0)',
@@ -273,7 +273,14 @@
             this.isRequested = false;
             await api.queryLoginCoupon('POST',null).then(resp => {
                 this.isRequested = true;
-
+                if(resp.data){
+                    this.couponVisible = true;
+                    resp.data.filter(item => {
+                        item.amount = parseInt(item.amount);
+                        item.order_amount = parseInt(item.order_amount);
+                    });
+                    this.couponList = resp.data;
+                }
                 this.$apply();
             });
         };

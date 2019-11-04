@@ -10,11 +10,13 @@
         </i-tabs>
     </view>
     <view class="wx-coupon-list marginT20">
-        <view class="marginB20" wx:for="{{couponList}}" wx:key="{{item.id}}" wx:if="{{couponList.length}}">
-            <CouponItem :current.sync="current"></CouponItem>
-        </view>
+        <repeat for="{{couponList}}" key="index" index="index" item="item" wx:if="{{couponList.length}}">
+            <view class="marginB20">
+                <CouponItem :current.sync="current" position="index" :coupon.sync="item"></CouponItem>
+            </view>
+        </repeat>
         <view wx:if="{{!couponList.length}}">
-            <NoInfo emptyText="暂无订单信息" marginTop="200"></NoInfo>
+            <NoInfo emptyText="暂无优惠券信息" marginTop="200"></NoInfo>
         </view>
     </view>
 </template>
@@ -52,31 +54,36 @@
             current: 'UNUSED',
             page: 1,
             hasPage: true,
-            couponList: [1,2]
+            couponList: []
         };
 
         methods = {
             handleChangeStatus({ detail }){
                 this.current = detail.key;
+                this.queryReload();
             },
         };
 
         queryReload(){
             this.page = 1;
-            this.pointList = [];
+            this.couponList = [];
             this.hasPage = true;
             this.queryItemList();
         };
 
         async queryItemList() {
             tip.loading(MSG.LOADING);
-            await api.queryPointList('POST',{page: this.page}).then(resp => {
+            await api.queryCouponList('POST',{
+                page: this.page,
+                status: this.current,
+            }).then(resp => {
                 tip.loaded();
                 if(resp.data){
                     resp.data.items.filter(item => {
-                        item.gmt_create = utils.formatDateTime(item.gmt_create,'yyyy-MM-dd');
+                        item.amount = parseInt(item.amount);
+                        item.order_amount = parseInt(item.order_amount);
                     });
-                    this.pointList = this.pointList.concat(resp.data.items);
+                    this.couponList = this.couponList.concat(resp.data.items);
                     if(resp.data.pager.index >= resp.data.pager.count){
                         this.hasPage = false;
                     }

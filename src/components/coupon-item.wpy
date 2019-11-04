@@ -84,19 +84,19 @@
 <template>
     <i-row i-class="wx-coupon">
         <i-col span="{{lspan}}" i-class="wx-coupon-left" wx:if="{{current == 'UNUSED'}}">
-            <view class="wx-price"><span>￥</span>8</view>
-            <view class="wx-note">满10元使用</view>
+            <view class="wx-price"><span>￥</span>{{coupon.amount}}</view>
+            <view class="wx-note">满{{coupon.order_amount}}元使用</view>
             <span class="wx-dot wx-dot-up"></span>
             <span class="wx-dot wx-dot-down"></span>
         </i-col>
         <i-col span="{{lspan}}" i-class="wx-coupon-left wx-left-bg" wx:else>
-            <view class="wx-price"><span>￥</span>8</view>
-            <view class="wx-note">满10元使用</view>
+            <view class="wx-price"><span>￥</span>{{coupon.amount}}</view>
+            <view class="wx-note">满{{coupon.order_amount}}元使用</view>
         </i-col>
         <i-col span="{{mspan}}" i-class="wx-coupon-mid">
-            <view class="wx-title">8元注册红包</view>
+            <view class="wx-title">{{coupon.name}}</view>
             <view class="wx-cate">全场通用</view>
-            <view>有效期30天</view>
+            <view>有效期{{coupon.days}}天</view>
         </i-col>
         <i-col span="{{rspan}}" i-class="wx-coupon-right">
             <view wx:if="{{current == 'UNUSED'}}"><span class="wx-btn">去使用</span></view>
@@ -115,6 +115,9 @@
             },
             position: {
                 type: String
+            },
+            coupon: {
+                type: Object
             }
         };
         computed = {

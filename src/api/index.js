@@ -84,4 +84,5 @@ export default{
     applyWithdraw: (method,params) => wxRequest(method,params, "/api/user/applyWithdraw"),
     queryWithdrawList: (method,params) => wxRequest(method,params, "/api/user/queryWithdrawList"),
     queryLoginCoupon: (method,params) => wxRequest(method,params, "/api/coupon/queryLoginCoupon"),
+    queryCouponList: (method,params) => wxRequest(method,params, "/api/coupon/queryCouponList"),
 };
