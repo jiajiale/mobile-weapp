@@ -12,7 +12,7 @@
     <view class="wx-coupon-list marginT20">
         <repeat for="{{couponList}}" key="index" index="index" item="item" wx:if="{{couponList.length}}">
             <view class="marginB20">
-                <CouponItem :current.sync="current" position="index" :coupon.sync="item"></CouponItem>
+                <CouponItem :current.sync="current" position="list" :coupon.sync="item"></CouponItem>
             </view>
         </repeat>
         <view wx:if="{{!couponList.length}}">

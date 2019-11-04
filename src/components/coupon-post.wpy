@@ -67,7 +67,7 @@
             <view class="wx-coupon-list wx-coupon-index">
                 <repeat for="{{couponList}}" key="index" index="index" item="item">
                     <view class="marginB20">
-                        <CouponItem current="UNUSED" position="index" :coupon.sync="item"></CouponItem>
+                        <CouponItem current="UNUSED" position="index" :coupon.sync="item" @handleClose.user="handleClose"></CouponItem>
                     </view>
                 </repeat>
             </view>

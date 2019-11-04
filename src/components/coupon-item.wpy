@@ -99,7 +99,7 @@
             <view>有效期{{coupon.days}}天</view>
         </i-col>
         <i-col span="{{rspan}}" i-class="wx-coupon-right">
-            <view wx:if="{{current == 'UNUSED'}}"><span class="wx-btn">去使用</span></view>
+            <view wx:if="{{current == 'UNUSED'}}"><span class="wx-btn" @tap="handleUse">去使用</span></view>
             <view wx:if="{{current == 'USED'}}"><icon class="iconfont icon-yishiyong"/></view>
             <view wx:if="{{current == 'EXPIRED'}}"><icon class="iconfont icon-yiguoqi"/></view>
         </i-col>
@@ -122,14 +122,25 @@
         };
         computed = {
             lspan () {
-                return this.position == 'index' ? 7 : 6;
+                return this.position === 'index' ? 7 : 6;
             },
             mspan () {
-                return this.position == 'index' ? 11 : 12;
+                return this.position === 'index' ? 11 : 12;
             },
             rspan () {
-                return this.position == 'index' ? 6 : 6;
+                return this.position === 'index' ? 6 : 6;
             }
-        }
+        };
+        methods = {
+            handleUse(){
+                if(this.position !== 'index'){
+                    wepy.switchTab({
+                        url: '/pages/home/index'
+                    })
+                }else{
+                    this.$emit('handleClose')
+                }
+            },
+        };
     }
 </script>
