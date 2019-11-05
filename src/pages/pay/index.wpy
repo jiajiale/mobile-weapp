@@ -8,9 +8,10 @@
             <view class="wx-subtitle">请及时付款，超时订单将自动关闭</view>
         </view>
         <i-cell-group>
-            <i-cell title="订单编号" i-class="wx-spec-item" value="￥{{goodsOrder.order_sn}}"></i-cell>
+            <i-cell title="订单编号" i-class="wx-spec-item" value="{{goodsOrder.order_sn}}"></i-cell>
             <i-cell title="商品金额" i-class="wx-spec-item" value="￥{{goodsOrder.goods_price}}"></i-cell>
-            <i-cell title="运费" i-class="wx-spec-item" value="￥{{goodsOrder.shipping_price}}"></i-cell>
+            <i-cell title="运费" i-class="wx-spec-item" value="+￥{{goodsOrder.shipping_price}}"></i-cell>
+            <i-cell title="优惠券" i-class="wx-spec-item" value="-￥{{goodsOrder.shipping_price}}"></i-cell>
             <i-cell title="积分抵扣" i-class="wx-spec-item" is-link bind:click="switchPointPay" wx:if="{{isCYUser && goodsOrder.maxPoint > 0}}">
                 <view slot="footer" style="font-size: 24rpx;color: #999;">
                     <span wx:if="{{pointMoney}}">￥{{pointMoney}}</span>
@@ -299,7 +300,7 @@
         };
 
         onLoad(params) {
-//            params.order_id = 4285;
+            //params.order_id = 8204;
             this.params = params;
         }
 

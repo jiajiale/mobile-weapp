@@ -44,7 +44,8 @@
     <view class="marginT20">
         <i-cell-group>
             <i-cell title="商品金额" i-class="wx-spec-item" value="￥{{totalPrice.total_fee}}"></i-cell>
-            <i-cell title="运费" i-class="wx-spec-item" value="￥{{totalPrice.delivery_fee ? totalPrice.delivery_fee : 0}}"></i-cell>
+            <i-cell title="运费" i-class="wx-spec-item" value="+￥{{totalPrice.delivery_fee ? totalPrice.delivery_fee : 0}}"></i-cell>
+            <i-cell title="优惠券" i-class="wx-spec-item" is-link url="/pages/user/coupon?from=order" value="0张可用"></i-cell>
         </i-cell-group>
     </view>
 
@@ -141,6 +142,7 @@
         async queryItem() {
             tip.loading(MSG.LOADING);
             this.params.is_goods = 1;
+            this.params.from = 'goods';
             await api.queryCartGoods('POST',this.params).then(resp => {
                 tip.loaded();
                 if(resp.data && resp.data.cartList){
