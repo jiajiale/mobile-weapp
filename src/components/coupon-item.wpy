@@ -96,7 +96,8 @@
         <i-col span="{{mspan}}" i-class="wx-coupon-mid">
             <view class="wx-title">{{coupon.name}}</view>
             <view class="wx-cate">全场通用</view>
-            <view>有效期{{coupon.days}}天</view>
+            <view wx:if="{{position == 'index'}}">有效期{{coupon.days}}天</view>
+            <view wx:else>有效期至：{{coupon.gmt_end}}</view>
         </i-col>
         <i-col span="{{rspan}}" i-class="wx-coupon-right">
             <view wx:if="{{current == 'UNUSED'}}">
