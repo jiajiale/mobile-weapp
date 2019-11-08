@@ -158,6 +158,11 @@
                     this.totalPrice = resp.data.totalPrice;
                     this.totalAmount = (parseFloat(this.totalPrice.total_fee) + parseFloat(this.totalPrice.delivery_fee)).toFixed(2);
 
+                    if(resp.data.couponInfo && resp.data.couponInfo.amount > 0){
+                        this.couponInfo = resp.data.couponInfo;
+                        wx.setStorageSync('couponInfo', this.couponInfo);
+                    }
+
                     if(this.couponInfo && this.couponInfo.amount > 0){
                         this.totalAmount = (parseFloat(this.totalAmount) - parseFloat(this.couponInfo.amount)).toFixed(2);
                     }
