@@ -11,14 +11,14 @@
             <i-cell title="订单编号" i-class="wx-spec-item" value="{{goodsOrder.order_sn}}"></i-cell>
             <i-cell title="商品金额" i-class="wx-spec-item" value="￥{{goodsOrder.goods_price}}"></i-cell>
             <i-cell title="运费" i-class="wx-spec-item" value="+￥{{goodsOrder.shipping_price}}"></i-cell>
-            <i-cell title="优惠券" i-class="wx-spec-item" value="-￥{{goodsOrder.shipping_price}}"></i-cell>
+            <i-cell title="优惠券" i-class="wx-spec-item" value="-￥{{goodsOrder.coupon_price}}"></i-cell>
             <i-cell title="积分抵扣" i-class="wx-spec-item" is-link bind:click="switchPointPay" wx:if="{{isCYUser && goodsOrder.maxPoint > 0}}">
                 <view slot="footer" style="font-size: 24rpx;color: #999;">
                     <span wx:if="{{pointMoney}}">￥{{pointMoney}}</span>
                     <span wx:else>使用移动积分</span>
                 </view>
             </i-cell>
-            <i-cell title="需付款" i-class="wx-spec-item" value="￥{{goodsOrder.total_amount - pointMoney}}"></i-cell>
+            <i-cell title="需付款" i-class="wx-spec-item" value="￥{{goodsOrder.order_amount - pointMoney}}"></i-cell>
         </i-cell-group>
     </view>
 

@@ -77,17 +77,17 @@
                 this.queryReload();
             },
             handleCheckCoupon({ detail }){
-                let coupon_id,amount = 0;
-                coupon_id = detail.value;
+                let user_coupon_id,amount = 0;
+                user_coupon_id = detail.value;
 
-                if(coupon_id > 0){
-                    this.couponList.forEach(function (coupon) {
-                        if(coupon.id === coupon_id){
-                            amount = coupon.amount;
+                if(user_coupon_id > 0){
+                    this.couponList.forEach(function (userCoupon) {
+                        if(userCoupon.id === user_coupon_id){
+                            amount = userCoupon.amount;
                         }
                     });
                     let couponInfo = {
-                        coupon_id: detail.value,
+                        user_coupon_id: detail.value,
                         amount: amount,
                     };
                     wx.setStorageSync('couponInfo', couponInfo);
@@ -117,7 +117,7 @@
                     resp.data.items.filter(item => {
                         item.amount = parseInt(item.amount);
                         item.order_amount = parseInt(item.order_amount);
-                        item.checked = !!(this.couponInfo && item.id == this.couponInfo.coupon_id);
+                        item.checked = !!(this.couponInfo && item.id === this.couponInfo.user_coupon_id);
                     });
                     this.couponList = this.couponList.concat(resp.data.items);
                     if(resp.data.pager.index >= resp.data.pager.count){

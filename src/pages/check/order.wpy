@@ -113,6 +113,11 @@
                 this.formData['from'] = this.params.from ? this.params.from : '';
                 this.formData['from_user_id'] = userFrom;
                 this.formData['form_id'] = formId;
+
+                if(this.couponInfo && this.couponInfo.amount > 0){
+                    this.formData['user_coupon_id'] = this.couponInfo.user_coupon_id;
+                }
+
                 if(!this.isSubmit){
                     this.isSubmit = true;
                     tip.loading(MSG.COMMITTING);
@@ -174,6 +179,7 @@
 
         onLoad(params) {
             this.params = params;
+            wx.removeStorageSync('couponInfo');
         }
     }
 </script>
