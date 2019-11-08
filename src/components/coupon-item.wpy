@@ -100,7 +100,7 @@
         </i-col>
         <i-col span="{{rspan}}" i-class="wx-coupon-right">
             <view wx:if="{{current == 'UNUSED'}}">
-                <radio wx:if="{{position == 'order'}}" value="{{coupon.id}}" color="#ec3a3e" checked=""/>
+                <radio wx:if="{{position == 'order'}}" value="{{coupon.id}}" color="#ec3a3e" checked="{{coupon.checked}}"/>
                 <span wx:else class="wx-btn" @tap="handleUse">去使用</span>
             </view>
             <view wx:if="{{current == 'USED'}}"><icon class="iconfont icon-yishiyong"/></view>
