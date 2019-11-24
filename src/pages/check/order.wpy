@@ -45,7 +45,7 @@
         <i-cell-group>
             <i-cell title="商品金额" i-class="wx-spec-item" value="￥{{totalPrice.total_fee}}"></i-cell>
             <i-cell title="运费" i-class="wx-spec-item" value="+￥{{totalPrice.delivery_fee ? totalPrice.delivery_fee : 0}}"></i-cell>
-            <i-cell title="优惠券" wx:if="{{!couponInfo}}" i-class="wx-spec-item" is-link url="/pages/user/coupon?from=order" value="0张可用"></i-cell>
+            <i-cell title="优惠券" wx:if="{{!couponInfo || !couponInfo.amount}}" i-class="wx-spec-item" is-link url="/pages/user/coupon?from=order" value="0张可用"></i-cell>
             <i-cell title="优惠券" wx:else i-class="wx-spec-item" is-link url="/pages/user/coupon?from=order" value="-￥{{couponInfo.amount}}"></i-cell>
         </i-cell-group>
     </view>
@@ -158,10 +158,18 @@
                     this.totalPrice = resp.data.totalPrice;
                     this.totalAmount = (parseFloat(this.totalPrice.total_fee) + parseFloat(this.totalPrice.delivery_fee)).toFixed(2);
 
-                    if(resp.data.couponInfo && resp.data.couponInfo.amount > 0){
+                    if(resp.data.couponInfo && resp.data.couponInfo.amount > 0 && !this.couponInfo){
                         this.couponInfo = resp.data.couponInfo;
-                        wx.setStorageSync('couponInfo', this.couponInfo);
+                    }else{
+                        if(this.couponInfo){
+                            this.couponInfo.order_amount = this.totalPrice.total_fee;
+                        }else{
+                            this.couponInfo = {
+                                order_amount: this.totalPrice.total_fee
+                            }
+                        }
                     }
+                    wx.setStorageSync('couponInfo', this.couponInfo);
 
                     if(this.couponInfo && this.couponInfo.amount > 0){
                         this.totalAmount = (parseFloat(this.totalAmount) - parseFloat(this.couponInfo.amount)).toFixed(2);
