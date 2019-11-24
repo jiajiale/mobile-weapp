@@ -111,11 +111,15 @@
 
         async queryItemList() {
             tip.loading(MSG.LOADING);
-            await api.queryCouponList('POST',{
+            let params = {
                 page: this.page,
-                status: this.current,
-                order_amount: this.couponInfo.order_amount ? this.couponInfo.order_amount : 0
-            }).then(resp => {
+                status: this.current
+            };
+
+            if(this.couponInfo && this.couponInfo.order_amount){
+                params.order_amount = this.couponInfo.order_amount;
+            }
+            await api.queryCouponList('POST',params).then(resp => {
                 tip.loaded();
                 if(resp.data){
                     resp.data.items.filter(item => {
@@ -141,9 +145,9 @@
 
         onLoad(params) {
             this.params = params;
-            this.couponInfo = wx.getStorageSync('couponInfo');
             if(params.from && params.from === 'order'){
                 this.position = 'order';
+                this.couponInfo = wx.getStorageSync('couponInfo');
             }
         }
     }
