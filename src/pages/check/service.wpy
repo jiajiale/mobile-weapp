@@ -124,7 +124,7 @@
 
                 wx.chooseImage({
                     count: 1,
-                    sizeType: ['original', 'compressed'],
+                    sizeType: ['compressed'],
                     sourceType: ['album', 'camera'],
                     success(res) {
                         const tempFilePaths = res.tempFilePaths;
@@ -212,14 +212,15 @@
         };
 
         onShow() {
-            let _this = this;
-            this.checkAuthorize(function () {
-                _this.queryItem();
-            });
+
         };
 
         onLoad(params) {
             this.params = params;
+            let _this = this;
+            this.checkAuthorize(function () {
+                _this.queryItem();
+            });
         }
     }
 </script>

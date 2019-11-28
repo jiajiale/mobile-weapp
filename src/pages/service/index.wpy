@@ -10,7 +10,7 @@
     </view>
 
     <view class="wx-search">
-        <input placeholder="请输入名称" value="{{keywords}}" data-key="name" bindinput="handleInput"/>
+        <input placeholder="请输入名称" value="{{keywords}}" data-key="name" bindinput="handleSearchInput"/>
         <view class="wx-search-icon"><i-icon type="search" size="20" color="#999999"/></view>
         <view class="wx-search-btn" @tap="queryReload">搜索</view>
     </view>
@@ -100,6 +100,11 @@
             },
         };
 
+        handleSearchInput(e){
+            let key = e.currentTarget.dataset.key;
+            this.keywords = e.detail.value;
+        }
+
         queryReload(){
             this.page = 1;
             this.goodsList = [];
@@ -120,13 +125,15 @@
             }
             await api.queryGoodsList('POST',condition).then(resp => {
                 tip.loaded();
-                if(resp.data){
+                if(resp.data.goodsList){
                     this.goodsList = this.goodsList.concat(resp.data.goodsList.items);
                     if(resp.data.goodsList.pager.index >= resp.data.goodsList.pager.count){
                         this.hasPage = false;
                     }
-                    this.$apply();
+                }else{
+                    this.hasPage = false;
                 }
+                this.$apply();
             });
         };
 
