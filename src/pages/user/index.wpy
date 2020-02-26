@@ -93,11 +93,13 @@
                     </i-grid-icon>
                     <i-grid-label>我的地址</i-grid-label>
                 </i-grid-item>
-                <i-grid-item i-class="wx-item" data-url="/pages/user/question" @tap="handleGo">
+                <i-grid-item i-class="wx-item" data-url="/pages/user/question">
+                   <button open-type="contact" plain="true" style="border:none;line-height: normal;padding:0px;">
                     <i-grid-icon i-class="wx-icon">
-                        <icon class="iconfont icon-yijianfankui"/>
+                        <icon class="iconfont icon-lianxikefu" style="font-size: 36rpx;font-weight: bold;"/>
                     </i-grid-icon>
-                    <i-grid-label>我的反馈</i-grid-label>
+                    <i-grid-label>联系客服</i-grid-label>
+                   </button>
                 </i-grid-item>
                 <i-grid-item i-class="wx-item" data-url="/pages/user/code" @tap="handleGo">
                     <i-grid-icon i-class="wx-icon">
