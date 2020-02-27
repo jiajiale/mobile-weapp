@@ -7,9 +7,15 @@
             <image src="{{advImgUrl + 'user_bg.jpg'}}" mode="scaleToFill" wx:if="{{advImgUrl}}"></image>
         </view>
         <view class="wx-user-info">
-            <view style="position: relative;top:-60rpx;">
+            <view wx:if="{{isLogin}}" style="position: relative;top:-60rpx;">
                 <view class="user-thumb"><open-data type="userAvatarUrl"></open-data></view>
                 <view class="user-name"><open-data type="userNickName"></open-data></view>
+            </view>
+            <view wx:else style="position: relative;top:-60rpx;" @tap="handleLogin">
+                <view class="user-thumb" style="background: #ccc;">
+                   <icon class="iconfont icon-touxiang" style="font-size: 60rpx;color: #fff;line-height: 140rpx;"/>
+                </view>
+                <view class="user-name">点击登录</view>
             </view>
             <view class="wx-user-wallet">
                 <i-row>
@@ -152,34 +158,66 @@
             adv: null,
             isLoop: false,
             userInfo: {},
+            isLogin: false
         };
 
         computed = {};
 
         methods = {
             handleGo(e){
-                this.checkLogin(function () {
-                    let url = e.currentTarget.dataset.url;
-                    wepy.navigateTo({url: url});
+                let _this = this;
+                this.checkAuthorize(function () {
+                  _this.checkLogin(function () {
+                     let url = e.currentTarget.dataset.url;
+                     wepy.navigateTo({url: url});
+                   });
                 });
+            },
+            handleLogin(e){
+              let _this = this;
+              this.checkAuthorize(function () {
+
+                  _this.$parent.updateLocalUser(function () {
+                      _this.userInfo = _this.$parent.globalData.userInfo;
+                      if(_this.userInfo.notice && _this.userInfo.notice.length > 25){
+                          _this.isLoop = true;
+                      }
+                      _this.$apply();
+                  });
+              });
             }
         };
 
         onShow() {
             let _this = this;
-            this.checkAuthorize(function () {
+            // this.checkAuthorize(function () {
+            //     _this.$parent.updateLocalUser(function () {
+            //         _this.userInfo = _this.$parent.globalData.userInfo;
+            //         if(_this.userInfo.notice && _this.userInfo.notice.length > 25){
+            //             _this.isLoop = true;
+            //         }
+            //         _this.$apply();
+            //     });
+            // });
+            if(this.$parent.globalData.userInfo){
+               let _this = this;
+               this.isLogin = true;
                 _this.$parent.updateLocalUser(function () {
                     _this.userInfo = _this.$parent.globalData.userInfo;
+                    _this.adv = _this.userInfo.adv;
                     if(_this.userInfo.notice && _this.userInfo.notice.length > 25){
                         _this.isLoop = true;
                     }
                     _this.$apply();
                 });
-            });
+            }
         };
 
         onLoad() {
-            this.adv = this.$parent.globalData.userInfo.adv;
+            if(this.$parent.globalData.userInfo){
+               this.isLogin = true;
+               this.adv = this.$parent.globalData.userInfo.adv;
+            }
         }
     }
 </script>
