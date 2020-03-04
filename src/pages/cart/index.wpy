@@ -137,8 +137,10 @@
             handleCheck(){
                 if(this.hasSelect){
                     let _this = this;
-                    this.checkLogin(function () {
-                        _this.addGoodsCart();
+                    this.checkAuthorize(function () {
+                        this.checkLogin(function () {
+                            _this.addGoodsCart();
+                        });
                     });
                 }else{
                     tip.toast(MSG.SELECT_GOODS);
@@ -189,10 +191,8 @@
 
         onShow() {
             let _this = this;
-            this.checkAuthorize(function () {
-                _this.selectAll = 0;
-                _this.cartList = wx.getStorageSync('goodsCart') ? wx.getStorageSync('goodsCart') : [];
-            });
+            _this.selectAll = 0;
+            _this.cartList = wx.getStorageSync('goodsCart') ? wx.getStorageSync('goodsCart') : [];
         };
 
         onLoad() {

@@ -34,7 +34,7 @@
             <view class="wx-row">
                 <i-row>
                     <i-col span="12" i-class="wx-item"  wx:for="{{saleGoodsList}}" wx:key="{{item.id}}">
-                        <navigator open-type="navigate" hover-class="none" url="/pages/goods/detail?id={{item.id}}">
+                        <view @tap="handleGo" data-url="/pages/goods/detail?id={{item.id}}">
                         <i-row>
                             <i-col span="14" i-class="wx-left">
                                 <view class="wx-goods-title">{{item.goods_name}}</view>
@@ -47,7 +47,7 @@
                         <i-row>
                             <view style="padding-bottom: 15rpx;color: #ec3a3e;font-size: 24rpx;">￥{{item.shop_price}}</view>
                         </i-row>
-                        </navigator>
+                        </view>
                     </i-col>
                 </i-row>
             </view>
@@ -63,15 +63,11 @@
                 <i-row i-class="wx-item-block">
                     <i-col span="12" i-class="wx-item" @tap="handleGo" data-url="{{appInfo[0].app_url}}">
                         <view class="wx-item-box" wx:if="{{appInfo[0]}}">
-                            <!--<view class="wx-icon"><icon class="iconfont icon-zhongguoyidong"/></view>-->
-                            <!--<view class="wx-txt">{{appInfo[0].app_name}}</view>-->
                             <image src="{{appImgUrl + appInfo[0].app_image}}" mode="scaleToFill"></image>
                         </view>
                     </i-col>
                     <i-col span="12" i-class="wx-item" @tap="handleGo" data-url="{{appInfo[1].app_url}}">
                         <view class="wx-item-box" wx:if="{{appInfo[1]}}">
-                            <!--<view class="wx-icon"><icon class="iconfont icon-kuandai"/></view>-->
-                            <!--<view class="wx-txt">{{appInfo[1].app_name}}</view>-->
                             <image src="{{appImgUrl + appInfo[1].app_image}}" mode="scaleToFill"></image>
                         </view>
                     </i-col>
@@ -89,15 +85,11 @@
                 <i-row i-class="wx-mobile">
                     <i-col span="12" i-class="wx-item" @tap="handleGo" data-url="{{appInfo[2].app_url}}">
                         <view class="wx-item-box" wx:if="{{appInfo[2]}}">
-                            <!--<view class="wx-icon"><icon class="iconfont icon-zhongguoyidong"/></view>-->
-                            <!--<view class="wx-txt">{{appInfo[2].app_name}}</view>-->
                             <image src="{{appImgUrl + appInfo[2].app_image}}" mode="scaleToFill"></image>
                         </view>
                     </i-col>
                     <i-col span="12" i-class="wx-item" @tap="handleGo" data-url="{{appInfo[3].app_url}}">
                         <view class="wx-item-box" wx:if="{{appInfo[3]}}">
-                            <!--<view class="wx-icon"><icon class="iconfont icon-kuandai"/></view>-->
-                            <!--<view class="wx-txt">{{appInfo[3].app_name}}</view>-->
                             <image src="{{appImgUrl + appInfo[3].app_image}}" mode="scaleToFill"></image>
                         </view>
                     </i-col>
@@ -112,13 +104,13 @@
         <view class="wx-goods-new">
             <i-row>
                 <i-col span="8" i-class="wx-goods-col" wx:for="{{newGoodsList}}" wx:key="{{item.id}}">
-                    <navigator open-type="navigate" hover-class="none" url="/pages/goods/detail?id={{item.id}}">
+                    <view @tap="handleGo" data-url="/pages/goods/detail?id={{item.id}}">
                         <GoodsItem>
                             <view slot="thumb" style="height: 100%;"><image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image></view>
                             <view slot="title">{{item.goods_name}}</view>
                             <view slot="extra"><span class="wx-goods-price">￥{{item.shop_price}}</span></view>
                         </GoodsItem>
-                    </navigator>
+                    </view>
                 </i-col>
             </i-row>
         </view>
@@ -130,13 +122,13 @@
         <view class="wx-goods-new">
             <i-row>
                 <i-col span="8" i-class="wx-goods-col" wx:for="{{recommendGoodsList}}" wx:key="{{item.id}}">
-                    <navigator open-type="navigate" hover-class="none" url="/pages/goods/detail?id={{item.id}}">
+                    <view @tap="handleGo" data-url="/pages/goods/detail?id={{item.id}}">
                         <GoodsItem>
                             <view slot="thumb" style="height: 100%;"><image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image></view>
                             <view slot="title">{{item.goods_name}}</view>
                             <view slot="extra"><span class="wx-goods-price">￥{{item.shop_price}}</span></view>
                         </GoodsItem>
-                    </navigator>
+                    </view>
                 </i-col>
             </i-row>
         </view>
@@ -232,10 +224,15 @@
                 }
             },
             handleGo(e){
-                let url = e.currentTarget.dataset.url;
-                if(url){
-                    wepy.navigateTo({url: url});
-                }
+                let _this = this;
+                this.checkAuthorize(function () {
+                    _this.checkLogin(function () {
+                        let url = e.currentTarget.dataset.url;
+                        if(url){
+                          wepy.navigateTo({url: url});
+                        }
+                    });
+                });
             },
             handleSearchFocus(){
                 wepy.navigateTo({
@@ -300,7 +297,9 @@
 
         initData(){
             this.queryItem();
-            this.queryCoupon();
+            if(this.$parent.globalData.userInfo){
+               this.queryCoupon();
+            }
         }
 
         onShow() {

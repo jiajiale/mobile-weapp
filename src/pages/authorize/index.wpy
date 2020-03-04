@@ -14,6 +14,7 @@
             <view class="wx-content">获取您的信息(头像、昵称)等</view>
             <view class="wx-btn">
                 <i-button type="success" size="small" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登陆</i-button>
+                <view @tap="handleBack" style="font-size: 24rpx;text-align: center;color: #2d8cf0;">取消授权</view>
             </view>
         </view>
     </view>
@@ -36,7 +37,11 @@
 
         events = {};
 
-        methods = {};
+        methods = {
+          handleBack(e){
+            wx.navigateBack();
+          },
+        };
 
         bindGetUserInfo(e) {
             if(e.detail.userInfo) {
