@@ -30,7 +30,7 @@
                    <i-input value="{{formData[item.label]}}"  wx:if="{{item.type == 1}}"  bindchange="handleInput" data-key="{{item.label}}" title="{{item.name}}" placeholder="请{{item.tips}}" right="true"/>
                     <picker bindchange="handleSelect" value="{{selectArr[index]}}" range="{{item.options}}" wx:if="{{item.type == 3}}" data-current="{{index}}">
                       <view class="picker">
-                        <i-input value="{{formData[item.label]}}"  data-key="{{item.label}}" title="{{item.name}}" placeholder="请{{item.tips}}" right="true"/>
+                        <i-input value="{{formData[item.label]}}" disabled="true" data-key="{{item.label}}" title="{{item.name}}" placeholder="请{{item.tips}}" right="true"/>
                       </view>
                     </picker>
                 </span>
