@@ -149,7 +149,9 @@
         async queryItem() {
             tip.loading(MSG.LOADING);
             this.params.is_goods = 1;
-            this.params.from = 'goods';
+            if(this.params.from){
+                this.params.from = 'goods';
+            }
             await api.queryCartGoods('POST',this.params).then(resp => {
                 tip.loaded();
                 if(resp.data && resp.data.cartList){
