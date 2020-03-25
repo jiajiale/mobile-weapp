@@ -138,7 +138,7 @@
                 if(this.hasSelect){
                     let _this = this;
                     this.checkAuthorize(function () {
-                        this.checkLogin(function () {
+                        _this.checkLogin(function () {
                             _this.addGoodsCart();
                         });
                     });

@@ -125,7 +125,7 @@
                 tip.loaded();
                 if(resp.data.goodsList){
                     this.goodsList = this.goodsList.concat(resp.data.goodsList.items);
-                    if(resp.data.goodsList.pager.index >= resp.data.goodsList.pager.count){
+                    if(resp.data.goodsList.pager && resp.data.goodsList.pager.index >= resp.data.goodsList.pager.count){
                         this.hasPage = false;
                     }
                 }

@@ -218,13 +218,13 @@
                             if(enrollInfo[item.label] !== undefined){
                                 this.formData[item.label] = enrollInfo[item.label]
                             }
-                            if(item.type == 3){
-                                item.options.forEach((val,idx) => {
-                                    if(val === enrollInfo[item.label]){
-                                      this.selectArr[index] = idx;
-                                    }
-                                })
-                            }
+                            // if(item.type == 3){
+                            //     item.options.forEach((val,idx) => {
+                            //         if(val === enrollInfo[item.label]){
+                            //           this.selectArr[index] = idx;
+                            //         }
+                            //     })
+                            // }
                         })
                     }
                     this.totalAmount = (parseFloat(this.totalPrice.total_fee) + parseFloat(this.totalPrice.delivery_fee)).toFixed(2);
