@@ -10,7 +10,7 @@
         <view class="wx-focus">
             <swiper indicator-dots="{{indicatorDots}}" style="height: 480rpx;"
                     autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
-                <block wx:for="{{focusList}}" wx:key="{{item.id}}">
+                <block wx:for="{{focusList}}" wx:key="index">
                     <swiper-item @tap="handleGo" data-url="{{item.target}}">
                         <image src="{{focusImgUrl +  item.image}}" data-item="{{item}}"/>
                     </swiper-item>
@@ -19,7 +19,7 @@
         </view>
 
         <view class="wx-cate-box marginB20">
-            <view class="wx-cate-item" wx:for="{{cateList}}" wx:key="{{index}}" data-item="{{item}}" @tap="handleNavigation">
+            <view class="wx-cate-item" wx:for="{{cateList}}" wx:key="index" data-item="{{item}}" @tap="handleNavigation">
                 <view class="wx-icon"><image src="{{categoryImgUrl + item.image}}" mode="scaleToFill"></image></view>
                 <view class="wx-txt">{{item.name}}</view>
             </view>
@@ -33,7 +33,7 @@
             <view class="wx-title">特价专区</view>
             <view class="wx-row">
                 <i-row>
-                    <i-col span="12" i-class="wx-item"  wx:for="{{saleGoodsList}}" wx:key="{{item.id}}">
+                    <i-col span="12" i-class="wx-item"  wx:for="{{saleGoodsList}}" wx:key="index">
                         <view @tap="handleGo" data-url="/pages/goods/detail?id={{item.id}}">
                         <i-row>
                             <i-col span="14" i-class="wx-left">
@@ -103,7 +103,7 @@
 
         <view class="wx-goods-new">
             <i-row>
-                <i-col span="8" i-class="wx-goods-col" wx:for="{{newGoodsList}}" wx:key="{{item.id}}">
+                <i-col span="8" i-class="wx-goods-col" wx:for="{{newGoodsList}}" wx:key="index">
                     <view @tap="handleGo" data-url="/pages/goods/detail?id={{item.id}}">
                         <GoodsItem>
                             <view slot="thumb" style="height: 100%;"><image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image></view>
@@ -121,7 +121,7 @@
 
         <view class="wx-goods-new">
             <i-row>
-                <i-col span="8" i-class="wx-goods-col" wx:for="{{recommendGoodsList}}" wx:key="{{item.id}}">
+                <i-col span="8" i-class="wx-goods-col" wx:for="{{recommendGoodsList}}" wx:key="index">
                     <view @tap="handleGo" data-url="/pages/goods/detail?id={{item.id}}">
                         <GoodsItem>
                             <view slot="thumb" style="height: 100%;"><image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image></view>

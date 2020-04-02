@@ -17,7 +17,7 @@
 
     <scroll-view scroll-y bindscrolltolower="onReachBottom" wx:if="{{goodsList.length > 0}}">
         <view class="wx-goods-list">
-            <view class="wx-goods-item" wx:for="{{goodsList}}" wx:key="{{item.id}}" bindtap="handleNavigation" data-item="{{item}}">
+            <view class="wx-goods-item" wx:for="{{goodsList}}" wx:key="index" bindtap="handleNavigation" data-item="{{item}}">
                 <i-row class="wx-goods-item-head">
                     <i-col span="24" i-class="col-class">
                         <image src="{{goodsImgUrl + (item.app_img ? item.app_img : item.original_img)}}"

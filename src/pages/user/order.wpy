@@ -12,7 +12,7 @@
         </i-tabs>
     </view>
     <view class="wx-order-list marginT20">
-        <view class="marginB20" wx:for="{{orderList}}" wx:key="{{item.id}}" wx:if="{{orderList.length}}">
+        <view class="marginB20" wx:for="{{orderList}}" wx:key="index" wx:if="{{orderList.length}}">
             <i-card title="{{item.gmt_create}}" full extra="{{item.status_desc}}" i-class="wx-order-card" data-url="/pages/user/detail?id={{item.id}}" bindtap="handleGo">
                 <view slot="content">
                     <repeat for="{{item.goods_list}}" key="{{goodsItem.id}}" item="goodsItem">
