@@ -133,7 +133,7 @@
         </i-panel>
     </view>
 
-    <view class="wx-order-actions" wx:if="{{goodsOrder.is_goods == '0' && goodsOrder.handle_btn}}">
+    <view class="wx-order-actions" wx:if="{{goodsOrder.is_goods == '0' && userInfo.type == '2' && goodsOrder.handle_btn}}">
         <i-row>
             <i-col span="12" i-class="wx-cancel">
                 <view data-action="cancel" @tap="cancelOrder">取消办理</view>
@@ -183,6 +183,7 @@
         data = {
             goodsImgThumb: api.THUMBNAIL_IMG,
             params: [],
+            userInfo: {},
             goodsOrder: {},
             goodsList: [],
             fieldList: [],
@@ -291,6 +292,7 @@
         onShow() {
             let _this = this;
             this.checkAuthorize(function () {
+                _this.userInfo = _this.$parent.globalData.userInfo;
                 _this.queryItem();
             });
         };
