@@ -26,7 +26,14 @@
             <view class="wx-check-info">
                 <i-input value="{{formData.name}}" bindchange="handleInput" data-key="name" title="姓　　名" placeholder="请输入办理人姓名" right="true"/>
                 <i-input value="{{formData.mobile}}" bindchange="handleInput" data-key="mobile" title="手机号码" placeholder="请输入办理人手机号码" right="true"/>
-                <i-input value="{{formData[item.label]}}" wx:for="{{fieldList}}" wx:if="{{item.type == 1}}" wx:key="{{index}}" bindchange="handleInput" data-key="{{item.label}}" title="{{item.name}}" placeholder="请{{item.tips}}" right="true"/>
+                <span wx:for="{{fieldList}}" wx:key="{{index}}">
+                   <i-input value="{{formData[item.label]}}"  wx:if="{{item.type == 1}}"  bindchange="handleInput" data-key="{{item.label}}" title="{{item.name}}" placeholder="请{{item.tips}}" right="true"/>
+                    <picker bindchange="handleSelect" value="{{selectArr[index]}}" range="{{item.options}}" wx:if="{{item.type == 3}}" data-current="{{index}}">
+                      <view class="picker">
+                        <i-input value="{{formData[item.label]}}" disabled="true" data-key="{{item.label}}" title="{{item.name}}" placeholder="请{{item.tips}}" right="true"/>
+                      </view>
+                    </picker>
+                </span>
             </view>
         </view>
 
@@ -98,6 +105,7 @@
             params: null,
             cartList: [],
             fieldList: [],
+            selectArr: [],
             totalPrice: {},
             totalAmount: '0.00',
             formData: {},
@@ -110,6 +118,15 @@
             handleInput(e){
                 let key = e.currentTarget.dataset.key;
                 this.formData[key] = e.detail.detail.value;
+            },
+            handleSelect(e){
+                const curIndex = e.target.dataset.current
+                const selIndex = e.detail.value;
+                this.selectArr[curIndex] = selIndex;
+
+                let item = this.fieldList[curIndex];
+                let options = item.options;
+                this.formData[item.label] = options[selIndex];
             },
             uploadImage(e){
                 let _this = this;
@@ -197,10 +214,17 @@
                         this.formData.name = enrollInfo.name ? enrollInfo.name : '';
                         this.formData.mobile = enrollInfo.mobile ? enrollInfo.mobile : '';
 
-                        this.fieldList.forEach((item) => {
+                        this.fieldList.forEach((item,index) => {
                             if(enrollInfo[item.label] !== undefined){
                                 this.formData[item.label] = enrollInfo[item.label]
                             }
+                            // if(item.type == 3){
+                            //     item.options.forEach((val,idx) => {
+                            //         if(val === enrollInfo[item.label]){
+                            //           this.selectArr[index] = idx;
+                            //         }
+                            //     })
+                            // }
                         })
                     }
                     this.totalAmount = (parseFloat(this.totalPrice.total_fee) + parseFloat(this.totalPrice.delivery_fee)).toFixed(2);
@@ -216,6 +240,7 @@
         };
 
         onLoad(params) {
+            params.from = "goods";
             this.params = params;
             let _this = this;
             this.checkAuthorize(function () {

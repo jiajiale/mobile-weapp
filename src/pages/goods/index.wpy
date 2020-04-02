@@ -83,16 +83,21 @@
                 this.queryItemList();
             },
             handleNavigation(e){
-                let item = e.currentTarget.dataset.item;
-                if(!!parseInt(item.is_goods)){
-                    wepy.navigateTo({
-                        url: "/pages/goods/detail?id=" + item.id
-                    })
-                }else{
-                    wepy.navigateTo({
-                        url: "/pages/service/detail?id=" + item.id
-                    })
-                }
+                let _this = this;
+                this.checkAuthorize(function () {
+                    _this.checkLogin(function () {
+                        let item = e.currentTarget.dataset.item;
+                        if(!!parseInt(item.is_goods)){
+                            wepy.navigateTo({
+                              url: "/pages/goods/detail?id=" + item.id
+                            })
+                        }else{
+                            wepy.navigateTo({
+                              url: "/pages/service/detail?id=" + item.id
+                            })
+                        }
+                    });
+                });
             }
         };
 
@@ -142,11 +147,11 @@
 
         onShow() {
             let _this = this;
-            this.checkAuthorize(function () {
+            // this.checkAuthorize(function () {
                 if(!_this.params.from){
                     _this.queryReload();
                 }
-            });
+            // });
         };
 
         onLoad(params) {
