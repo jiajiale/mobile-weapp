@@ -174,8 +174,9 @@ function hideMobile(mobile){
 }
 
 const fsm = wx.getFileSystemManager();
-const FILE_BASE_NAME = 'tmp_base64src';
-function base64src(base64data){
+//const FILE_BASE_NAME = 'tmp_base64src';
+function base64src(base64data,basename){
+    let FILE_BASE_NAME = basename
     return new Promise((resolve, reject) => {
         const [, format, bodyData] = /data:image\/(\w+);base64,(.*)/.exec(base64data) || [];
         if (!format) {

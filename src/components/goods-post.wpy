@@ -90,7 +90,7 @@
             </div>
         </div>
         <!--<view style="display:none;"></view>-->
-        <canvas canvas-id="post" style="position:fixed;top:-999;width:{{canvasW}}px; height:{{canvasH}}px"/>
+        <canvas canvas-id="post_{{goods.id}}" style="position:fixed;top:-999;width:{{canvasW}}px; height:{{canvasH}}px"/>
         <view class="wx-post-mask" @tap="handleClose"></view>
     </view>
 </template>
@@ -143,7 +143,7 @@
                     wx.canvasToTempFilePath({
                         x: 0,
                         y: 0,
-                        canvasId: 'post',
+                        canvasId: 'post_'+that.goods.id,
                         success: function (res) {
                             let tmpImg = res.tempFilePath;
                             wx.saveImageToPhotosAlbum({
@@ -175,7 +175,7 @@
                 if(resp.code === 200){
                     this.base64Data = 'data:image/jpg;base64,' + resp.data.code;
                     this.base64Qr = this.base64Data;
-                    this.base64Data = util.base64src(this.base64Data);
+                    this.base64Data = util.base64src(this.base64Data,'tmp_base64src_'+this.goods.id);
                     this.base64Data.then(val => {
                         that.base64Data = val;
                         that.drawPost();
@@ -200,7 +200,7 @@
                 let imgWidth = that.scale(335);
                 that.canvasW = that.scale(375);
                 that.canvasH = that.scale(600);
-                that.context = wx.createCanvasContext('post');
+                that.context = wx.createCanvasContext('post_'+that.goods.id);
                 that.context.setFillStyle("#ffffff");
                 that.context.fillRect(0, 0, that.canvasW, that.canvasH);
                 that.$apply();
