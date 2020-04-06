@@ -139,7 +139,7 @@
                         <view slot="extra" wx:if="{{current === 'COMMISSION'}}">
                             <view style="font-size: 32rpx;">¥{{goodsItem.commission}}</view>
                         </view>
-                        <view slot="extra" wx:if="{{current === 'SERVICE'}}">
+                        <view slot="extra" wx:if="{{current !== 'COMMISSION'}}">
                             <view style="font-size: 32rpx;position: absolute;right: 20rpx;"><i-icon type="enter" /></view>
                         </view>
                     </OrderItem>
@@ -202,7 +202,7 @@
                 let url = e.currentTarget.dataset.url;
                 let type = e.currentTarget.dataset.type;
 
-                if(type === 'order' && this.current !== 'SERVICE'){
+                if(type === 'order' && this.current === 'COMMISSION'){
                     return;
                 }
                 this.checkLogin(function () {

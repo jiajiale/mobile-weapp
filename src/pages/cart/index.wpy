@@ -94,7 +94,7 @@
                 api.delGoodsCart('POST',{goods_id: goods.id}).then(resp => {
                     tip.loaded();
                     this.cartList.splice(index,1);
-                    this.syncCartInfo(goods);
+                    this.syncCartInfo();
                     this.calcCartAmount();
                     this.$apply();
                 });
@@ -119,6 +119,7 @@
                     this.selectAll = 0;
                 }
                 this.calcCartAmount();
+                this.syncCartInfo();
             },
             handleChangeSelectAll({ detail }){
                 let selectArr = detail.value;
@@ -169,6 +170,7 @@
                 cartInfo.push({
                     goods_id: this.cartList[i].id,
                     goods_num: 1,
+                    selected: this.cartList[i].checked ? 1 : 0,
                     goods_spec: this.cartList[i].select_spec
                 })
             }
@@ -191,8 +193,16 @@
 
         onShow() {
             let _this = this;
-            _this.selectAll = 0;
-            _this.cartList = wx.getStorageSync('goodsCart') ? wx.getStorageSync('goodsCart') : [];
+            this.selectAll = 1;
+            this.cartList = wx.getStorageSync('goodsCart') ? wx.getStorageSync('goodsCart') : [];
+            this.calcCartAmount();
+            this.cartList.filter(item => {
+                if(!item.checked){
+                   _this.selectAll = 0;
+                }else{
+                   _this.hasSelect = true;
+                }
+            });
         };
 
         onLoad() {
