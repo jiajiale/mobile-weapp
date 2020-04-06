@@ -15,8 +15,10 @@
             <i-col span="18" i-class="wx-cate-right">
                 <i-row>
                     <i-col span="8" i-class="wx-cate-info" wx:for="{{subCategoryList}}" wx:for-item="category" wx:key="index" bindtap="handleNavigation" data-index="{{index}}">
-                        <view><image src="{{categoryImgUrl + category.image}}" mode="scaleToFill"></image></view>
-                        <view>{{category.name}}</view>
+                        <view style="height: 165rpx;">
+                          <view><image src="{{categoryImgUrl + category.image}}" mode="aspectFill"></image></view>
+                          <span>{{category.name}}</span>
+                        </view>
                     </i-col>
                 </i-row>
             </i-col>
