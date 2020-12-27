@@ -103,6 +103,7 @@
                 let index = currentTarget.dataset.index;
 
                 this.cartList[index].goods_num = detail.value;
+                this.syncCartInfo();
                 this.calcCartAmount();
             },
             handleChangeSelect({ detail }){
@@ -169,7 +170,7 @@
             for(let i in this.cartList){
                 cartInfo.push({
                     goods_id: this.cartList[i].id,
-                    goods_num: 1,
+                    goods_num: this.cartList[i].goods_num ? this.cartList[i].goods_num : 1,
                     selected: this.cartList[i].checked ? 1 : 0,
                     goods_spec: this.cartList[i].select_spec
                 })
