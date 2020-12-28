@@ -114,8 +114,10 @@ function formatDateTime(date,fmt) {
 function GoodsInCart(cartList,goods) {
     let flag = false;
 
+    console.log(goods.spec_info)
     for(let i in cartList){
-        if(cartList[i].id === goods.id){
+        console.log(cartList[i].spec_info);
+        if(cartList[i].id === goods.id && cartList[i].spec_info === goods.spec_info){
             flag = i;
         }
     }

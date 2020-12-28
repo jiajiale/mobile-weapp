@@ -38,7 +38,7 @@
                         <i-row>
                             <i-col span="14" i-class="wx-left">
                                 <view class="wx-goods-title">{{item.goods_name}}</view>
-                                <i-tag class="wx-tag" type="border" color="red">直降¥{{item.market_price - item.shop_price}}</i-tag>
+                                <i-tag class="wx-tag" type="border" color="red">直降¥{{(item.sale_price)}}</i-tag>
                             </i-col>
                             <i-col span="10" i-class="wx-right">
                                 <image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image>
@@ -261,6 +261,9 @@
                     this.recommendGoodsList = resp.data.recommendGoods;
                     this.saleGoodsList = resp.data.saleGoods;
                     this.advList = resp.data.advList;
+                    this.saleGoodsList.filter(item => {
+                        item.sale_price = (item.market_price - item.shop_price).toFixed(2);
+                    });
                 }
                 this.$apply();
             });

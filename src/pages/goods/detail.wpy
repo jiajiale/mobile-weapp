@@ -221,7 +221,7 @@
                     this.goods.goods_spec[key] = item.item_id;
                 }
                 this.specInfo[key] = item.item;
-
+                console.log(item)
                 this.goodsSpecList[key].filter(spec => {
                     if(spec.item_id === item.item_id){
                         spec['class'] = 'active';
@@ -245,7 +245,8 @@
 
                 let index = utils.GoodsInCart(this.cartList,this.goods);
                 if(index === false){
-                    this.cartList.push(this.goods);
+                    let goodsInfo = JSON.stringify(this.goods);
+                    this.cartList.push(JSON.parse(goodsInfo));
                 }else{
                     this.cartList[index].goods_num += this.goods.goods_num;
                 }
@@ -324,10 +325,20 @@
                 if(this.goodsSpecList !== null){
                     this.goods.goods_spec = [];
 
+                    let selected =false;
                     for(let i in this.goodsSpecList){
-                        this.goods.goods_spec[i] = this.goodsSpecList[i][0].item_id;
-                        this.goodsSpecList[i][0]['class'] = 'active';
-                        this.specInfo[i] = this.goodsSpecList[i][0].item;
+                        for(let j in this.goodsSpecList[i]){
+                            if(this.goodsSpecList[i][j]['class'] === 'active'){
+                                this.goods.goods_spec[i] = this.goodsSpecList[i][j].item_id;
+                                selected = true;
+                                break;
+                            }
+                        }
+                        if(!selected){
+                            this.goods.goods_spec[i] = this.goodsSpecList[i][0].item_id;
+                            this.goodsSpecList[i][0]['class'] = 'active';
+                            this.specInfo[i] = this.goodsSpecList[i][0].item;
+                        }
                     }
                     this.changeGoodsPrice();
                 }
