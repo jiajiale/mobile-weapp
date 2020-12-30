@@ -30,6 +30,7 @@
                 'pages/user/address',
                 'pages/cart/index',
                 'pages/goods/index',
+                'pages/sales/index',
                 'pages/authorize/index',
                 'pages/authorize/login',
                 'pages/pay/index',

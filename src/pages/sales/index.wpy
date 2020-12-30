@@ -1,0 +1,160 @@
+<style lang="less">
+    @import "../../assets/styles/sales";
+</style>
+<template>
+<!--    <view class="wx-goods-search">-->
+<!--        <input placeholder="商品搜索" value="{{keywords}}" data-key="name" bindinput="handleSearchInput" auto-focus/>-->
+<!--        <view class="wx-search-icon"><i-icon type="search" size="20" color="#999999"/></view>-->
+<!--        <view class="wx-search-btn" @tap="queryReload">搜索</view>-->
+<!--    </view>-->
+
+    <scroll-view scroll-y bindscrolltolower="onReachBottom" wx:if="{{goodsList.length > 0}}">
+        <view class="wx-goods-list">
+            <i-row>
+                <i-col span="12" i-class="wx-goods-col" wx:for="{{goodsList}}" wx:key="index" bindtap="handleNavigation" data-item="{{item}}">
+                    <GoodsItem>
+                        <view slot="thumb" style="height: 100%;"><image src="{{goodsImgUrl + item.original_img}}" mode="scaleToFill"></image></view>
+                        <view slot="title">{{item.goods_name}}</view>
+                        <view slot="extra"><span class="wx-goods-price">￥{{item.shop_price}}</span></view>
+                    </GoodsItem>
+                </i-col>
+            </i-row>
+        </view>
+        <LoadMore :hasPage.sync="hasPage" :itemList.sync="goodsList" emptyText="暂无商品信息"></LoadMore>
+    </scroll-view>
+    <view wx:if="{{!goodsList.length}}">
+        <NoInfo :emptyText="emptyText" marginTop="200"></NoInfo>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import GoodsItem from '../../components/goods-item';
+    import LoadMore from '../../components/load-more';
+    import NoInfo from '../../components/no-info';
+    import authorize from '../../mixins/authorize';
+    import pagination from '../../mixins/pagination';
+    import api from '../../api';
+    import tip from '../../utils/tip';
+    import utils from '../../utils/util';
+    import MSG from '../../utils/msg';
+
+    export default class GoodsIndex extends wepy.page {
+        config = {
+            navigationBarTitleText: '特价商品',
+            usingComponents: {
+                "i-row": "../../iview/row/index",
+                "i-col": "../../iview/col/index",
+                "i-icon": "../../iview/icon/index",
+                "i-tabs": "../../iview/tabs/index",
+                "i-tab": "../../iview/tab/index"
+            }
+        };
+        components = {
+            GoodsItem: GoodsItem,
+            LoadMore: LoadMore,
+            NoInfo: NoInfo,
+        };
+
+        mixins = [pagination,authorize];
+
+        data = {
+            goodsImgUrl: api.GOODS_IMG_URL,
+            params: [],
+            goodsList: [],
+            categoryList: [],
+            keywords: '',
+            page: 1,
+            hasPage: true,
+            activeCategory: null,
+            emptyText: '暂无商品信息'
+        };
+
+        computed = {};
+
+        methods = {
+            handleChangeCategory({ detail }){
+                this.activeCategory = detail.key;
+                this.goodsList = [];
+                this.queryItemList();
+            },
+            handleNavigation(e){
+                let _this = this;
+                this.checkAuthorize(function () {
+                    _this.checkLogin(function () {
+                        let item = e.currentTarget.dataset.item;
+                        if(!!parseInt(item.is_goods)){
+                            wepy.navigateTo({
+                              url: "/pages/goods/detail?id=" + item.id
+                            })
+                        }else{
+                            wepy.navigateTo({
+                              url: "/pages/service/detail?id=" + item.id
+                            })
+                        }
+                    });
+                });
+            }
+        };
+
+        handleSearchInput(e){
+            let key = e.currentTarget.dataset.key;
+            this.keywords = e.detail.value;
+        }
+
+        queryReload(){
+            this.page = 1;
+            this.goodsList = [];
+            this.hasPage = true;
+            this.queryItemList();
+        };
+
+        async queryItemList() {
+            tip.loading(MSG.LOADING);
+            let conditions = {
+                page: this.page,
+                keywords: this.keywords,
+                is_goods: 1,
+                is_hot: 1
+            };
+
+            if(this.params.cate){
+                conditions.cate = this.params.cate;
+                conditions.cat_id = this.activeCategory;
+            }
+            await api.queryGoodsList('POST',conditions).then(resp => {
+                tip.loaded();
+                if(resp.data.goodsList){
+                    this.goodsList = this.goodsList.concat(resp.data.goodsList.items);
+                    if(resp.data.goodsList.pager.index >= resp.data.goodsList.pager.count){
+                        this.hasPage = false;
+                    }
+                }
+                if(resp.data.categoryList){
+                    this.categoryList = resp.data.categoryList;
+
+                    if(this.params.cate && !this.params.category_id && !this.activeCategory){
+                        this.activeCategory = this.categoryList[0].id;
+                    }
+                }
+                this.$apply();
+            });
+        };
+
+        onShow() {
+            let _this = this;
+            // this.checkAuthorize(function () {
+                if(!_this.params.from){
+                    _this.queryReload();
+                }
+            // });
+        };
+
+        onLoad(params) {
+            if(params.category_id){
+                this.activeCategory = params.category_id;
+            }
+            this.params = params;
+        }
+    }
+</script>
