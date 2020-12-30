@@ -118,6 +118,7 @@
 
             if(this.couponInfo && this.couponInfo.order_amount){
                 params.order_amount = this.couponInfo.order_amount;
+                params.amount = this.couponInfo.amount;
             }
             await api.queryCouponList('POST',params).then(resp => {
                 tip.loaded();

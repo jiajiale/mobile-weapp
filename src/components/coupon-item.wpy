@@ -95,7 +95,10 @@
         </i-col>
         <i-col span="{{mspan}}" i-class="wx-coupon-mid">
             <view class="wx-title">{{coupon.name}}</view>
-            <view class="wx-cate">全场通用</view>
+            <view class="wx-cate">
+                <span wx:if="{{coupon.type == 1}}">全场通用</span>
+                <span wx:else>特价商品使用</span>
+            </view>
             <view wx:if="{{position == 'index'}}">有效期{{coupon.days}}天</view>
             <view wx:else>有效期至：{{coupon.gmt_end}}</view>
         </i-col>

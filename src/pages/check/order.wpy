@@ -165,9 +165,11 @@
                     }else{
                         if(this.couponInfo){
                             this.couponInfo.order_amount = this.totalPrice.total_fee;
+                            this.couponInfo.amount = 0;
                         }else{
                             this.couponInfo = {
-                                order_amount: this.totalPrice.total_fee
+                                order_amount: this.totalPrice.total_fee,
+                                amount: 0
                             }
                         }
                     }
